@@ -1,6 +1,6 @@
-let express = require('express');
-let path = require('path')
-let multer  = require('multer')
+const express = require('express');
+const path = require('path')
+const multer  = require('multer')
 const controllers = require('../controllers/upload')
 
 let router = express.Router();
