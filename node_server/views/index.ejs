@@ -7,5 +7,18 @@
   <body>
     <h1><%= title %></h1>
     <p>Welcome to <%= title %></p>
+    <form method="post" action="/common/upload/single" enctype="multipart/form-data" >
+      <input type="file" name="file">
+      <input type="submit">
+    </form>
+    <form method="post" action="/common/upload/array_file" enctype="multipart/form-data" >
+      <input type="file" name="files" multiple>
+      <input type="submit">
+    </form>
+    <form method="post" action="/common/upload/array_obj_file" enctype="multipart/form-data" >
+      <input type="file" name="files_1" >
+      <input type="file" name="flies_2" multiple>
+      <input type="submit">
+    </form>
   </body>
 </html>

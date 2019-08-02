@@ -4,11 +4,10 @@ const mysql = require("../util/db-util")
 
 /* GET home page. */
 router.get('/', function (req, res, next) {
-    mysql.findDataById('user',1).then(function(rows){
-        res.render('index', {title: rows[0].name});
-    }).catch(function(err){
-        res.render('index', {title: JSON.stringify(err)});
-    })
+    res.render('index', {title: 'admin'})
 });
+
+router.use('/common', require('./public/routes'))
+
 
 module.exports = router;
