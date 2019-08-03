@@ -7,7 +7,7 @@ router.get('/', function (req, res, next) {
     res.render('index', {title: 'admin'})
 });
 
-router.use('/common', require('./public/routes'))
+router.use('/common', require('./common/routes'))
 
 
 module.exports = router;

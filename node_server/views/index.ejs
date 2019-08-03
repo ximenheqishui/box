@@ -1,24 +1,16 @@
 <!DOCTYPE html>
 <html>
-  <head>
+<head>
     <title><%= title %></title>
-    <link rel='stylesheet' href='/stylesheets/style.css' />
-  </head>
-  <body>
-    <h1><%= title %></h1>
-    <p>Welcome to <%= title %></p>
-    <form method="post" action="/common/upload/single" enctype="multipart/form-data" >
-      <input type="file" name="file">
-      <input type="submit">
-    </form>
-    <form method="post" action="/common/upload/array_file" enctype="multipart/form-data" >
-      <input type="file" name="files" multiple>
-      <input type="submit">
-    </form>
-    <form method="post" action="/common/upload/array_obj_file" enctype="multipart/form-data" >
-      <input type="file" name="files_1" >
-      <input type="file" name="flies_2" multiple>
-      <input type="submit">
-    </form>
-  </body>
+    <base target="_blank"/>
+    <link rel='stylesheet' href='/stylesheets/style.css'/>
+</head>
+<body>
+<p>导航页</p>
+<ul>
+    <li>
+        <a href="/common/test">公共接口导航页</a>
+    </li>
+</ul>
+</body>
 </html>

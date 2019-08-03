@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title><%= title %></title>
+    <link rel='stylesheet' href='/stylesheets/test.css'/>
+    <script src="/lib/jquery-3.4.1.min.js"></script>
+</head>
+<body>
+
+<div class="aside">
+    <h3>公共接口测试页面</h3>
+    <ol>
+        <li>
+            <a href="#item-1">单文件上传</a>
+        </li>
+        <li>
+            <a href="#item-2">多文件件上传</a>
+        </li>
+        <li>
+            <a href="#item-3">多文件件上传</a>
+        </li>
+        <li>
+            <a href="#item-4">单图片上传并修改</a>
+        </li>
+    </ol>
+</div>
+<div class="main">
+    <div class="item" id="item-1">
+        <div class="description">
+            <div class="title">1、单文件上传</div>
+            <div class="req-res">
+                <div class="left">
+                <pre>
+                    req：
+                    url: '/common/upload/single'
+                    method: 'post'
+                    data:{file:file}
+                </pre>
+                </div>
+                <div class="right">
+                <pre>
+                    res：
+                    file：file
+                </pre>
+                </div>
+            </div>
+        </div>
+        <div class="dome">
+            <form method="post" action="/common/upload/single" enctype="multipart/form-data">
+                <input type="file" name="file">
+                <button type="submit">表单提交</button>
+            </form>
+            <div style="margin-top: 20px;">
+                <div>
+                    <input class="input-file" type="file" name="file" hidden>
+                    <span class="file-click" style=" cursor: pointer;display: inline-block;padding: 10px;font-size: 30px;border: 1px dashed #ddd">+</span>
+                    <img src="" alt="" width="200">
+                </div>
+                <div class="progress">0</div>
+                <button class="ajax-submit">ajax提交</button>
+                <script>
+                    $(function(){
+                        let dom  =  $('#item-1')
+                        let file = ''
+                        dom.find('.file-click').on('click',function(){
+                            dom.find('.input-file').click()
+                        })
+                        dom.find('.input-file').on('change',function(el){
+                            var files = el.target.files
+                            if (files.length === 0) return
+                            file = files[0]
+                            el.target.value = '' // 否则同一张图片不触发事件
+                            dom.find('img').attr('src',  URL.createObjectURL(file))
+                        })
+                        dom.find('.ajax-submit').on('click',function(){
+                            let data = new FormData()
+                            data.append('file',file);
+                            $.ajax({
+                                type: 'post',
+                                url: '/common/upload/single',
+                                data: data,
+                                processData:false,
+                                contentType:false,
+                                dataType: 'json',
+                                success: function (res) {
+                                    console.log(res)
+                                    // dom.find('img').attr('src',  res.file)
+                                },
+                                xhr: function () {
+                                    var myXhr = $.ajaxSettings.xhr();
+                                    if (myXhr.upload) { //检查upload属性是否存在
+                                        //绑定progress事件的回调函数
+                                        myXhr.upload.addEventListener('progress', progressHandlingFunction, false);
+                                    }
+                                    return myXhr; //xhr对象返回给jQuery使用
+                                }
+                            })
+                            function progressHandlingFunction(event) {
+                                var loaded = Math.floor(100 * (event.loaded / event.total)); //已经上传的百分比
+                                dom.find('.progress').html(loaded)
+                            }
+                        })
+                    })
+                </script>
+            </div>
+
+        </div>
+    </div>
+
+    <div class="item" id="item-2">
+        <div class="description">
+            <div class="title">2、多文件件上传</div>
+            <div class="req-res">
+                <div class="left">
+                <pre>
+                    req：
+                    url: '/common/upload/array_file'
+                    method: 'post'
+                    data:{files:files}
+                </pre>
+                </div>
+                <div class="right">
+                <pre>
+                    res：
+                    files：files
+                </pre>
+                </div>
+            </div>
+        </div>
+        <div class="dome">
+            <form method="post" action="/common/upload/array_file" enctype="multipart/form-data">
+                <input type="file" name="files" multiple>
+                <button type="submit">表单提交</button>
+            </form>
+        </div>
+    </div>
+
+    <div class="item" id="item-3">
+        <div class="description">
+            <div class="title">3、多文件件上传</div>
+            <div class="req-res">
+                <div class="left">
+                <pre>
+                    req：
+                    url: '/common/upload/array_file'
+                    method: 'post'
+                    data:{files_1:file,files_2:files}
+                </pre>
+                </div>
+                <div class="right">
+                <pre>
+                    res：
+                    files：files
+                </pre>
+                </div>
+            </div>
+        </div>
+        <div class="dome">
+            <form method="post" action="/common/upload/array_obj_file" enctype="multipart/form-data">
+                <input type="file" name="files_1">
+                <input type="file" name="flies_2" multiple>
+                <input type="submit">
+            </form>
+        </div>
+    </div>
+
+    <div class="item" id="item-4">
+        <div class="description">
+            <div class="title">1、单图片上传并修改</div>
+            <div class="req-res">
+                <div class="left">
+                <pre>
+                    req：
+                    url: '/common/upload/single_image'
+                    method: 'post'
+                    data:{file:file}
+                </pre>
+                </div>
+                <div class="right">
+                <pre>
+                    res：
+                    file：file
+                </pre>
+                </div>
+            </div>
+        </div>
+        <div class="dome">
+            <form method="post" action="/common/upload/single_image" enctype="multipart/form-data">
+                <input type="file" name="file">
+                <button type="submit">表单提交</button>
+            </form>
+            <div style="margin-top: 20px;">
+                <div>
+                    <input class="input-file" type="file" name="file" hidden>
+                    <span class="file-click" style=" cursor: pointer;display: inline-block;padding: 10px;font-size: 30px;border: 1px dashed #ddd">+</span>
+                    <img class="upload-image" src="" alt="上传图片">
+                </div>
+                <div class="progress">0</div>
+                <div>
+                    <img class="back-image" src="" alt="返回的图片">
+                </div>
+                <button class="ajax-submit">ajax提交</button>
+                <script>
+                    $(function(){
+                        let dom  =  $('#item-4')
+                        let file = ''
+                        dom.find('.file-click').on('click',function(){
+                            dom.find('.input-file').click()
+                        })
+                        dom.find('.input-file').on('change',function(el){
+                            var files = el.target.files
+                            if (files.length === 0) return
+                            file = files[0]
+                            el.target.value = '' // 否则同一张图片不触发事件
+                            dom.find('.upload-image').attr('src',  URL.createObjectURL(file))
+                        })
+                        dom.find('.ajax-submit').on('click',function(){
+                            let data = new FormData()
+                            data.append('file',file);
+                            $.ajax({
+                                type: 'post',
+                                url: '/common/upload/single_image',
+                                data: data,
+                                processData:false,
+                                contentType:false,
+                                dataType: 'json',
+                                success: function (res) {
+                                    console.log(res)
+                                    dom.find('.back-image').attr('src',  res.new_path)
+                                },
+                                xhr: function () {
+                                    var myXhr = $.ajaxSettings.xhr();
+                                    if (myXhr.upload) { //检查upload属性是否存在
+                                        //绑定progress事件的回调函数
+                                        myXhr.upload.addEventListener('progress', progressHandlingFunction, false);
+                                    }
+                                    return myXhr; //xhr对象返回给jQuery使用
+                                }
+                            })
+                            function progressHandlingFunction(event) {
+                                var loaded = Math.floor(100 * (event.loaded / event.total)); //已经上传的百分比
+                                dom.find('.progress').html(loaded)
+                            }
+                        })
+                    })
+                </script>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

@@ -41,6 +41,15 @@ router.post(
     controllers.arrayObjFile
 )
 
+/**
+ * 上传图片并对图片进行修改   ‘file’ = file
+ * */
+router.post(
+    '/single_image',
+    upload.single('file'),
+    controllers.singleImage
+)
+
 // 接口的错误处理  error handler
 router.use(function(err, req, res, next) {
     let info= {
