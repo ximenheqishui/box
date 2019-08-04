@@ -1,5 +1,7 @@
 const sharp = require('sharp');
 const path = require('path')
+const TextToSVG = require('text-to-svg');
+const textToSVG = TextToSVG.loadSync();
 /**
  * 图片处理务操作
  */
@@ -35,5 +37,33 @@ module.exports = {
             result.new_path = '/upload/images/' + 'new' + info.file.filename
         }
         return result
-    }
+    },
+    // 可以用来创建文字水印 或者给图片添加文字
+    async createWater (info) {
+
+        let result = {
+            path: ''
+        }
+        const attributes = {fill: '#eee', stroke: '#eee'};
+        const options = {x: 0, y: 0, fontSize: 20, anchor: 'top', attributes: attributes};
+        const svg = textToSVG.getSVG('hello world', options);
+        const svgbuf = Buffer.from(svg);
+        await new Promise((resolve, reject) => {
+            sharp({
+                create: {
+                    width: 300,
+                    height: 200,
+                    channels: 4,
+                    background: { r: 0, g: 0, b: 0, alpha: 0 }
+                }
+            }).composite([{ input: svgbuf }])
+                .png()
+                .toFile(path.join(__dirname,'../../../public/images/water.png'), (err) => {
+                    if (err) reject(err)
+                    resolve()
+                });
+        })
+        result.path = '/images/water.png'
+        return  result
+    },
 }
