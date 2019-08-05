@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>视频记录</title>
+    <script src="./jquery-3.4.1.min.js"></script>
+    <style>
+        html,body{
+            overflow: hidden;
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            width: 100%;
+            box-sizing: border-box;
+            font-size: 14px;
+            font-family: '微软雅黑';
+        }
+        p{
+            margin: 0;
+            padding: 0;
+        }
+        body{
+            box-sizing: border-box;
+            background: rgba(213,224,246,.1);
+
+        }
+        body > .left{
+            box-sizing: border-box;
+            position: absolute;
+            left: 0;
+            right: 0;
+            top: 0;
+            bottom: 0;
+            height: 100%;
+            margin-right: 400px;
+            z-index: 1;
+            display: flex;
+            flex-flow: column nowrap;
+            padding: 0 24px 24px;
+        }
+        body > .left .logo{
+            background: #fff;
+            /*background: -webkit-linear-gradient(left, #002349 , #004b96); !* Safari 5.1 - 6.0 *!*/
+            /*background: -o-linear-gradient(right, #002349, #004b96); !* Opera 11.1 - 12.0 *!*/
+            /*background: -moz-linear-gradient(right, #002349, #004b96); !* Firefox 3.6 - 15 *!*/
+            /*background: linear-gradient(to right, #002349 , #004b96); !* 标准的语法 *!*/
+            margin: 0 -24px 10px;
+            height: 60px;
+            color: #0D349A;
+            line-height: 60px;
+            padding: 0 24px;
+            font-size: 26px;
+            display: flex;
+            align-items: center;
+        }
+        body > .left .logo img{
+        }
+        body > .left .logo span{
+            display: inline-block;
+            margin-left: 20px;
+            /*-webkit-background-clip: text;*/
+            /*-webkit-text-fill-color: transparent;*/
+            font-weight: 700;
+            letter-spacing: 4px;
+            color: #000;
+           /* background-image: linear-gradient(90deg, #3f97c1,#eee, #e1b334 );*/
+        }
+        body > .left .header{
+          margin-bottom: 10px;
+        }
+        body > .left .header .title{
+            overflow: hidden;
+            margin-bottom: 10px;
+        }
+        body > .left .header .title .text{
+            box-sizing: border-box;
+            font-size: 16px;
+            color: #0D349A;
+            font-weight: 700;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        body > .left .header .title .time{
+            text-align: left;
+            padding-right: 20px;
+        }
+        body > .left .header .title .time > span{
+            display: inline-block;
+            font-size: 12px;
+            font-weight: normal;
+            color: #333;
+            margin-right: 20px;
+            line-height: 40px;
+        }
+        body > .left .header .describe{
+            margin-bottom: 10px;
+            text-indent: 30px;
+            line-height: 20px;
+            font-size: 14px;
+            color: #333;
+            display: -webkit-box;
+            -webkit-box-orient: vertical;
+            -webkit-line-clamp: 3;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            width: 100%;
+            flex: none;
+        }
+        body > .left .video{
+            flex: auto;
+            width: 100%;
+            height: 0;
+            position: relative;
+        }
+        body > .left .video  video{
+            background: rgba(0,0,0,.3);
+            display: inline-block;
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+        body > .right {
+            z-index: 2;
+            width: 400px;
+            right: 0;
+            top: 0;
+            bottom: 0;
+            height: 100%;
+            overflow-x: hidden;
+            overflow-y: auto;
+            padding: 20px;
+            box-sizing: border-box;
+            position: absolute;
+            background: #eee;
+        }
+        .right .list{
+
+        }
+        .item{
+            margin-bottom: 20px;
+        }
+        .item .title{
+            box-sizing: border-box;
+            line-height: 40px;
+            font-size: 16px;
+            color: #0D349A;
+            letter-spacing: 1.08px;
+            font-weight: 700;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        .item .content{
+            color: #333;
+            text-indent: 30px;
+            font-size: 14px;
+            line-height: 2em;
+            letter-spacing: 1px;
+        }
+    </style>
+</head>
+<body>
+    <div class="left">
+        <div class="logo">
+            <img height="40" src="./hui.png" alt="">
+            <span>某某公安局</span>
+        </div>
+        <div class="header">
+            <div class="title">
+                <div title="李某某殴打他人案" class="text">李某某殴打他人案</div>
+                <div class="time">
+                   <span>询问员：赵警察、张警察</span> <span>被询问人：李某某</span> <span>问询时间：2019-12-11 10:30 至 2019-12-11 11:30</span>
+                </div>
+            </div>
+        </div>
+        <div class="video">
+            <video id="video-1" controls src="./note.mp4"></video>
+        </div>
+    </div>
+    <div class="right">
+        <div class="list">
+            <div class="item" data-time="3">
+                <div class="title">开场部分</div>
+                <div class="content">
+                    <p>
+                        问:我们是xx市公安局xx分局xx派出所的民警(出示工作证件)，
+                        因你涉嫌殴打他人，根据《中华人民共和国治理管理处罚法》第八十二条第一款，
+                        口头传唤你到xx市公安局xx派出所接受询问，你听明白了吗？
+                    </p>
+                    <p>
+                        答： 听明白了。
+                    </p>
+                    <p>
+                        问：现依法向你询问，你应当如实回答，对与案件无关的问题，你有拒绝回答的权利，你有要求办案人员或者公安机关负责人回避的权利，有陈述和申辩的权利，以上权利义务，你清楚了吗？
+                    </p>
+                    <p>
+                        答：清楚了。
+                    </p>
+                </div>
+            </div>
+            <div class="item" data-time="10">
+                <div class="title"> 开始询问嫌疑人</div>
+                <div class="content">
+                    <p>问：今天x时你在什么地方？</p>
+                    <p>答：网吧</p>
+                    <p>问：当时发生了什么事情？</p>
+                    <p>答：他先骂我，所以动手打了他</p>
+                    <p>问：你和他们是什么关系？</p>
+                    <p>答：陌生人</p>
+                    <p>问：你把当时的情况详细地说一遍。</p>
+                    <p>答：我在路过时看了他一眼，他说你瞅啥瞅，我说我瞅你咋地，然后他骂我xxxxxxx，我就动手打了他几拳</p>
+                    <p>问：对方的伤情？</p>
+                    <p>答：当时就鼻青脸肿了</p>
+                </div>
+            </div>
+            <div class="item" data-time="40">
+                <div class="title"> 结束部分</div>
+                <div class="content">
+                    <p>问：你以上所讲的是否属实？</p>
+                    <p>答：属实。</p>
+                    <p>问：你看一下笔录，是否和你说的相符，如果记录有差错或者遗漏，可以提出更正或者补充。</p>
+                    <p>答：好的（阅读六分钟）</p>
+                </div>
+            </div>
+        </div>
+    </div>
+<script>
+    $(function () {
+        var  video = $('#video-1')[0]
+        $('.right .item').on('click',function(){
+            video.currentTime = parseInt($(this).data('time') ? $(this).data('time') : 0)
+            video.play()
+        })
+    })
+</script>
+</body>
+</html>
