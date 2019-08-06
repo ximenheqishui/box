@@ -5,6 +5,10 @@
  */
 
 var app = require('../app');
+
+
+
+
 var debug = require('debug')('node-server:server');
 var http = require('http');
 let opn = require('opn')
@@ -15,6 +19,21 @@ let opn = require('opn')
 
 var port = normalizePort(process.env.PORT || '3000');
 app.set('port', port);
+
+
+if (app.get('env') === 'development') {
+  /**
+   *  开发环境下页面热更新  css变化 js变化  模板变化
+   * */
+  const bs = require("browser-sync").create();
+  bs.init({
+    server: ["./public/demo","./public/css", "./public/js", "./views"], // 相对于app.js的路径
+    watch: true,
+    port: port,
+    middleware: [app]
+  });
+  return false
+}
 
 /**
  * Create HTTP server.
