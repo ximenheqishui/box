@@ -1,11 +1,4 @@
-html ,body {
-    margin: 0;
-    padding: 0;
-}
-a{
-    color: #0c0f9a;
-    text-decoration: none;
-}
+@import "__common__/index";
 .aside {
     overflow-x: hidden;
     overflow-y: auto;
