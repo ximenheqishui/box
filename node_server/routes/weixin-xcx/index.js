@@ -40,7 +40,7 @@ router.get('/er', function (req, res, next) {
             console.log(body)
             // var data = JSON.parse(body);//解析为一个对象不解析就是字符串
             // console.log(data)
-            res.end(response)
+            res.end(JSON.stringify(response))
         })
     })
 });

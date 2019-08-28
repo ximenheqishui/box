@@ -27,7 +27,7 @@
           <!-- <select class="form-control" id="userId"></select> -->
           <input class="form-control" id="userId" type="text" value="" />
           <label for="room-number">房间号:</label>
-          <input class="form-control" id="roomid" type="text"  value="123456" placeholder="请输入数字(1~999999999)" maxlength="9" minlength="1" onkeyup="value=value.replace(/[^\d]/g,'')">
+          <input class="form-control" id="roomid" type="text" readonly value="123456" placeholder="请输入数字(1~999999999)" maxlength="9" minlength="1" onkeyup="value=value.replace(/[^\d]/g,'')">
       </div>
       <button class="btn btn-default" type="button" onclick="push()">我要视频通话</button>
       <br />
@@ -38,7 +38,12 @@
 
   <!-- RTC  -->
   <div id="video-section" style="display: none;">
-    <p>当前房间号：<span id="c_roomid"></span>  当前用户： <span id="c_userid"></span></p>
+      <p>
+        当前用户： <span id="c_userid"></span>
+        </br>
+        当前房间号：<span id="c_roomid"></span>
+        <img style="margin-left: 20px" src="./er.jpg" alt="" width="160">
+      </p>
 <!--    <button class="btn btn-default" type="button" onclick="stopRTC()">停止推流</button>-->
 <!--    <button class="btn btn-default" type="button" onclick="startRTC()">开始推流</button>-->
     <button class="btn btn-primary" type="button">提交调解协议</button>
