@@ -8,6 +8,7 @@ router.get('/', function (req, res, next) {
 });
 
 router.use('/common', require('./common/routes'))
+router.use('/weixin-xcx', require('./weixin-xcx'))
 
 
 module.exports = router;
