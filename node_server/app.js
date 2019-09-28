@@ -17,7 +17,7 @@ if (app.get('env') === 'development') {
     app.use(logger('dev'));
     const chokidar = require('chokidar');
     // 文件监视实现node开发的热更新    路由也要有响应的修改才生效
-    const watcher = chokidar.watch([path.join(__dirname, './routes')], {});
+    const watcher = chokidar.watch([path.join(__dirname, 'routes')], {});
     watcher.on('ready', function () {
         watcher.on('all', function () {
             console.log("Clearing require.cache");
