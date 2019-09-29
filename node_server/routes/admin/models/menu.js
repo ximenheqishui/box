@@ -40,4 +40,17 @@ module.exports = {
             })
         return result
     },
+
+    /**
+     * 根据用户名查找用户信息
+     * @param  {string} userName 用户账号名称
+     * @return {object|null}     查找结果
+     */
+    async update(model,id) {
+        let result = await dbUtils.updateData('menu',model,id)
+            .catch((err) => {
+                return  err
+            })
+        return result
+    },
 }

@@ -1,13 +1,11 @@
 <template>
-  <collection></collection>
+ <div>home</div>
 </template>
 
 <script>
-  import collection from '@/views/business/collection.vue'
   export default {
     name: 'home',
     components: {
-      'collection': collection
     },
     data () {
       return {

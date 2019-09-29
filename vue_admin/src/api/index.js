@@ -1,17 +1,5 @@
 import axios from './request'
 export default {
-  // 所有页面的导出连接
-  exportUrl: {
-    collection: baseConfig.apiHost + '/refuelingRecord/queryByCondition/export', // 实时数据
-    company: baseConfig.apiHost + '/company/queryByCondition/export', // 公司列表
-    tanker: baseConfig.apiHost + '/tanker/queryByCondition/export', // 加油站列表
-    tankerM: baseConfig.apiHost + '/tanker/import/template', // 模板导出
-    tankerImport: baseConfig.apiHost + '/tanker/import', // 加油机数据导入
-    equipment: baseConfig.apiHost + '/tankerAlert/queryByCondition/export', // 设备预警列表
-    youPinT: baseConfig.apiHost + '/report3/queryByCondition/export', // 按油品统计
-    stationT: baseConfig.apiHost + '/report2/queryByCondition/export', // 按油品统计
-    areaT: baseConfig.apiHost + '/report1/queryByCondition/export' // 按油品统计
-  },
   /**
    * @description 获取各个页面的配置项
    * */
@@ -50,136 +38,6 @@ export default {
     })
   },
   /**
-   * @description 实时收集信息
-   * */
-  getCollection: function (data) {
-    return axios({
-      url: '/refuelingRecord/queryByCondition',
-      method: 'get',
-      params: data
-    })
-  },
-  /**
-   * @description 获取区域信息
-   * */
-  getAreaTree: function (data) {
-    return axios({
-      url: '/area/getAreaTree',
-      method: 'get',
-      params: data
-    })
-  },
-
-  /**
-   * @description 获取所有企业名称
-   * */
-  getStation: function (data) {
-    return axios({
-      url: '/company/getAllCompany',
-      method: 'get',
-      params: data
-    })
-  },
-  /**
-   * @description 获取企业名称
-   * */
-  getCompany: function (data) {
-    return axios({
-      url: '/company/queryByCondition',
-      method: 'get',
-      params: data
-    })
-  },
-  /**
-   * @description 添加企业名称
-   * */
-  addCompany: function (data) {
-    return axios({
-      url: '/company/save',
-      method: 'post',
-      data
-    })
-  },
-  /**
-   * @description 更新企业名称
-   * */
-  updateCompany: function (data) {
-    return axios({
-      url: '/company/update',
-      method: 'PUT',
-      data: data
-    })
-  },
-  /**
-   * @description 删除企业名称
-   * */
-  delCompany: function (data) {
-    return axios({
-      url: `/company/delByIds/${data.id}`,
-      method: 'DELETE'
-    })
-  },
-  /**
-   * @description 获取加油站数据
-   * */
-  getTanker: function (data) {
-    return axios({
-      url: '/tanker/queryByCondition',
-      method: 'get',
-      params: data
-    })
-  },
-  /**
-   * @description 获取油品
-   * */
-  getTankerType: function (data) {
-    return axios({
-      url: '/tanker/queryRefuelingType',
-      method: 'get',
-      params: data
-    })
-  },
-  /**
-   * @description 获取设备告警
-   * */
-  getEquipment: function (data) {
-    return axios({
-      url: '/tankerAlert/queryByCondition',
-      method: 'get',
-      params: data
-    })
-  },
-  /**
-   * @description 按油品统计
-   * */
-  getYouPinT: function (data) {
-    return axios({
-      url: '/report3/queryByCondition',
-      method: 'get',
-      params: data
-    })
-  },
-  /**
-   * @description 按加油站统计
-   * */
-  getStationT: function (data) {
-    return axios({
-      url: '/report2/queryByCondition',
-      method: 'get',
-      params: data
-    })
-  },
-  /**
-   * @description 按区域统计
-   * */
-  getAreaT: function (data) {
-    return axios({
-      url: '/report1/queryByCondition',
-      method: 'get',
-      params: data
-    })
-  },
-  /**
    * @description  菜单相关
    * */
   getMenu: function (data) {
@@ -205,7 +63,7 @@ export default {
   },
   updateMenu: function (data) {
     return axios({
-      url: '/sys/permission/update',
+      url: '/menu',
       method: 'PUT',
       data: data
     })

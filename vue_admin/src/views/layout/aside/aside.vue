@@ -5,7 +5,7 @@
             {{systemName}}
           </template>
           <template v-else>
-            <span style="font-size: 14px">{{systemName.substring(0,4)}}</span>
+            <span style="font-size: 14px">{{systemName}}</span>
           </template>
         </div>
         <el-menu

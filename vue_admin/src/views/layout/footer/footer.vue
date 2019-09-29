@@ -1,5 +1,5 @@
 <template>
-  <el-footer>Footer</el-footer>
+  <el-footer>个人代码工具箱，开发的基础框架 qq：296876606@qq.com</el-footer>
 </template>
 
 <script>
