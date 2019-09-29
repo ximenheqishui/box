@@ -1,13 +1,16 @@
-let createError = require('http-errors');
-let express = require('express');
-let path = require('path');
-let fs = require('fs');
-let cookieParser = require('cookie-parser');
+const config = require('./config')
+const createError = require('http-errors');
+const express = require('express');
+const path = require('path');
+const fs = require('fs');
+const cookieParser = require('cookie-parser');
 // 用redis长时间存贮session不至于服务器重启session丢失
-const session = require("./util/session_redis")
-let logger = require('morgan');
+// const session = require("./util/session_redis")
+const logger = require('morgan');
 
 let app = express();
+
+app.set('env',config.env || 'development')
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
@@ -35,7 +38,7 @@ app.disable('etag'); // 禁用动态接口的缓存 304
 app.use(express.json());
 app.use(express.urlencoded({extended: false}));
 app.use(cookieParser());
-app.use(session)
+// app.use(session)
 
 app.use(express.static(path.join(__dirname, 'public')));
 
@@ -53,7 +56,7 @@ app.use(function (req, res, next) {
 app.use(function (err, req, res, next) {
     // set locals, only providing error in development
     res.locals.message = err.message;
-    // app.env是等于process.env.NODE_ENV的  若果NODE_ENV没有设置  env默认等于 development。  开发环境下一定要设置为 environment 很多包的性能会提升30%以上
+    // app.env是等于process.env.NODE_ENV的  若果NODE_ENV没有设置  env默认等于 development。  开发环境下一定要设置为 production 很多包的性能会提升30%以上
     res.locals.error = req.app.get('env') === 'development' ? err : {};
     // render the error page
     res.status(err.status || 500);
