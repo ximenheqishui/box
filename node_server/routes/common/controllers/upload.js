@@ -11,7 +11,7 @@ module.exports = {
             if (req.file) {
                 info = {
                     file: req.file,
-                    path: '/upload/images/' +  req.file.filename,
+                    path:  'http://localhost:3000/upload/images/' +  req.file.filename,
                     name: 'admin'
                 }
             }

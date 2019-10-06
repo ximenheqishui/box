@@ -1,5 +1,9 @@
 import axios from './request'
 export default {
+
+  commonURL: {
+      uploadUrl: baseUrl + '/common/upload/single'
+  },
   /**
    * @description 获取各个页面的配置项
    * */
@@ -173,7 +177,7 @@ export default {
    * */
   getDepartmentUser (data) {
     return axios({
-      url: '/sys/user/getDepartmentUser',
+      url: '/user/department',
       method: 'get',
       params: data
     })

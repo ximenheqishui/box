@@ -1,4 +1,5 @@
 const departmentModels = require('../models/department')
+const userModels = require('../models/user')
 
 module.exports = {
 
@@ -79,9 +80,13 @@ module.exports = {
                 parent_id: req.body.parent_id || 0,
                 parent_name: req.body.parent_name,
                 sort_order: parseInt(req.body.sort_order),
-                status: parseInt(req.body.status)
+                status: parseInt(req.body.status),
             }
             await departmentModels.update(requestData, req.body.id)
+            await userModels.updateDept({leader:0},req.body.id)
+            for(let i=0;i< req.body.leader;i++){
+                await userModels.update({leader:1},req.body.leader[i])
+            }
             await res.json(req.returnData)
         } catch (e) {
             next(e)
@@ -101,7 +106,10 @@ module.exports = {
                 let result = await departmentModels.getAllByParentId(id)
                 if (result && result.length) {
                     for (let i = 0; i < result.length; i++) {
-                        result[i].children = await getTree(result[i].id)
+                       let children  = await getTree(result[i].id)
+                        if (children.length) {
+                            result[i].children
+                        }
                     }
                 }
                 return result

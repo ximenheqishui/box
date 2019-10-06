@@ -12,8 +12,19 @@ module.exports = {
      * @param  {int} pn  第几页
      * @param {int} pageSize   每页多少条
      */
-    async getByPage(pn,pageSize) {
-        let result = await dbUtils.findDataByPage("user",(pn-1)*pageSize, pn*pageSize)
+    async getByPage(pn, pageSize) {
+        let _sql = `select 
+        user.*, 
+        dictionary.name as sex_name,
+        department.name as dept_name 
+        FROM user
+        LEFT JOIN  dictionary on user.sex = dictionary.value and dictionary.type = 'sex'
+        LEFT JOIN  department on user.dept_id = department.id
+        LIMIT ? , ?`
+        let result = await dbUtils.query(_sql, [(pn - 1) * pageSize, pn * pageSize])
+        for (let i = 0; i < result.length;i++){
+            result[i].role_ids =  await this.getUserRole(result[i].id)
+        }
         return result
     },
 
@@ -31,15 +42,23 @@ module.exports = {
      * @return {object|null}     删除结果
      */
     async delById(id) {
-        let result = await dbUtils.deleteDataByIds('role',id)
+        let result = await dbUtils.deleteDataByIds('user', id)
         return result
     },
 
     /**
      * 根据id更新角色
      */
-    async update(model,id) {
-        let result = await dbUtils.updateData('role',model,id)
+    async update(model, id) {
+        let result = await dbUtils.updateData('user', model, id)
+        return result
+    },
+    /**
+     * 根据id更新角色
+     */
+    async updateDept(model, dept_id) {
+        let _sql = "UPDATE ?? SET ? WHERE dept_id = ?"
+        let result = await dbUtils.query(_sql,['user',model,dept_id])
         return result
     },
 
@@ -48,35 +67,49 @@ module.exports = {
      * @param  {array} menuIds 菜单的id数组
      * @param  {int} roleId 角色的id
      */
-    async roleMenu(menuIds,roleId) {
+    async userRole(roleIds, userId) {
 
         // 先删掉所有权限
-        let _sql = "DELETE FROM ?? WHERE role_id = ?"
-        await dbUtils.query(_sql, ['role_menu', roleId])
+        let _sql = "DELETE FROM ?? WHERE user_id = ?"
+        await dbUtils.query(_sql, ['user_role', userId])
 
-        // 再添加新的
-        let arr = []
-        for (let i=0; i< menuIds.length; i++) {
-            let str = `(${menuIds[i]},${roleId})`
-            arr.push(str)
+        if (roleIds.length) {
+            // 再添加新的
+            let arr = []
+            for (let i = 0; i < roleIds.length; i++) {
+                let str = `(${roleIds[i]},${userId})`
+                arr.push(str)
+            }
+            let values = arr.join(',')
+            _sql = `INSERT INTO user_role(role_id,user_id) VALUES ${values}`
+            await dbUtils.query(_sql, [])
         }
-        let values = arr.join(',')
-        _sql = `INSERT INTO role_menu(menu_id,role_id) VALUES ${values}`
-        let result = await dbUtils.query(_sql,[])
-        return result
+        return
     },
 
     /**
      * 根据roleId获取权限
      * @param  {int} roleId 角色的id
      */
-    async getRoleMenu(roleId) {
-        let _sql = "SELECT * FROM ?? WHERE role_id = ? "
-        let result = await dbUtils.query(_sql,['role_menu',roleId])
+    async getUserRole(userId) {
+        let _sql = "SELECT * FROM ?? WHERE user_id = ? "
+        let result = await dbUtils.query(_sql, ['user_role', userId])
         let arr = []
-        result.forEach(function(item){
-            arr.push(item.menu_id)
+        result.forEach(function (item) {
+            arr.push(item.role_id)
         })
         return arr
+    },
+
+
+    /**
+     * 分页查询数据
+     * @param  {int} pn  第几页
+     * @param {int} pageSize   每页多少条
+     */
+    async getDepartmentUser(dept_id) {
+        let _sql = `select * FROM user where dept_id = ?`
+        let result = await dbUtils.query(_sql, [dept_id])
+        return result
     },
 }

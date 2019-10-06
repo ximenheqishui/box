@@ -65,7 +65,7 @@
             <el-option
               v-for="item in options"
               :key="item.id"
-              :label="item.name"
+              :label="item.user_name"
               :value="item.id">
             </el-option>
           </el-select>
@@ -282,6 +282,7 @@
         this.api.getDepartmentUser({ dept_id: id }).then(res => {
           if (res.data.code === 0) {
             this.options = res.data.data
+            this.form.leader = res.data.leader
           }
         }).catch(error => { // 状态码非2xx时
           console.log(error)

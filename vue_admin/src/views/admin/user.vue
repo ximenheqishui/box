@@ -196,7 +196,7 @@
         <el-form-item label="头像" prop="avatar">
           <el-upload
             class="avatar-uploader"
-            action="https://jsonplaceholder.typicode.com/posts/"
+            :action="uploadUrl"
             :show-file-list="false"
             :on-success="handleAvatarSuccess"
             :before-upload="beforeAvatarUpload">
@@ -282,6 +282,7 @@
         }
       }
       return {
+        uploadUrl: this.api.commonURL.uploadUrl,
         searchLoading: false, // 搜索中的loading
         pageLoading: false, // 分页的loading
         sswitch: false, // 是否展开高级搜索
@@ -369,19 +370,16 @@
       // 图片上传成功后的操作
       handleAvatarSuccess (res, file) {
         // 这里加一个后台返回连接的
-        this.dialog.form.avatar = URL.createObjectURL(file.raw)
+        // this.dialog.form.avatar = URL.createObjectURL(file.raw)
+        this.dialog.form.avatar = res.path
       },
       // 图片上传之前的校验
       beforeAvatarUpload (file) {
-        const isJPG = file.type === 'image/jpeg'
         const isLt2M = file.size / 1024 / 1024 < 2
-        if (!isJPG) {
-          this.$message.error('上传头像图片只能是 JPG 格式!')
-        }
         if (!isLt2M) {
           this.$message.error('上传头像图片大小不能超过 2MB!')
         }
-        return isJPG && isLt2M
+        return isLt2M
       },
       // 分页改变时候的回调
       handleCurrentChange (val) {
@@ -538,7 +536,11 @@
         if (!this.multipleSelection.length) {
           return false
         }
-        this.api.delUser({ id: this.multipleSelection.join(',') }).then(res => {
+        let arr = []
+        this.multipleSelection.forEach(function (item) {
+          arr.push(item.id)
+        })
+        this.api.delUser({ id: arr.join(',') }).then(res => {
           if (res.data.code === 0) {
             this.getData(0)
             this.$message({
