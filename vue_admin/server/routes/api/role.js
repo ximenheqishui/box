@@ -78,7 +78,6 @@ router.delete('/delByIds/:id',function (req, res, next) {
 })
 router.get('/getPermission',function (req, res, next) {
 
-
   let data = {
     message: '成功了',
     code: 0,

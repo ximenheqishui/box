@@ -3,7 +3,8 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "start": "node ./bin/www"
+    "start": "node ./bin/www",
+    "doc": "apidoc -i  ./routes/ -o  ./public/doc/"
   },
   "dependencies": {
     "chokidar": "^3.0.2",
@@ -37,5 +38,13 @@
     "node-sass": "^4.12.0",
     "vinyl-named": "^1.1.0",
     "webpack-stream": "^5.2.1"
+  },
+  "apidoc": {
+    "name": "box-li",
+    "version": "0.1.0",
+    "description": "接口文档",
+    "title": "box-li接口文档",
+    "url" : "http://localhost:3000",
+    "sampleUrl": "http://localhost:3000"
   }
 }

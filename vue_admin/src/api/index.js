@@ -5,7 +5,7 @@ export default {
    * */
   getOption: function (data) {
     return axios({
-      url: '/sys/dict/getDictConstant',
+      url: '/dictionaries',
       method: 'get',
       params: data
     })
@@ -49,7 +49,7 @@ export default {
   },
   getUsableMenu: function (data) {
     return axios({
-      url: '/sys/permission/getUsableMenuTree',
+      url: '/menu/usable',
       method: 'get',
       params: data
     })
@@ -58,7 +58,7 @@ export default {
     return axios({
       url: '/menu',
       method: 'post',
-      data
+      data: data
     })
   },
   updateMenu: function (data) {
@@ -70,8 +70,9 @@ export default {
   },
   delMenu: function (data) {
     return axios({
-      url: `/menu/${data.id}`,
-      method: 'DELETE'
+      url: '/menu',
+      method: 'DELETE',
+      data: { id: data.id + '' }
     })
   },
   /**
@@ -79,36 +80,37 @@ export default {
    * */
   getRole: function (data) {
     return axios({
-      url: '/sys/role/getByPage',
+      url: '/role',
       method: 'get',
       params: data
     })
   },
   getRoleAll: function (data) {
     return axios({
-      url: '/sys/role/getByPage',
+      url: '/role',
       method: 'get',
       params: data
     })
   },
   addRole: function (data) {
     return axios({
-      url: '/sys/role/save',
+      url: '/role',
       method: 'post',
-      data
+      data: data
     })
   },
   updateRole: function (data) {
     return axios({
-      url: '/sys/role/update',
+      url: '/role',
       method: 'PUT',
       data: data
     })
   },
   delRole: function (data) {
     return axios({
-      url: `/sys/role/delByIds/${data.id}`,
-      method: 'DELETE'
+      url: '/role',
+      method: 'DELETE',
+      data: { id: data.id + '' }
     })
   },
   /**
@@ -116,14 +118,14 @@ export default {
    * */
   getRoleMenu: function (data) {
     return axios({
-      url: '/sys/role/getPermission',
+      url: '/role/menu',
       method: 'get',
       params: data
     })
   },
   updateRoleMenu: function (data) {
     return axios({
-      url: '/sys/role/savePermission',
+      url: '/role/menu',
       method: 'post',
       data: data
     })
@@ -133,7 +135,7 @@ export default {
    * */
   getDepartment: function (data) {
     return axios({
-      url: '/sys/department/getDeptTree',
+      url: '/department',
       method: 'get',
       params: data
     })
@@ -147,22 +149,23 @@ export default {
   },
   addDepartment: function (data) {
     return axios({
-      url: '/sys/department/save',
+      url: 'department',
       method: 'post',
       data
     })
   },
   updateDepartment: function (data) {
     return axios({
-      url: '/sys/department/update',
+      url: '/department',
       method: 'PUT',
       data: data
     })
   },
   delDepartment: function (data) {
     return axios({
-      url: `/sys/department/delByIds/${data.id}`,
-      method: 'DELETE'
+      url: `/department`,
+      method: 'DELETE',
+      data: { id: data.id + '' }
     })
   },
   /**
@@ -177,29 +180,30 @@ export default {
   },
   getUser: function (data) {
     return axios({
-      url: '/sys/user/admin/getByCondition',
+      url: '/user',
       method: 'get',
       params: data
     })
   },
   addUser: function (data) {
     return axios({
-      url: '/sys/user/admin/save',
+      url: '/user',
       method: 'post',
-      data
+      data: data
     })
   },
   updateUser: function (data) {
     return axios({
-      url: '/sys/user/admin/update',
+      url: '/user',
       method: 'PUT',
       data: data
     })
   },
   delUser: function (data) {
     return axios({
-      url: `/sys/user/admin/delByIds/${data.id}`,
-      method: 'DELETE'
+      url: `/user`,
+      method: 'DELETE',
+      data: { id: data.id + '' }
     })
   }
 }

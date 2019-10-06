@@ -222,9 +222,6 @@
       },
       submitForm (e, tag) {
         let _this = this
-        if (e.type === 'keyup') {
-          if (e.keyCode !== 13) return
-        }
         this.$refs['ruleForm' + tag].validate((valid) => {
           if (valid) {
             if (!_this.disableSubmit) {
@@ -240,7 +237,7 @@
                   _this.dialog2 = false
                   let tdata = JSON.parse(JSON.stringify(_this.form))
                   tdata.id = res.data.data.id
-                  console.log(JSON.stringify(tdata))
+                  // console.log(JSON.stringify(tdata))
                   if (_this.dataT) {
                     if (!_this.dataT.children) {
                       this.$set(_this.dataT, 'children', [])
@@ -250,11 +247,18 @@
                     _this.data.push(tdata)
                   }
                 } else {
-                  console.log('添加失败')
+                  _this.$message({
+                    message: res.data.message,
+                    type: 'error'
+                  })
                 }
               }).catch(error => { // 状态码非2xx时
                 _this.disableSubmit = false
                 console.log(error)
+                _this.$message({
+                  message: '服务器忙...',
+                  type: 'error'
+                })
               })
             } else {
               _this.api.updateMenu(_this.form).then(res => {
@@ -276,11 +280,18 @@
                   _this.dataT.status = _this.form.status
                   _this.dataT.last_menu = _this.form.last_menu
                 } else {
-                  console.log('添加失败')
+                  _this.$message({
+                    message: res.data.message,
+                    type: 'error'
+                  })
                 }
               }).catch(error => { // 状态码非2xx时
                 _this.disableSubmit = false
                 console.log(error)
+                _this.$message({
+                  message: '服务器忙...',
+                  type: 'error'
+                })
               })
             }
           } else {
@@ -355,11 +366,22 @@
             const children = parent.data.children || parent.data
             const index = children.findIndex(d => d.id === data.id)
             children.splice(index, 1)
+            this.$message({
+              message: res.data.message,
+              type: 'success'
+            })
           } else {
-            console.log('添加失败')
+            this.$message({
+              message: res.data.message,
+              type: 'error'
+            })
           }
         }).catch(error => { // 状态码非2xx时
           console.log(error)
+          this.$message({
+            message: '服务器忙...',
+            type: 'error'
+          })
         })
       },
       deleteMore () {
@@ -369,12 +391,23 @@
         }
         this.api.delMenu({ id: key.join(',') }).then(res => {
           if (res.data.code === 0) {
+            this.$message({
+              message: res.data.message,
+              type: 'success'
+            })
             this.getMenu()
           } else {
-            console.log('添加失败')
+            this.$message({
+              message: res.data.message,
+              type: 'error'
+            })
           }
         }).catch(error => { // 状态码非2xx时
           console.log(error)
+          this.$message({
+            message: '服务器忙...',
+            type: 'error'
+          })
         })
       }
     },

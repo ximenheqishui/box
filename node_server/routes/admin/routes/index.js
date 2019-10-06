@@ -9,7 +9,13 @@ router.use(function (req, res, next) {
     next()
 });
 
+
+router.use('/', require('./common'))
 router.use('/menu', require('./menu'))
+router.use('/role', require('./role'))
+router.use('/department', require('./department'))
+router.use('/user', require('./user'))
+
 
 // // error handler
 router.use(function (err, req, res, next) {

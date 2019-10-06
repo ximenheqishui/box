@@ -345,7 +345,8 @@
     },
     computed: {
       downloadUrl: function () {
-        return this.api.exportUrl.company + '/?' + qs.stringify(this.lastPostData, { arrayFormat: 'repeat' })
+        return ''
+        // return this.api.exportUrl.company + '/?' + qs.stringify(this.lastPostData, { arrayFormat: 'repeat' })
       }
     },
     watch: {
@@ -478,7 +479,7 @@
         let _this = this
         _this.api.getRoleAll({}).then(res => {
           if (res.data.code === 0) {
-            _this.role = res.data.data.list
+            _this.role = res.data.data
           }
         }).catch(error => { // 状态码非2xx时
           console.log(error)

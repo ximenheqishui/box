@@ -3,12 +3,10 @@ const dbUtils = require('../../../util/db-util')
 module.exports = {
 
     async create(model) {
-        let result = await dbUtils.insertData('menu', model)
-            .catch((err) => {
-                return  err
-            })
+        let result = await dbUtils.insertData('department', model)
         return result
     },
+
 
     /**
      * 根据菜单父节点名查找菜单
@@ -17,7 +15,7 @@ module.exports = {
      */
     async getAllByParentId(pid) {
         let _sql = "SELECT * FROM ?? WHERE parent_id = ? "
-        let result = await dbUtils.query(_sql, ['menu', pid])
+        let result = await dbUtils.query(_sql, ['department', pid])
         return result
     },
 
@@ -38,7 +36,7 @@ module.exports = {
      * @return {object|null}     删除结果
      */
     async delById(id) {
-        let result = await dbUtils.deleteDataByIds('menu',id)
+        let result = await dbUtils.deleteDataByIds('department',id)
         return result
     },
 
@@ -49,7 +47,7 @@ module.exports = {
      * @return {object|null}     修改结果
      */
     async update(model,id) {
-        let result = await dbUtils.updateData('menu',model,id)
+        let result = await dbUtils.updateData('department',model,id)
             .catch((err) => {
                 return  err
             })
