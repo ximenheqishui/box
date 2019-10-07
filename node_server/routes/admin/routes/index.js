@@ -1,11 +1,15 @@
-let express = require('express');
-let router = express.Router();
+const express = require('express');
+const {getDate} = require('../../../util/redis')
+const router = express.Router();
 
-router.use(function (req, res, next) {
+router.use(async function (req, res, next) {
     req.returnData = {
         code: 0,
         message: '成功'
     }
+    let user = await getDate(req.cookies['Admin-Token'])
+    console.log(user)
+    req.user = user
     next()
 });
 

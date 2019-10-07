@@ -33,6 +33,17 @@ module.exports = {
     },
 
     /**
+     * 根据菜单父节点名查找可用的菜单
+     * @param  {int} pid 菜单的父节点
+     * @return {object|null}     查找结果
+     */
+    async getUsableByParentIdInids(pid,ids) {
+        let _sql = "SELECT * FROM ?? WHERE parent_id = ? and status = 0 and id IN (?)"
+        let result = await dbUtils.query(_sql, ['menu', pid, ids])
+        return result
+    },
+
+    /**
      * 根据菜单id删除用户
      * @param  {int} id 菜单id
      * @return {object|null}     删除结果

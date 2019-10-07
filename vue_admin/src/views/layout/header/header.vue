@@ -7,7 +7,7 @@
       </div>
     </div>
     <div class="right">
-      <span>{{$store.getters.userInfo.name}}</span>
+      <span>{{$store.getters.userInfo.user_name}}</span>
       <el-dropdown>
         <i class="el-icon-setting" style="margin-left: 15px"></i>
         <el-dropdown-menu slot="dropdown">

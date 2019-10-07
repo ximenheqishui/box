@@ -21,4 +21,21 @@ module.exports = {
         })
         return obj
     },
+
+    /**
+     * 根据菜单父节点名查找菜单
+     * @param  {int} pid  菜单的父节点
+     * @return {object|null}     查找结果
+     */
+    async getUser(user_name) {
+        let _sql = `select 
+                    user.*, 
+                    dictionary.name as sex_name,
+                    department.name as dept_name 
+                    FROM user
+                    LEFT JOIN  dictionary on user.sex = dictionary.value and dictionary.type = 'sex'
+                    LEFT JOIN  department on user.dept_id = department.id where user_name= ?`
+        let result = await dbUtils.query(_sql, [user_name])
+        return result
+    },
 }
