@@ -19,7 +19,7 @@
                 background-color="#304156"
                 text-color="#d2d9ef"
                 active-text-color="#409EFF">
-            <template v-for="item in  asideMenu">
+            <template v-for="item in $store.getters.userInfo.menu">
                 <el-submenu class="submenu" v-if="item.children && item.children.length" :index="item.name"
                             :key="item.name">
                     <template slot="title">
@@ -57,7 +57,6 @@
     data () {
       return {
         systemName: baseConfig.systemName,
-        asideMenu: baseConfig.asideMenu,
         isCollapse: false
       }
     },

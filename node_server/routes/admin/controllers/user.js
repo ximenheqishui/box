@@ -20,7 +20,7 @@ module.exports = {
                 mobile: req.body.mobile,
                 sex: parseInt(req.body.sex) || 0,
                 dept_id: parseInt(req.body.dept_id) || 0,
-                dept_path:req.body.dept_path,
+                dept_path: req.body.dept_path,
                 status: parseInt(req.body.status) || 0,
                 avatar: req.body.avatar,
                 create_time: new Date()
@@ -70,11 +70,11 @@ module.exports = {
                 mobile: req.body.mobile,
                 sex: parseInt(req.body.sex) || 0,
                 dept_id: parseInt(req.body.dept_id) || 0,
-                dept_path:req.body.dept_path,
+                dept_path: req.body.dept_path,
                 status: parseInt(req.body.status) || 0,
                 avatar: req.body.avatar
             }
-            let result = await userModels.update(requestData,req.body.id)
+            let result = await userModels.update(requestData, req.body.id)
             await userModels.userRole(req.body.role_ids, req.body.id)
             req.returnData.data = {id: result.insertId}
             await res.json(req.returnData)
@@ -92,11 +92,10 @@ module.exports = {
      */
     async getUser(req, res, next) {
         try {
-            let {pn, page_size} = req.query
             let result = {}
-            result.totalCount = await userModels.count()
+            result.totalCount = await userModels.count(req.query)
             result.totalCount = result.totalCount[0].total_count
-            result.list = await userModels.getByPage(pn, page_size)
+            result.list = await userModels.getByPage(req.query)
             req.returnData.data = result
             await res.json(req.returnData)
         } catch (e) {

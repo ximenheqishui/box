@@ -104,8 +104,17 @@ module.exports = {
                 }
                 return noButtonResult
             }
-            let noButtonResult = await getTree(0)
-            req.user.menu = noButtonResult
+            let noButtonResult = []
+            let adminMenu = []
+            if (menuids.length) {
+                noButtonResult = await getTree(0)
+            }
+            noButtonResult.forEach(function(item){
+                if (item.unique_id === 'admin') {
+                    adminMenu = item.children
+                }
+            })
+            req.user.menu = adminMenu
             req.user.permission = permission
             req.returnData.userInfo = req.user
             await res.json(req.returnData)

@@ -8,7 +8,6 @@ router.use(async function (req, res, next) {
         message: '成功'
     }
     let user = await getDate(req.cookies['Admin-Token'])
-    console.log(user)
     req.user = user
     next()
 });

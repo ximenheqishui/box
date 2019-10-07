@@ -108,7 +108,7 @@ module.exports = {
                     for (let i = 0; i < result.length; i++) {
                        let children  = await getTree(result[i].id)
                         if (children.length) {
-                            result[i].children
+                            result[i].children = children
                         }
                     }
                 }

@@ -54,11 +54,12 @@ const user = {
       })
     },
     // 登出
-    logOut ({ commit, state }) {
+    logOut ({ commit, dispatch, state }) {
       return new Promise((resolve, reject) => {
         api.logout(state.token).then(() => {
           commit('setToken', '')
-          // commit('SET_ROLES', [])
+          commit('setUserInfo', {})
+          dispatch('tagsView/delAllViews')
           removeToken()
           router.push('/login')
           resolve()

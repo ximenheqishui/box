@@ -12,16 +12,38 @@ module.exports = {
      * @param  {int} pn  第几页
      * @param {int} pageSize   每页多少条
      */
-    async getByPage(pn, pageSize) {
-        let _sql = `select 
-        user.*, 
-        dictionary.name as sex_name,
-        department.name as dept_name 
-        FROM user
-        LEFT JOIN  dictionary on user.sex = dictionary.value and dictionary.type = 'sex'
-        LEFT JOIN  department on user.dept_id = department.id
-        LIMIT ? , ?`
-        let result = await dbUtils.query(_sql, [(pn - 1) * pageSize, pn * pageSize])
+    async getByPage(query) {
+        let {
+            pn,
+            page_size,
+            user_name,
+            dept_id,
+            end_date,
+            start_date,
+            mobile,
+            email,
+            sex,
+            status
+        } = query
+        let whereTag = false
+        let _sql = "select user.*,dictionary.name as sex_name,department.name as dept_name " +
+            "FROM user " +
+            "LEFT JOIN  dictionary on user.sex = dictionary.value and dictionary.type = 'sex' " +
+            "LEFT JOIN  department on user.dept_id = department.id"
+        if (user_name !== '') {
+            whereTag = true
+            _sql += ` where user.user_name like '%${user_name}%'`
+        }
+        if (dept_id !== '') {
+            if (whereTag) {
+                _sql += ` and user.dept_id = ${dept_id}`
+            } else {
+                whereTag = true
+                _sql += ` where user.dept_id = ${dept_id}`
+            }
+        }
+        _sql += ` LIMIT ? , ?`
+        let result = await dbUtils.query(_sql, [(pn - 1) * page_size, pn * page_size])
         for (let i = 0; i < result.length;i++){
             result[i].role_ids =  await this.getUserRole(result[i].id)
         }
@@ -31,8 +53,32 @@ module.exports = {
     /**
      * 计总数
      */
-    async count() {
-        let result = await dbUtils.count('user')
+    async count(query) {
+        let {
+            user_name,
+            dept_id,
+            end_date,
+            start_date,
+            mobile,
+            email,
+            sex,
+            status
+        } = query
+        let whereTag = false
+        let _sql = "SELECT COUNT(*) AS total_count FROM user"
+        if (user_name !== '') {
+            whereTag = true
+            _sql += ` where user.user_name like '%${user_name}%'`
+        }
+        if (dept_id !== '') {
+            if (whereTag) {
+                _sql += ` and user.dept_id = ${dept_id}`
+            } else {
+                whereTag = true
+                _sql += ` where user.dept_id = ${dept_id}`
+            }
+        }
+        let result = await dbUtils.query(_sql ,[])
         return result
     },
 
