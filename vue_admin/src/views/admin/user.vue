@@ -406,8 +406,13 @@
           this.searchLoading = true
           postdata = JSON.parse(JSON.stringify(this.searchData))
           postdata.dept_id = postdata.dept_path.length ? postdata.dept_path[postdata.dept_path.length - 1] : ''
-          postdata.end_date = postdata.date[0] ? this.dateFmt('yyyy-MM-dd hh:mm:ss', new Date(postdata.date[0])) : ''
-          postdata.start_date = postdata.date[1] ? this.dateFmt('yyyy-MM-dd hh:mm:ss', new Date(postdata.date[1])) : ''
+          if (postdata.date) {
+            postdata.start_date = postdata.date[0] ? this.dateFmt('yyyy-MM-dd hh:mm:ss', new Date(postdata.date[0])) : ''
+            postdata.end_date = postdata.date[1] ? this.dateFmt('yyyy-MM-dd hh:mm:ss', new Date(postdata.date[1])) : ''
+          } else {
+            postdata.end_date = ''
+            postdata.start_date = ''
+          }
           delete postdata.pageSizes
           delete postdata.dept_path
           delete postdata.date

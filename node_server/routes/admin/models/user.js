@@ -1,4 +1,5 @@
 const dbUtils = require('../../../util/db-util')
+const departmentModels = require('./department')
 
 module.exports = {
 
@@ -35,11 +36,73 @@ module.exports = {
             _sql += ` where user.user_name like '%${user_name}%'`
         }
         if (dept_id !== '') {
+            async function getTree(id) {
+                let result = await departmentModels.getAllByParentId(id)
+                if (result && result.length) {
+                    for (let i = 0; i < result.length; i++) {
+                        let children  = await getTree(result[i].id)
+                        if (children.length) {
+                            result[i].children = children
+                        }
+                    }
+                }
+                return result
+            }
+
+            let dept = await getTree(dept_id)
+            let dept_ids = [dept_id]
+            dept.forEach(function(item){
+                dept_ids.push(item.id)
+            })
             if (whereTag) {
-                _sql += ` and user.dept_id = ${dept_id}`
+                _sql += ` and user.dept_id in (${dept_ids})`
             } else {
                 whereTag = true
-                _sql += ` where user.dept_id = ${dept_id}`
+                _sql += ` where user.dept_id in (${dept_ids})`
+            }
+        }
+
+        if (mobile !== '') {
+            if (whereTag) {
+                _sql += ` and user.mobile like '%${mobile}%'`
+            } else {
+                whereTag = true
+                _sql += ` where user.mobile like '%${mobile}%'`
+            }
+        }
+
+        if (email !== '') {
+            if (whereTag) {
+                _sql += ` and user.email like '%${email}%'`
+            } else {
+                whereTag = true
+                _sql += ` where user.email like '%${email}%'`
+            }
+        }
+
+        if (sex !== '') {
+            if (whereTag) {
+                _sql += ` and user.sex=${sex}`
+            } else {
+                whereTag = true
+                _sql += ` where user.sex=${sex}`
+            }
+        }
+        if (status !== '') {
+            if (whereTag) {
+                _sql += ` and user.status=${status}`
+            } else {
+                whereTag = true
+                _sql += ` where user.status=${status}`
+            }
+        }
+
+        if (end_date !== '') {
+            if (whereTag) {
+                _sql += ` and  user.create_time  between '${start_date}' and '${end_date}'`
+            } else {
+                whereTag = true
+                _sql += ` where user.create_time between '${start_date}' and '${end_date}'`
             }
         }
         _sql += ` LIMIT ? , ?`
@@ -71,11 +134,73 @@ module.exports = {
             _sql += ` where user.user_name like '%${user_name}%'`
         }
         if (dept_id !== '') {
+            async function getTree(id) {
+                let result = await departmentModels.getAllByParentId(id)
+                if (result && result.length) {
+                    for (let i = 0; i < result.length; i++) {
+                        let children  = await getTree(result[i].id)
+                        if (children.length) {
+                            result[i].children = children
+                        }
+                    }
+                }
+                return result
+            }
+
+            let dept = await getTree(dept_id)
+            let dept_ids = [dept_id]
+            dept.forEach(function(item){
+                dept_ids.push(item.id)
+            })
             if (whereTag) {
-                _sql += ` and user.dept_id = ${dept_id}`
+                _sql += ` and user.dept_id in (${dept_ids})`
             } else {
                 whereTag = true
-                _sql += ` where user.dept_id = ${dept_id}`
+                _sql += ` where user.dept_id in (${dept_ids})`
+            }
+        }
+
+        if (mobile !== '') {
+            if (whereTag) {
+                _sql += ` and user.mobile like '%${mobile}%'`
+            } else {
+                whereTag = true
+                _sql += ` where user.mobile like '%${mobile}%'`
+            }
+        }
+
+        if (email !== '') {
+            if (whereTag) {
+                _sql += ` and user.email like '%${email}%'`
+            } else {
+                whereTag = true
+                _sql += ` where user.email like '%${email}%'`
+            }
+        }
+
+        if (sex !== '') {
+            if (whereTag) {
+                _sql += ` and user.sex=${sex}`
+            } else {
+                whereTag = true
+                _sql += ` where user.sex=${sex}`
+            }
+        }
+        if (status !== '') {
+            if (whereTag) {
+                _sql += ` and user.status=${status}`
+            } else {
+                whereTag = true
+                _sql += ` where user.status=${status}`
+            }
+        }
+
+        if (end_date !== '') {
+            if (whereTag) {
+                _sql += ` and  user.create_time  between '${start_date}' and '${end_date}'`
+            } else {
+                whereTag = true
+                _sql += ` where user.create_time between '${start_date}' and '${end_date}'`
             }
         }
         let result = await dbUtils.query(_sql ,[])
