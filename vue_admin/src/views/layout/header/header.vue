@@ -11,11 +11,11 @@
       <el-dropdown>
         <i class="el-icon-setting" style="margin-left: 15px"></i>
         <el-dropdown-menu slot="dropdown">
-          <el-dropdown-item>
-             <span @click="changePass">修改密码</span>
+          <el-dropdown-item @click.native="changePass">
+             <span>修改密码</span>
           </el-dropdown-item>
-          <el-dropdown-item>
-            <span @click="logOut">退出系统</span>
+          <el-dropdown-item @click.native="logOut">
+            <span>退出系统</span>
           </el-dropdown-item>
         </el-dropdown-menu>
       </el-dropdown>
