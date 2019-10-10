@@ -248,7 +248,7 @@
                   }
                 } else {
                   _this.$message({
-                    message: res.data.message,
+                    message: res.message,
                     type: 'error'
                   })
                 }

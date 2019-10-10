@@ -24,12 +24,14 @@ router.beforeEach((to, from, next) => {
         beforeNext(to, from, next)
         next()
       } else {
-        store.dispatch('getUserInfo', getToken()).then((res) => {
+        store.dispatch('user/getUserInfo').then((res) => {
           beforeNext(to, from, next)
           next()
-        }).catch(() => {
-          store.dispatch('fedLogOut').then(() => {
-            Message.error('获取用户信息失败，请重新登录')
+        }).catch((error) => {
+          store.dispatch('user/fedLogOut').then(() => {
+            if (error.message !== 'loginTimeout') {
+              Message.error('获取用户信息失败，请重新登录')
+            }
             beforeNext(to, from, next)
             next({ path: '/login' })
           })

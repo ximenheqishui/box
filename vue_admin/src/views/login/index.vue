@@ -4,7 +4,7 @@
         <img src="./logo.png" alt="">
         <span>{{systemName}}</span>
       </div>
-      <el-form :model="form" status-icon :rules="rules" ref="ruleForm" class="right">
+      <el-form :model="form" status-icon :rules="rules" ref="ruleForm" class="right" @keyup.enter.native="submitForm">
           <div class="head">
             用户登录 login
           </div>
@@ -14,7 +14,7 @@
           </el-input>
           </el-form-item>
           <el-form-item label="" prop="password" class="input">
-            <el-input placeholder="请输入密码" type="password" v-model="form.password" @keyup.enter.native="submitForm" autocomplete="off">
+            <el-input placeholder="请输入密码" type="password" v-model="form.password"  autocomplete="off">
             <template slot="prepend" ><span class="password"></span></template>
           </el-input>
           </el-form-item>
@@ -45,24 +45,15 @@
       }
     },
     methods: {
-      submitForm (e) {
-        if (e.type === 'keyup') {
-          if (e.keyCode !== 13) return
-        }
+      submitForm () {
         this.$refs.ruleForm.validate((valid) => {
           if (valid) {
             this.form.account = this.form.account.trim()
-            this.$store.dispatch('login', this.form)
+            this.form.password = this.form.password.trim()
+            this.$store.dispatch('user/login', this.form)
           } else {
-            // console.log('提交错误')
             return false
           }
-        })
-      },
-      forgetPassword () {
-        this.$message({
-          message: '请通知系统管理员重置密码',
-          type: 'warning'
         })
       }
     },

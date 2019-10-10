@@ -241,7 +241,6 @@
 </template>
 
 <script>
-  import qs from 'qs'
   let defaultForm = {
     id: '',
     user_name: '',

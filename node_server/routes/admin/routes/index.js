@@ -1,5 +1,4 @@
 const express = require('express');
-const {getDate} = require('../../../util/redis')
 const router = express.Router();
 
 router.use(async function (req, res, next) {
@@ -7,9 +6,15 @@ router.use(async function (req, res, next) {
         code: 0,
         message: '成功'
     }
-    let user = await getDate(req.cookies['Admin-Token'])
-    req.user = user
-    next()
+    if (req.path === '/login') {
+        next()
+    } else {
+        if (!req.session.user || req.cookies['Admin-Token'] !== req.session.token ) {
+            res.json({code: 2, message: '登录超时请重新登录'})
+        }else{
+            next()
+        }
+    }
 });
 
 

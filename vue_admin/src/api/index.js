@@ -34,11 +34,10 @@ export default {
     })
   },
   // 获取用户信息
-  getUserInfo: function (token) {
+  getUserInfo: function () {
     return axios({
       url: '/userInfo',
-      method: 'get',
-      params: { token: token }
+      method: 'get'
     })
   },
   /**

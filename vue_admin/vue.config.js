@@ -25,7 +25,7 @@ module.exports = {
     }
   },
   configureWebpack: {
-    devtool: false, // productionSourceMap 不起作用 打包的时候把这个放开
+    // devtool: false, // productionSourceMap 不起作用 打包的时候把这个放开
     output: {
       filename: 'static/js/[name].js'
     },

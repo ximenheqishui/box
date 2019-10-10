@@ -2,7 +2,7 @@ const commonModels = require('../models/common')
 const userModels = require('../models/user')
 const roleModels = require('../models/role')
 const menuModels = require('../models/menu')
-const {setLoginSession,delToken} = require('../../../util/redis')
+const crypto = require("crypto")
 
 module.exports = {
 
@@ -37,7 +37,12 @@ module.exports = {
             let result = await commonModels.getUser(req.body.account)
             if (result && result.length) {
                 if (req.body.password == result[0].password) {
-                    req.returnData.token = await setLoginSession(result[0])
+                    let secret = result[0].user_name + new Date().getTime();
+                    let token = crypto.createHmac('sha256', secret).update("I am lily").digest('hex'); //加密生成返回session
+                    req.session.user = result[0]
+                    req.session.token = token
+                    req.returnData.token = token
+                    // req.session.cookie.maxAge  = 1000
                 } else {
                     req.returnData.code = 1
                     req.returnData.message = '密码不正确'
@@ -62,7 +67,8 @@ module.exports = {
      */
     async logout(req, res, next) {
         try {
-            await delToken(req.cookies['Admin-Token'])
+            req.session.token = ''
+            req.session.user = ''
             await res.json(req.returnData)
         } catch (e) {
             next(e)
@@ -79,10 +85,11 @@ module.exports = {
      */
     async userInfo(req, res, next) {
         try {
-            req.user.role_ids = await userModels.getUserRole(req.user.id)
+            let user = req.session.user
+            user.role_ids = await userModels.getUserRole(user.id)
             let menuids = []
-            for (let i = 0; i < req.user.role_ids.length; i++) {
-                let menuid = await roleModels.getRoleMenu(req.user.role_ids[i])
+            for (let i = 0; i < user.role_ids.length; i++) {
+                let menuid = await roleModels.getRoleMenu(user.role_ids[i])
                 menuid.forEach(function (item) {
                     if (menuids.indexOf(item) == -1) {
                         menuids.push(item)
@@ -114,9 +121,9 @@ module.exports = {
                     adminMenu = item.children
                 }
             })
-            req.user.menu = adminMenu
-            req.user.permission = permission
-            req.returnData.userInfo = req.user
+            user.menu = adminMenu
+            user.permission = permission
+            req.returnData.userInfo = user
             await res.json(req.returnData)
         } catch (e) {
             next(e)

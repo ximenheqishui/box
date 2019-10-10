@@ -5,7 +5,7 @@ const path = require('path');
 const fs = require('fs');
 const cookieParser = require('cookie-parser');
 // 用redis长时间存贮session不至于服务器重启session丢失
-// const session = require("./util/session_redis")
+const session = require("./util/session_redis")
 const logger = require('morgan');
 
 let app = express();
@@ -38,7 +38,7 @@ app.disable('etag'); // 禁用动态接口的缓存 304
 app.use(express.json());
 app.use(express.urlencoded({extended: false}));
 app.use(cookieParser());
-// app.use(session)
+app.use(session)
 
 
 app.use(express.static(path.join(__dirname, 'public')));

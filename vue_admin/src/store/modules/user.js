@@ -3,6 +3,7 @@ import { Message } from 'element-ui'
 import router from '@/router/index.js'
 import api from '@/api/index.js'
 const user = {
+  namespaced: true,
   state: {
     userInfo: {},
     token: ''
@@ -19,31 +20,30 @@ const user = {
     // 用户名登录
     login ({ dispatch, commit }, userInfo) {
       api.login(userInfo).then(res => {
-        if (res.data.code === 0) {
-          commit('setToken', res.data.token)
-          setToken(res.data.token)
+        if (res.code === 0) {
+          commit('setToken', res.token)
+          setToken(res.token)
           router.push('/')
         } else {
           Message({
-            message: res.data.message,
+            message: res.message,
             type: 'warning'
           })
         }
       }).catch(error => { // 状态码非2xx时
-        console.log(error)
         Message({
-          message: '登录失败',
+          message: error.message || '登录失败',
           type: 'error',
           duration: 5 * 1000
         })
       })
     },
     // 获取用户信息
-    getUserInfo ({ commit, state }, token) {
+    getUserInfo ({ commit, state }) {
       return new Promise((resolve, reject) => {
-        api.getUserInfo(token).then(res => {
-          if (res.data.code === 0) {
-            commit('setUserInfo', res.data.userInfo)
+        api.getUserInfo().then(res => {
+          if (res.code === 0) {
+            commit('setUserInfo', res.userInfo)
             resolve(res)
           } else {
             reject(res)
@@ -54,14 +54,11 @@ const user = {
       })
     },
     // 登出
-    logOut ({ commit, dispatch, state }) {
+    logOut ({ commit, state }) {
       return new Promise((resolve, reject) => {
         api.logout(state.token).then(() => {
           commit('setToken', '')
-          commit('setUserInfo', {})
-          dispatch('tagsView/delAllViews')
           removeToken()
-          router.push('/login')
           resolve()
         }).catch(error => {
           reject(error)
