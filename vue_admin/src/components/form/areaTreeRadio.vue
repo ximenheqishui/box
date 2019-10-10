@@ -62,8 +62,8 @@
         this.data = data
       } else {
         this.api.getAreaTree({}).then(res => {
-          if (res.data.code === 0) {
-            this.data = res.data.data
+          if (res.code === 0) {
+            this.data = res.data
             sessionStorage.setItem('areaTree', JSON.stringify(this.data))
           }
         }).catch(error => { // 状态码非2xx时

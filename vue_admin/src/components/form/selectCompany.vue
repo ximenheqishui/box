@@ -43,8 +43,8 @@
     },
     mounted: function () {
       this.api.getStation({}).then(res => {
-        if (res.data.code === 0) {
-          this.data = res.data.data
+        if (res.code === 0) {
+          this.data = res.data
         }
       }).catch(error => { // 状态码非2xx时
         console.log(error)

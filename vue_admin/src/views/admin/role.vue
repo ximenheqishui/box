@@ -174,7 +174,7 @@
       },
       deleteRow (index, rows, id) {
         this.api.delRole({ id: id }).then(res => {
-          if (res.data.code === 0) {
+          if (res.code === 0) {
             rows.splice(index, 1)
             this.$message({
               type: 'success',
@@ -196,10 +196,10 @@
           pageSize: _this.searchData.pageSize
         }).then(res => {
           _this.loading = false
-          if (res.data.code === 0) {
-            _this.total = res.data.data.totalCount
-            if (res.data.data.list && res.data.data.list.length) {
-              _this.tableData = res.data.data.list
+          if (res.code === 0) {
+            _this.total = res.data.totalCount
+            if (res.data.list && res.data.list.length) {
+              _this.tableData = res.data.list
             }
           }
         }).catch(error => { // 状态码非2xx时
@@ -222,7 +222,7 @@
             if (_this.dialog.isAdd) {
               _this.api.addRole(_this.dialog.form).then(res => {
                 _this.dialog.disableSubmit = false
-                if (res.data.code === 0) {
+                if (res.code === 0) {
                   _this.dialog.roleDialog = false
                   _this.getData()
                 } else {
@@ -235,7 +235,7 @@
             } else {
               _this.api.updateRole(_this.dialog.form).then(res => {
                 _this.dialog.disableSubmit = false
-                if (res.data.code === 0) {
+                if (res.code === 0) {
                   _this.dialog.roleDialog = false
                   _this.getData()
                 } else {
@@ -279,9 +279,9 @@
           this.$refs.tree.setCheckedKeys([])
           this.roleId = obj.row.id
           this.api.getRoleMenu({ roleId: obj.row.id }).then(res => {
-            if (res.data.code === 0) {
-              if (res.data.data && res.data.data.length) {
-                this.$refs.tree.setCheckedKeys(res.data.data)
+            if (res.code === 0) {
+              if (res.data && res.data.length) {
+                this.$refs.tree.setCheckedKeys(res.data)
               }
             }
           }).catch(error => { // 状态码非2xx时
@@ -299,7 +299,7 @@
         let ids = this.$refs.tree.getCheckedKeys()
         _this.api.updateRoleMenu({ roleId: _this.roleId, permissionIds: ids }).then(res => {
           _this.dialog.disableSubmit = false
-          if (res.data.code === 0) {
+          if (res.code === 0) {
             _this.menuDialog = false
             _this.$message({
               type: 'success',
@@ -316,9 +316,9 @@
       getTree () {
         let _this = this
         _this.api.getUsableMenu({}).then(res => {
-          if (res.data.code === 0) {
-            if (res.data.data && res.data.data.length) {
-              _this.menuTree = res.data.data
+          if (res.code === 0) {
+            if (res.data && res.data.length) {
+              _this.menuTree = res.data
             }
           }
         }).catch(error => { // 状态码非2xx时

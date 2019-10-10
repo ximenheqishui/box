@@ -17,9 +17,9 @@ const common = {
     getAreaTree ({ commit, state }) {
       return new Promise((resolve, reject) => {
         api.getAreaTree({}).then(res => {
-          if (res.data.code === 0) {
-            console.log(res.data.data.list)
-            commit('setAreaTree', res.data.data.list)
+          if (res.code === 0) {
+            console.log(res.data.list)
+            commit('setAreaTree', res.data.list)
             resolve(res)
           } else {
             reject(res)
@@ -33,9 +33,9 @@ const common = {
     getStation ({ commit, state }) {
       return new Promise((resolve, reject) => {
         api.getStation({}).then(res => {
-          if (res.data.code === 0) {
-            console.log(res.data.data.list)
-            commit('setStation', res.data.data.list)
+          if (res.code === 0) {
+            console.log(res.data.list)
+            commit('setStation', res.data.list)
             resolve(res)
           } else {
             reject(res)

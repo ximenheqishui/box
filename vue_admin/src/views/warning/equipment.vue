@@ -237,13 +237,13 @@
         this.api.getEquipment(postdata).then(res => {
           _this.pageLoading = false
           _this.searchLoading = false
-          if (res.data.code === 0) {
-            _this.resultData = res.data.data
+          if (res.code === 0) {
+            _this.resultData = res.data
           } else {
             _this.$message({
               type: 'error',
               showClose: true,
-              message: res.data.message
+              message: res.message
             })
           }
         }).catch(error => { // 状态码非2xx时
@@ -277,9 +277,9 @@
       },
       getOption () {
         this.api.getOption({}).then(res => {
-          if (res.data.code === 0) {
-            console.log(res.data.data)
-            this.alertTypes = res.data.data.alertTypes
+          if (res.code === 0) {
+            // console.log(res.data)
+            this.alertTypes = res.data.alertTypes
           }
         }).catch(error => { // 状态码非2xx时
           this.$message({

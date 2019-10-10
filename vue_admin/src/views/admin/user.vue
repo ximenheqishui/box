@@ -435,13 +435,13 @@
         this.api.getUser(postdata).then(res => {
           _this.pageLoading = false
           _this.searchLoading = false
-          if (res.data.code === 0) {
-            _this.resultData = res.data.data
+          if (res.code === 0) {
+            _this.resultData = res.data
           } else {
             _this.$message({
               type: 'error',
               showClose: true,
-              message: res.data.message
+              message: res.message
             })
           }
         }).catch(error => { // 状态码非2xx时
@@ -468,9 +468,9 @@
       // 获取所有的部门
       getDepartment () {
         this.api.getDepartment({}).then(res => {
-          if (res.data.code === 0) {
-            this.department = res.data.data
-            this.dialog.department = res.data.data
+          if (res.code === 0) {
+            this.department = res.data
+            this.dialog.department = res.data
           }
         }).catch(error => { // 状态码非2xx时
           console.log(error)
@@ -480,8 +480,8 @@
       getRole () {
         let _this = this
         _this.api.getRoleAll({}).then(res => {
-          if (res.data.code === 0) {
-            _this.role = res.data.data
+          if (res.code === 0) {
+            _this.role = res.data
           }
         }).catch(error => { // 状态码非2xx时
           console.log(error)
@@ -490,9 +490,9 @@
       // 获取数据字典
       getOption () {
         this.api.getOption({}).then(res => {
-          if (res.data.code === 0) {
-            this.sex = res.data.data.sex
-            this.status = res.data.data.status
+          if (res.code === 0) {
+            this.sex = res.data.sex
+            this.status = res.data.status
           }
         }).catch(error => { // 状态码非2xx时
           this.$message({
@@ -524,7 +524,7 @@
       deleteRow (index, rows, id) {
         let _this = this
         _this.api.delUser({ id: id }).then(res => {
-          if (res.data.code === 0) {
+          if (res.code === 0) {
             rows.splice(index, 1)
             this.$message({
               type: 'success',
@@ -545,7 +545,7 @@
           arr.push(item.id)
         })
         this.api.delUser({ id: arr.join(',') }).then(res => {
-          if (res.data.code === 0) {
+          if (res.code === 0) {
             this.getData(0)
             this.$message({
               type: 'success',
@@ -572,7 +572,7 @@
             if (_this.dialog.isAdd) {
               _this.api.addUser(form).then(res => {
                 _this.dialog.disableSubmit = false
-                if (res.data.code === 0) {
+                if (res.code === 0) {
                   _this.dialog.tag = false
                   _this.getData(0)
                 } else {
@@ -585,7 +585,7 @@
             } else {
               _this.api.updateUser(form).then(res => {
                 _this.dialog.disableSubmit = false
-                if (res.data.code === 0) {
+                if (res.code === 0) {
                   _this.dialog.tag = false
                   _this.getData(0)
                 } else {

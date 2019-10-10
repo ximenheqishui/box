@@ -213,8 +213,8 @@
       },
       getMenu () {
         this.api.getMenu({}).then(res => {
-          if (res.data.code === 0) {
-            this.data = res.data.data
+          if (res.code === 0) {
+            this.data = res.data
           }
         }).catch(error => { // 状态码非2xx时
           console.log(error)
@@ -232,11 +232,11 @@
             if (_this.isAdd) {
               _this.api.addMenu(_this.form).then(res => {
                 _this.disableSubmit = false
-                if (res.data.code === 0) {
+                if (res.code === 0) {
                   _this.dialog = false
                   _this.dialog2 = false
                   let tdata = JSON.parse(JSON.stringify(_this.form))
-                  tdata.id = res.data.data.id
+                  tdata.id = res.data.id
                   // console.log(JSON.stringify(tdata))
                   if (_this.dataT) {
                     if (!_this.dataT.children) {
@@ -263,7 +263,7 @@
             } else {
               _this.api.updateMenu(_this.form).then(res => {
                 _this.disableSubmit = false
-                if (res.data.code === 0) {
+                if (res.code === 0) {
                   _this.dialog = false
                   _this.dialog2 = false
                   // 给对象赋值
@@ -281,7 +281,7 @@
                   _this.dataT.last_menu = _this.form.last_menu
                 } else {
                   _this.$message({
-                    message: res.data.message,
+                    message: res.message,
                     type: 'error'
                   })
                 }
@@ -361,18 +361,18 @@
       remove (node, data) {
         let _this = this
         _this.api.delMenu(data).then(res => {
-          if (res.data.code === 0) {
+          if (res.code === 0) {
             const parent = node.parent
             const children = parent.data.children || parent.data
             const index = children.findIndex(d => d.id === data.id)
             children.splice(index, 1)
             this.$message({
-              message: res.data.message,
+              message: res.message,
               type: 'success'
             })
           } else {
             this.$message({
-              message: res.data.message,
+              message: res.message,
               type: 'error'
             })
           }
@@ -390,15 +390,15 @@
           return false
         }
         this.api.delMenu({ id: key.join(',') }).then(res => {
-          if (res.data.code === 0) {
+          if (res.code === 0) {
             this.$message({
-              message: res.data.message,
+              message: res.message,
               type: 'success'
             })
             this.getMenu()
           } else {
             this.$message({
-              message: res.data.message,
+              message: res.message,
               type: 'error'
             })
           }

@@ -140,8 +140,8 @@
       },
       getDepartment () {
         this.api.getDepartment({}).then(res => {
-          if (res.data.code === 0) {
-            this.data = res.data.data
+          if (res.code === 0) {
+            this.data = res.data
           }
         }).catch(error => { // 状态码非2xx时
           console.log(error)
@@ -162,10 +162,10 @@
             if (_this.isAdd) {
               _this.api.addDepartment(_this.form).then(res => {
                 _this.disableSubmit = false
-                if (res.data.code === 0) {
+                if (res.code === 0) {
                   _this.dialog = false
                   let tdata = JSON.parse(JSON.stringify(_this.form))
-                  tdata.id = res.data.data.id
+                  tdata.id = res.data.id
                   console.log(JSON.stringify(tdata))
                   if (_this.dataT) {
                     if (!_this.dataT.children) {
@@ -185,7 +185,7 @@
             } else {
               _this.api.updateDepartment(_this.form).then(res => {
                 _this.disableSubmit = false
-                if (res.data.code === 0) {
+                if (res.code === 0) {
                   _this.dialog = false
                   // 给对象赋值
                   _this.dataT.id = _this.form.id
@@ -251,7 +251,7 @@
       remove (node, data) {
         let _this = this
         _this.api.delDepartment(data).then(res => {
-          if (res.data.code === 0) {
+          if (res.code === 0) {
             const parent = node.parent
             const children = parent.data.children || parent.data
             const index = children.findIndex(d => d.id === data.id)
@@ -269,7 +269,7 @@
           return false
         }
         this.api.delDepartment({ id: key.join(',') }).then(res => {
-          if (res.data.code === 0) {
+          if (res.code === 0) {
             this.getDepartment()
           } else {
             console.log('添加失败')
@@ -280,9 +280,9 @@
       },
       getDeparUser (id) {
         this.api.getDepartmentUser({ dept_id: id }).then(res => {
-          if (res.data.code === 0) {
-            this.options = res.data.data
-            this.form.leader = res.data.leader
+          if (res.code === 0) {
+            this.options = res.data
+            this.form.leader = res.leader
           }
         }).catch(error => { // 状态码非2xx时
           console.log(error)
