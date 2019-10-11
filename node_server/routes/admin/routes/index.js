@@ -6,7 +6,7 @@ router.use(async function (req, res, next) {
         code: 0,
         message: '成功'
     }
-    if (req.path === '/login') {
+    if (req.path === '/login' ||req.path === '/excelExport' ) {
         next()
     } else {
         if (!req.session.user || req.cookies['Admin-Token'] !== req.session.token ) {

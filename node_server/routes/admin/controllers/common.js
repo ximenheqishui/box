@@ -2,7 +2,8 @@ const commonModels = require('../models/common')
 const userModels = require('../models/user')
 const roleModels = require('../models/role')
 const menuModels = require('../models/menu')
-const cryptoUtil= require("../../../util/crypto-util")
+const cryptoUtil = require("../../../util/crypto-util")
+const Excel = require('exceljs/modern.nodejs');
 
 module.exports = {
 
@@ -96,8 +97,9 @@ module.exports = {
                 })
             }
             let permission = []
+
             async function getTree(id) {
-                let result = await menuModels.getUsableByParentIdInids(id,menuids)
+                let result = await menuModels.getUsableByParentIdInids(id, menuids)
                 let noButtonResult = []
                 if (result && result.length) {
                     for (let i = 0; i < result.length; i++) {
@@ -110,12 +112,13 @@ module.exports = {
                 }
                 return noButtonResult
             }
+
             let noButtonResult = []
             let adminMenu = []
             if (menuids.length) {
                 noButtonResult = await getTree(0)
             }
-            noButtonResult.forEach(function(item){
+            noButtonResult.forEach(function (item) {
                 if (item.unique_id === 'admin') {
                     adminMenu = item.children
                 }
@@ -127,5 +130,44 @@ module.exports = {
         } catch (e) {
             next(e)
         }
+    },
+
+    /**
+     * @api {get} /admin/role 分页获取角色
+     * @apiName getRole
+     * @apiGroup role
+     *
+     * @apiParam {Number} pn  第几页
+     * @apiParam {Number} pageSize 每页多少条
+     */
+    async excelExport(req, res, next) {
+        try {
+            var workbook = new Excel.Workbook()
+            workbook.creator = 'Me';
+            workbook.lastModifiedBy = 'Her';
+            workbook.created = new Date(1985, 8, 30);
+            workbook.modified = new Date();
+            workbook.lastPrinted = new Date(2016, 9, 27);
+
+            // 创建一个红色标签颜色的工作表
+            var worksheet = workbook.addWorksheet('My Sheet', {properties: {tabColor: {argb: 'FFC0000'}}});
+
+            worksheet.columns = [
+                {header: 'Id', key: 'id', width: 10},
+                {header: 'Name', key: 'name', width: 32},
+                {header: 'D.O.B.', key: 'DOB', width: 10, outlineLevel: 1}
+            ];
+
+            worksheet.addRow({id: 1, name: 'John Doe', DOB: new Date(1970, 1, 1)});
+            worksheet.addRow({id: 2, name: 'Jane Doe', DOB: new Date(1965, 1, 7)});
+
+            let buffer = await workbook.xlsx.writeBuffer()
+            // res.setHeader('Content-Type', 'application/octet-stream');
+            res.attachment('ress.xlsx');
+            await res.end(buffer, 'binary');
+        } catch (e) {
+            next(e)
+        }
     }
+
 }
