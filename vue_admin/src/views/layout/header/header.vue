@@ -100,7 +100,7 @@
             }
             _this.dialog.form.password = _this.dialog.form.password.trim()
             _this.dialog.form.password2 = _this.dialog.form.password2.trim()
-            _this.api.changePass({ password: _this.dialog.form.password }).then(res => {
+            _this.api.updateUser({ password: _this.dialog.form.password }).then(res => {
               _this.dialog.disableSubmit = false
               if (res.code === 0) {
                 _this.$store.dispatch('user/logOut').then(() => {

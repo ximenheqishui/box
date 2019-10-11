@@ -1,4 +1,5 @@
 const userModels = require('../models/user')
+const cryptoUtil= require("../../../util/crypto-util")
 
 module.exports = {
 
@@ -15,7 +16,7 @@ module.exports = {
         try {
             let requestData = {
                 user_name: req.body.user_name,
-                password: req.body.password,
+                password: cryptoUtil.createPass(req.body.password),
                 email: req.body.email,
                 mobile: req.body.mobile,
                 sex: parseInt(req.body.sex) || 0,
@@ -63,20 +64,27 @@ module.exports = {
      */
     async upDateUser(req, res, next) {
         try {
-            let requestData = {
-                user_name: req.body.user_name,
-                password: req.body.password,
-                email: req.body.email,
-                mobile: req.body.mobile,
-                sex: parseInt(req.body.sex) || 0,
-                dept_id: parseInt(req.body.dept_id) || 0,
-                dept_path: req.body.dept_path,
-                status: parseInt(req.body.status) || 0,
-                avatar: req.body.avatar
+            let requestData = {}
+            if (!req.body.id) {
+                requestData = {
+                    password: cryptoUtil.createPass(req.body.password)
+                }
+                await userModels.update(requestData, req.session.user.id)
+            } else {
+                requestData = {
+                    user_name: req.body.user_name,
+                    password: cryptoUtil.createPass(req.body.password),
+                    email: req.body.email,
+                    mobile: req.body.mobile,
+                    sex: parseInt(req.body.sex) || 0,
+                    dept_id: parseInt(req.body.dept_id) || 0,
+                    dept_path: req.body.dept_path,
+                    status: parseInt(req.body.status) || 0,
+                    avatar: req.body.avatar
+                }
+                await userModels.update(requestData, req.body.id)
+                await userModels.userRole(req.body.role_ids, req.body.id)
             }
-            let result = await userModels.update(requestData, req.body.id)
-            await userModels.userRole(req.body.role_ids, req.body.id)
-            req.returnData.data = {id: result.insertId}
             await res.json(req.returnData)
         } catch (e) {
             next(e)

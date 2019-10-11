@@ -195,6 +195,7 @@ export default {
       data: data
     })
   },
+  // 修改用户信息 不传用户其他用户信息时修改当前用户的密码
   updateUser: function (data) {
     return axios({
       url: '/user',

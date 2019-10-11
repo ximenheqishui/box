@@ -2,7 +2,7 @@ const commonModels = require('../models/common')
 const userModels = require('../models/user')
 const roleModels = require('../models/role')
 const menuModels = require('../models/menu')
-const crypto = require("crypto")
+const cryptoUtil= require("../../../util/crypto-util")
 
 module.exports = {
 
@@ -36,9 +36,8 @@ module.exports = {
         try {
             let result = await commonModels.getUser(req.body.account)
             if (result && result.length) {
-                if (req.body.password == result[0].password) {
-                    let secret = result[0].user_name + new Date().getTime();
-                    let token = crypto.createHmac('sha256', secret).update("I am lily").digest('hex'); //加密生成返回session
+                if (cryptoUtil.createPass(req.body.password) === result[0].password) {
+                    let token = cryptoUtil.createToken(result[0].user_name)
                     req.session.user = result[0]
                     req.session.token = token
                     req.returnData.token = token
