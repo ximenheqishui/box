@@ -5,7 +5,7 @@
 </template>
 <script>
   export default {
-    name: 'noPage',
+    name: '_404',
     data () {
       return {
       }

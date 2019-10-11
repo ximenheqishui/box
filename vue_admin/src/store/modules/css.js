@@ -1,4 +1,5 @@
 const css = {
+  namespaced: true,
   state: {
     aside: {
       isCollapse: false

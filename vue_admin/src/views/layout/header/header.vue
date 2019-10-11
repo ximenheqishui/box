@@ -126,7 +126,7 @@
         })
       },
       collapse () {
-        this.$store.dispatch('changeCollapse')
+        this.$store.dispatch('css/changeCollapse')
       }
     },
     created () {

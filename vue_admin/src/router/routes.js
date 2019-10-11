@@ -8,7 +8,8 @@ const routes = [
         path: '',
         component: () => import('@/views/home'),
         name: 'home',
-        meta: { title: '首页', affix: true } }
+        meta: { title: '首页', affix: true }
+      }
     ]
   },
   {
@@ -20,7 +21,8 @@ const routes = [
         component: () => import('@/views/admin/menu'),
         name: 'menus',
         meta: {
-          title: '菜单权限管理'
+          title: '菜单权限管理',
+          unique_id: 'admin-menu'
         }
       },
       {
@@ -28,7 +30,8 @@ const routes = [
         component: () => import('@/views/admin/role'),
         name: 'role',
         meta: {
-          title: '角色权限管理'
+          title: '角色权限管理',
+          unique_id: 'admin-role'
         }
       },
       {
@@ -36,7 +39,8 @@ const routes = [
         component: () => import('@/views/admin/department'),
         name: 'department',
         meta: {
-          title: '部门管理'
+          title: '部门管理',
+          unique_id: 'admin-department'
         }
       },
       {
@@ -44,7 +48,8 @@ const routes = [
         component: () => import('@/views/admin/user'),
         name: 'user',
         meta: {
-          title: '用户管理'
+          title: '用户管理',
+          unique_id: 'admin-user'
         }
       }
     ]
@@ -64,8 +69,20 @@ const routes = [
     children: [
       {
         path: '/redirect/:path*',
-        component: () => import('@/views/redirect/index')
+        component: () => import('@/views/redirect/index'),
+        meta: {}
       }
+    ]
+  },
+  {
+    path: '/403',
+    component: Layout,
+    children: [
+      {
+        path: '',
+        name: '_403',
+        component: () => import('@/views/403'),
+        meta: { title: '403' } }
     ]
   },
   {
@@ -74,6 +91,7 @@ const routes = [
     children: [
       {
         path: '',
+        name: '_404',
         component: () => import('@/views/404'),
         meta: { title: '404' } }
     ]

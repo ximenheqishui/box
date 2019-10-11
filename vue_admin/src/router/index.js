@@ -22,7 +22,11 @@ router.beforeEach((to, from, next) => {
     if (getToken()) {
       if (store.getters.userInfo.id) {
         beforeNext(to, from, next)
-        next()
+        if (to.meta.unique_id && store.getters.userInfo.permission.indexOf(to.meta.unique_id) === -1) {
+          next({ path: '/403' })
+        } else {
+          next()
+        }
       } else {
         store.dispatch('user/getUserInfo').then((res) => {
           beforeNext(to, from, next)
