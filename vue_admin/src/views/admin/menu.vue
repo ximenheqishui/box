@@ -25,10 +25,12 @@
         ref="tree"
         :expand-on-click-node="false">
       <span class="custom-tree-node" slot-scope="{ node, data }">
-        <span style="padding: 0 6px;display: inline-block" @click="() => change(data)">
-          <i :class="String(data.type) !== '2' ?  ('icon iconfont ' + data.icon) : 'icon iconfont icon-anniu' "></i>
-          {{ node.label }}
-        </span>
+        <el-tooltip class="item" effect="light" :content=" '唯一标识：' +  data.unique_id + '；路径：' + data.path" placement="right">
+              <span style="padding: 0 6px;display: inline-block">
+                <i :class="String(data.type) !== '2' ?  ('icon iconfont ' + data.icon) : 'icon iconfont icon-anniu' "></i>
+                {{ node.label }}
+              </span>
+        </el-tooltip>
         <span>
           <el-button
             v-if="String(data.type) !== '2'"
@@ -102,7 +104,6 @@
         <el-button size="small" type="primary" :disabled="disableSubmit" @click="submitForm($event,'')">保 存</el-button>
       </div>
     </el-dialog>
-
     <el-dialog class="dialog-center" :title="isAdd ?  '添加子节点': '修改子节点'" :visible.sync="dialog2" width="600px">
       <div>
         <div style="margin-bottom: 18px;line-height: 30px">

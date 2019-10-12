@@ -1,0 +1,76 @@
+.search{
+  margin-top: 20px;
+  .el-form-item{
+    margin-right: 20px;
+  }
+}
+.table-tool{
+  margin: 10px 0px;
+  display: flex;
+  justify-content: space-between;
+  .left{
+    flex: 1;
+    text-align: left;
+    .icon-change{
+      position: relative;
+      .iconfont{
+        position: absolute;
+        top:6px;
+      }
+      .el-icon-loading{
+        position: absolute;
+        top:6px;
+      }
+      span{
+        display: inline-block;
+        margin-left:20px;
+      }
+    }
+    .el-button{
+      margin-right: 20px;
+    }
+  }
+  .right{
+    flex: 1;
+    text-align: right;
+    .switch{
+      display: inline-block;
+      > span{
+        font-size: 14px;
+        display: inline-block;
+        margin: 4px;
+      }
+    }
+  }
+}
+.el-table thead {
+  color: #555;
+  font-weight: 500;
+}
+.el-pagination{
+  text-align: right;
+  margin: 25px 0px;
+}
+
+
+/*搜索样式*/
+.search-box{
+}
+/*工具样式*/
+.tool-box{
+}
+/*列表样式*/
+.list-box{
+  .table-list {
+  }
+  .card-list{
+  }
+}
+/*分页样式*/
+.pagination-box{
+}
+/*loading样式*/
+.loading-box{
+}
+
+
