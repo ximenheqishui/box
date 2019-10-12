@@ -75,7 +75,7 @@ export default {
     return axios({
       url: '/menu',
       method: 'DELETE',
-      data: { id: data.id + '' }
+      data: data
     })
   },
   /**
