@@ -2,8 +2,33 @@ const dbUtils = require('../../../util/db-util')
 
 module.exports = {
 
+    /**
+     * 创建角色
+     * @param  {Object} model  角色的对象
+     */
     async create(model) {
         let result = await dbUtils.insertData('role', model)
+        return result
+    },
+
+    /**
+     * 根据id删除角色
+     * @param  {array} id 角色id的集合
+     * @return {object|null}   删除结果
+     */
+    async delById(id) {
+        let result = await dbUtils.deleteDataByIds('role',id)
+        let _sql = "DELETE FROM ?? WHERE role_id IN (?)"
+        await dbUtils.query(_sql, ['role_menu', id])
+        return result
+    },
+
+
+    /**
+     * 根据id更新角色
+     */
+    async update(model,id) {
+        let result = await dbUtils.updateData('role',model,id)
         return result
     },
 
@@ -36,54 +61,39 @@ module.exports = {
         return result
     },
 
-    /**
-     * 根据id删除角色
-     * @param  {int} id 菜单id
-     * @return {object|null}     删除结果
-     */
-    async delById(id) {
-        let result = await dbUtils.deleteDataByIds('role',id)
-        return result
-    },
 
-    /**
-     * 根据id更新角色
-     */
-    async update(model,id) {
-        let result = await dbUtils.updateData('role',model,id)
-        return result
-    },
 
     /**
      * 根据更新角色权限
      * @param  {array} menuIds 菜单的id数组
-     * @param  {int} roleId 角色的id
+     * @param  {int} role_id 角色的id
      */
-    async roleMenu(menuIds,roleId) {
-
+    async updateRoleMenu(menuIds,role_id) {
         // 先删掉所有权限
         let _sql = "DELETE FROM ?? WHERE role_id = ?"
-        await dbUtils.query(_sql, ['role_menu', roleId])
-
-        // 再添加新的
-        let arr = []
-        for (let i=0; i< menuIds.length; i++) {
-            let str = `(${menuIds[i]},${roleId})`
-            arr.push(str)
+        await dbUtils.query(_sql, ['role_menu', role_id])
+        let result  = {}
+        if (menuIds && menuIds.length) {
+            // 再添加新的
+            let arr = []
+            for (let i=0; i< menuIds.length; i++) {
+                let str = `(${menuIds[i]},${role_id})`
+                arr.push(str)
+            }
+            let values = arr.join(',')
+            _sql = `INSERT INTO role_menu(menu_id,role_id) VALUES ${values}`
+            result = await dbUtils.query(_sql,[])
         }
-        let values = arr.join(',')
-        _sql = `INSERT INTO role_menu(menu_id,role_id) VALUES ${values}`
-        let result = await dbUtils.query(_sql,[])
         return result
     },
 
     /**
-     * 根据roleId获取权限
-     * @param  {int} roleId 角色的id
+     * 根据role_id获取权限
+     * @param  {int} role_id 角色的id
      */
-    async getRoleMenu(roleId) {
+    async getRoleMenu(role_id) {
         let _sql = "SELECT * FROM ?? WHERE role_id = ? "
-        let result = await dbUtils.query(_sql,['role_menu',roleId])
+        let result = await dbUtils.query(_sql,['role_menu',role_id])
         let arr = []
         result.forEach(function(item){
             arr.push(item.menu_id)

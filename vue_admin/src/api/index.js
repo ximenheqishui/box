@@ -106,7 +106,7 @@ export default {
     return axios({
       url: '/role',
       method: 'DELETE',
-      data: { id: data.id + '' }
+      data: data
     })
   },
   /**

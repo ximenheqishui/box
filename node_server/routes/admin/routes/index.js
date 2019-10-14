@@ -8,6 +8,18 @@ const departmentRouter = require('./department')
 const userRouter = require('./user')
 
 /**
+ * @description 模拟请求延迟
+ * */
+router.use(async function (res, req, next) {
+    await new Promise(resolve => {
+        setTimeout(function () {
+            resolve()
+        }, 500)
+    })
+    next()
+})
+
+/**
  * @description 接口过滤器
  * */
 router.use(async function (req, res, next) {

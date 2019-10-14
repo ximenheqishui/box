@@ -130,13 +130,12 @@ module.exports = {
             next(e)
         }
     },
-
     /**
-     * @api {get} /admin/menu 获取所有菜单
+     * @api {get} /admin/menu 获取菜单
      * @apiName getMenu
      * @apiGroup menu
      *
-     * @apiParam {Number} status  是否启用  0 是启用  1 是不启用
+     * @apiParam {Number} status  是否启用 ：0 是启用、1 是不启用、空或者不存在为全部
      *
      */
     async getMenu(req, res, next) {
@@ -157,4 +156,5 @@ module.exports = {
             next(e)
         }
     }
+
 }

@@ -1,15 +1,15 @@
 <template>
     <div class="main role">
-        <div class="search"></div>
-        <div class="table-tool">
+        <div class="tool-box">
           <div class="left">
             <el-button size="mini" type="primary" @click="showRoleDialog(false)">添加角色</el-button>
+            <el-button @click="deleteMore()"  size="mini" type="primary">批量删除</el-button>
           </div>
           <div class="right">
           </div>
         </div>
         <div
-                class="table-box"
+                class="list-box"
                 element-loading-text="数据加载中"
                 v-loading="loading"
                 element-loading-background="rgba(255, 255, 255, 0.6)">
@@ -18,8 +18,13 @@
                     align="left"
                     :border="true"
                     :stripe="true"
-                    :data="tableData"
+                    :data="resultData.list"
+                    @selection-change="handleSelectionChange"
                     style="width: 100%">
+                <el-table-column
+                  type="selection"
+                  width="55">
+                </el-table-column>
                 <el-table-column
                         fixed
                         type="index"
@@ -58,27 +63,27 @@
                         <el-button @click.native.prevent="showRoleDialog(scope)" type="text" size="small">
                             编辑
                         </el-button>
-                        <el-button @click.native.prevent="deleteRow(scope.$index, tableData,scope.row.id)" type="text" size="small">
+                        <el-button @click.native.prevent="deleteRow(scope, resultData.list)" type="text" size="small">
                             移除
                         </el-button>
                     </template>
                 </el-table-column>
             </el-table>
             <el-pagination
-                    v-show="total"
+                    v-show="resultData.total"
                     @size-change="handleSizeChange"
                     @current-change="handleCurrentChange"
                     :current-page="searchData.pn"
                     :page-sizes="searchData.pageSizes"
                     :page-size="searchData.pageSize"
                     layout="total, sizes, prev, pager, next, jumper"
-                    :total="total">
+                    :total="resultData.total">
             </el-pagination>
         </div>
-        <el-dialog   :title="dialog.isAdd ?  '添加角色': '修改角色'" :visible.sync="dialog.roleDialog" height="80px" width="600px">
+      <el-dialog :title="dialog.isAdd ?  '添加角色': '修改角色'" :visible.sync="dialog.roleDialog" height="80px" width="600px">
             <el-form size="small" :model="dialog.form" :rules="dialog.rules" ref="ruleForm" label-width="120px">
                 <el-form-item label="角色名称" prop="name">
-                    <el-input @keyup.enter.native="submitForm" v-model="dialog.form.name"></el-input>
+                    <el-input placeholder="请输入角色名称" @keyup.enter.native="submitForm" v-model="dialog.form.name"></el-input>
                 </el-form-item>
                 <el-form-item label="备注" prop="description">
                     <el-input type="textarea" :rows="4" placeholder="请输入备注" v-model="dialog.form.description"></el-input>
@@ -88,9 +93,12 @@
                 <el-button size="small" @click="dialog.roleDialog = false">取 消</el-button>
                 <el-button size="small" type="primary" :disabled="dialog.disableSubmit" @click="submitForm">确 定</el-button>
             </div>
-        </el-dialog>
+      </el-dialog>
       <el-dialog title="菜单权限" :visible.sync="menuDialog" height="80px" width="600px">
         <el-tree
+          element-loading-text="数据加载中"
+          v-loading="treeLoading"
+          element-loading-background="rgba(255, 255, 255, 0.6)"
           style="max-height: 320px;overflow-y: auto"
           :data="menuTree"
           :props="defaultProps"
@@ -147,18 +155,26 @@
           }
         },
         menuTree: [],
+        multipleSelection: [],
         defaultProps: {
           children: 'children',
           label: 'name'
         },
         menuDialog: false,
-        tableData: [],
-        total: 0,
+        resultData: {
+          list: [],
+          total: 0
+        },
+        treeLoading: false,
         roleId: ''
       }
     },
     filters: {},
     methods: {
+      // 表格勾选
+      handleSelectionChange (val) {
+        this.multipleSelection = val
+      },
       handleCurrentChange (val) {
         this.searchData.pn = val
         this.$nextTick(() => {
@@ -172,10 +188,41 @@
           this.getData()
         })
       },
-      deleteRow (index, rows, id) {
+      deleteRow (scope, rows) {
+        let index = scope.$index
+        let id = String(scope.row.id)
         this.api.delRole({ id: id }).then(res => {
           if (res.code === 0) {
             rows.splice(index, 1)
+            this.$message({
+              type: 'success',
+              message: '删除成功!'
+            })
+          } else {
+            this.$message({
+              message: res.message,
+              type: 'error'
+            })
+          }
+        }).catch(error => {
+          this.$message({
+            message: error.message || '服务器忙...',
+            type: 'error'
+          })
+        })
+      },
+      // 批量删除
+      deleteMore () {
+        if (!this.multipleSelection.length) {
+          return false
+        }
+        let arr = []
+        this.multipleSelection.forEach(function (item) {
+          arr.push(item.id)
+        })
+        this.api.delRole({ id: arr.join(',') }).then(res => {
+          if (res.code === 0) {
+            this.getData()
             this.$message({
               type: 'success',
               message: '删除成功!'
@@ -197,21 +244,18 @@
         }).then(res => {
           _this.loading = false
           if (res.code === 0) {
-            _this.total = res.data.totalCount
-            if (res.data.list && res.data.list.length) {
-              _this.tableData = res.data.list
-            }
+            _this.resultData = res.data
           }
-        }).catch(error => { // 状态码非2xx时
+        }).catch(error => {
           _this.loading = false
-          console.log(error)
+          _this.$message({
+            message: error.message || '服务器忙...',
+            type: 'error'
+          })
         })
       },
-      submitForm (e) {
+      submitForm () {
         let _this = this
-        if (e.type === 'keyup') {
-          if (e.keyCode !== 13) return
-        }
         this.$refs.ruleForm.validate((valid) => {
           if (valid) {
             if (!_this.dialog.disableSubmit) {
@@ -226,11 +270,17 @@
                   _this.dialog.roleDialog = false
                   _this.getData()
                 } else {
-                  console.log('添加失败')
+                  _this.$message({
+                    message: res.message,
+                    type: 'error'
+                  })
                 }
-              }).catch(error => { // 状态码非2xx时
+              }).catch(error => {
                 _this.dialog.disableSubmit = false
-                console.log(error)
+                _this.$message({
+                  message: error.message || '服务器忙...',
+                  type: 'error'
+                })
               })
             } else {
               _this.api.updateRole(_this.dialog.form).then(res => {
@@ -239,11 +289,17 @@
                   _this.dialog.roleDialog = false
                   _this.getData()
                 } else {
-                  console.log('修改失败')
+                  _this.$message({
+                    message: res.message,
+                    type: 'error'
+                  })
                 }
-              }).catch(error => { // 状态码非2xx时
+              }).catch(error => {
                 _this.dialog.disableSubmit = false
-                console.log(error)
+                _this.$message({
+                  message: error.message || '服务器忙...',
+                  type: 'error'
+                })
               })
             }
           } else {
@@ -256,16 +312,19 @@
         this.$refs.ruleForm.resetFields()
       },
       showRoleDialog (obj) {
-        let _this = this
-        _this.dialog.roleDialog = true
-        _this.$nextTick(() => {
-          _this.resetForm()
+        this.dialog.roleDialog = true
+        this.$nextTick(() => {
+          this.resetForm()
           if (obj) {
-            _this.dialog.isAdd = false
-            _this.dialog.form = JSON.parse(JSON.stringify(obj.row))
+            this.dialog.isAdd = false
+            this.dialog.form = {
+              id: obj.row.id,
+              name: obj.row.name,
+              description: obj.row.description
+            }
           } else {
-            _this.dialog.isAdd = true
-            _this.dialog.form = {
+            this.dialog.isAdd = true
+            this.dialog.form = {
               id: '',
               name: '',
               description: ''
@@ -278,14 +337,20 @@
         this.$nextTick(() => {
           this.$refs.tree.setCheckedKeys([])
           this.roleId = obj.row.id
-          this.api.getRoleMenu({ roleId: obj.row.id }).then(res => {
+          this.treeLoading = true
+          this.api.getRoleMenu({ role_id: this.roleId }).then(res => {
+            this.treeLoading = false
             if (res.code === 0) {
               if (res.data && res.data.length) {
                 this.$refs.tree.setCheckedKeys(res.data)
               }
             }
-          }).catch(error => { // 状态码非2xx时
-            console.log(error)
+          }).catch(error => {
+            this.treeLoading = false
+            this.$message({
+              message: error.message || '服务器忙...',
+              type: 'error'
+            })
           })
         })
       },
@@ -297,7 +362,7 @@
           return false
         }
         let ids = this.$refs.tree.getCheckedKeys()
-        _this.api.updateRoleMenu({ roleId: _this.roleId, permissionIds: ids }).then(res => {
+        _this.api.updateRoleMenu({ role_id: _this.roleId, permissionIds: ids }).then(res => {
           _this.dialog.disableSubmit = false
           if (res.code === 0) {
             _this.menuDialog = false
@@ -306,29 +371,37 @@
               message: '修改成功!'
             })
           } else {
-            console.log('修改失败')
+            _this.$message({
+              message: res.message,
+              type: 'error'
+            })
           }
-        }).catch(error => { // 状态码非2xx时
+        }).catch(error => {
           _this.dialog.disableSubmit = false
-          console.log(error)
+          _this.$message({
+            message: error.message || '服务器忙...',
+            type: 'error'
+          })
         })
       },
-      getTree () {
-        let _this = this
-        _this.api.getMenu({ status: 0 }).then(res => {
+      getMenuTree () {
+        this.api.getMenu({ status: 0 }).then(res => {
           if (res.code === 0) {
             if (res.data && res.data.length) {
-              _this.menuTree = res.data
+              this.menuTree = res.data
             }
           }
-        }).catch(error => { // 状态码非2xx时
-          console.log(error)
+        }).catch(error => {
+          this.$message({
+            message: error.message || '服务器忙...',
+            type: 'error'
+          })
         })
       }
     },
     mounted: function () {
       this.getData()
-      this.getTree()
+      this.getMenuTree()
     }
   }
 </script>

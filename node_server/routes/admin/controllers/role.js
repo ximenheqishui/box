@@ -66,6 +66,7 @@ module.exports = {
             next(e)
         }
     },
+
     /**
      * @api {get} /admin/role 分页获取角色
      * @apiName getRole
@@ -79,8 +80,8 @@ module.exports = {
             let {pn, pageSize} = req.query
             if (pn && pageSize) {
                 let result = {}
-                result.totalCount = await roleModels.count()
-                result.totalCount = result.totalCount[0].total_count
+                let resultTotal = await roleModels.count()
+                result.total = resultTotal[0].total_count
                 result.list = await roleModels.getByPage(pn, pageSize)
                 req.returnData.data = result
             } else {
@@ -98,11 +99,11 @@ module.exports = {
      * @apiName getRoleMenu
      * @apiGroup role
      *
-     * @apiParam {Number} roleId  角色id
+     * @apiParam {Number} role_id  角色id
      */
     async getRoleMenu(req, res, next) {
         try {
-            req.returnData.data = await roleModels.getRoleMenu(req.query.roleId)
+            req.returnData.data = await roleModels.getRoleMenu(req.query.role_id)
             await res.json(req.returnData)
         } catch (e) {
             next(e)
@@ -115,12 +116,12 @@ module.exports = {
      * @apiGroup role
      *
      * @apiParam {array} permissionIds  菜单id的数组
-     * @apiParam {Number} roleId 角色id
+     * @apiParam {Number} role_id 角色id
      *
      */
-    async addRoleMenu(req, res, next) {
+    async updateRoleMenu(req, res, next) {
         try {
-            await roleModels.roleMenu(req.body.permissionIds, req.body.roleId)
+            await roleModels.updateRoleMenu(req.body.permissionIds, req.body.role_id)
             await res.json(req.returnData)
         } catch (e) {
             next(e)

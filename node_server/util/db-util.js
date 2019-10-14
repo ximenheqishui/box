@@ -1,3 +1,7 @@
+/**
+ * @description  最后在抽象整理这个公共方法
+* */
+
 const allConfig = require("../config.js")
 const config = allConfig.database
 const mysql = require("mysql")
