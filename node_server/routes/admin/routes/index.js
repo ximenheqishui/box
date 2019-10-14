@@ -1,11 +1,23 @@
 const express = require('express');
 const router = express.Router();
 
+const commonRouter = require('./common')
+const menuRouter = require('./menu')
+const roleRouter = require('./role')
+const departmentRouter = require('./department')
+const userRouter = require('./user')
+
+/**
+ * @description 接口过滤器
+ * */
 router.use(async function (req, res, next) {
+    // 返回值的模板
     req.returnData = {
         code: 0,
         message: '成功'
     }
+
+    // 不需要登录的接口
     if (req.path === '/login' || req.path === '/excelExport' ) {
         next()
     } else {
@@ -17,16 +29,15 @@ router.use(async function (req, res, next) {
     }
 });
 
+router.use('/', commonRouter)
+router.use('/menu', menuRouter)
+router.use('/role', roleRouter)
+router.use('/department', departmentRouter)
+router.use('/user', userRouter)
 
-router.use('/', require('./common'))
-router.use('/menu', require('./menu'))
-router.use('/role', require('./role'))
-router.use('/department', require('./department'))
-router.use('/user', require('./user'))
 
-
-// // error handler
-router.use(function (err, req, res, next) {
+// error handler
+router.use(function (err, req, res) {
     res.status(err.status || 500);
     res.json({
         message:err.message,

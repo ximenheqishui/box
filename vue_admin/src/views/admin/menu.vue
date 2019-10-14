@@ -24,7 +24,7 @@
         ref="tree"
         :expand-on-click-node="false">
       <span class="custom-tree-node" slot-scope="{ node, data }">
-        <el-tooltip class="item" effect="light" :content=" '唯一标识：' +  data.unique_id + '；路径：' + data.path" placement="right">
+        <el-tooltip class="item" effect="light" :content=" '唯一标识：' +  data.unique_id + (data.path ? '；路径：' + data.path: '') " placement="right">
               <span style="padding: 0 6px;display: inline-block">
                 <i :class="data.type !== 2 ?  ('icon iconfont ' + data.icon) : 'icon iconfont icon-anniu' "></i>
                 {{ node.label }}
@@ -72,7 +72,7 @@
           <el-input placeholder="请输入页面路径" v-model="form.path"></el-input>
         </el-form-item>
         <el-form-item label="字体图标" prop="icon">
-          <el-input placeholder="请输入右侧可用图标中的Font class" v-model="form.icon">
+          <el-input placeholder="请输入右侧可用图标中的Font class。如：icon-set" v-model="form.icon">
             <template slot="append">
               <el-link type="primary"  href="/static/fonts/demo_index.html" target="_blank">可用图标</el-link>
             </template>

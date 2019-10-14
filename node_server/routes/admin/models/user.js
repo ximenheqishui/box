@@ -26,21 +26,19 @@ module.exports = {
             sex,
             status
         } = query
-        let whereTag = false
         let _sql = "select user.*,dictionary.name as sex_name,department.name as dept_name " +
             "FROM user " +
             "LEFT JOIN  dictionary on user.sex = dictionary.value and dictionary.type = 'sex' " +
-            "LEFT JOIN  department on user.dept_id = department.id"
+            "LEFT JOIN  department on user.dept_id = department.id where 1=1"
         if (user_name !== '') {
-            whereTag = true
-            _sql += ` where user.user_name like '%${user_name}%'`
+            _sql += ` and user.user_name like '%${user_name}%'`
         }
         if (dept_id !== '') {
             async function getTree(id) {
                 let result = await departmentModels.getAllByParentId(id)
                 if (result && result.length) {
                     for (let i = 0; i < result.length; i++) {
-                        let children  = await getTree(result[i].id)
+                        let children = await getTree(result[i].id)
                         if (children.length) {
                             result[i].children = children
                         }
@@ -51,64 +49,34 @@ module.exports = {
 
             let dept = await getTree(dept_id)
             let dept_ids = [dept_id]
-            dept.forEach(function(item){
+            dept.forEach(function (item) {
                 dept_ids.push(item.id)
             })
-            if (whereTag) {
-                _sql += ` and user.dept_id in (${dept_ids})`
-            } else {
-                whereTag = true
-                _sql += ` where user.dept_id in (${dept_ids})`
-            }
+            _sql += ` and user.dept_id in (${dept_ids})`
         }
 
         if (mobile !== '') {
-            if (whereTag) {
-                _sql += ` and user.mobile like '%${mobile}%'`
-            } else {
-                whereTag = true
-                _sql += ` where user.mobile like '%${mobile}%'`
-            }
+            _sql += ` and user.mobile like '%${mobile}%'`
         }
 
         if (email !== '') {
-            if (whereTag) {
-                _sql += ` and user.email like '%${email}%'`
-            } else {
-                whereTag = true
-                _sql += ` where user.email like '%${email}%'`
-            }
+            _sql += ` and user.email like '%${email}%'`
         }
 
         if (sex !== '') {
-            if (whereTag) {
-                _sql += ` and user.sex=${sex}`
-            } else {
-                whereTag = true
-                _sql += ` where user.sex=${sex}`
-            }
+            _sql += ` and user.sex=${sex}`
         }
         if (status !== '') {
-            if (whereTag) {
-                _sql += ` and user.status=${status}`
-            } else {
-                whereTag = true
-                _sql += ` where user.status=${status}`
-            }
+            _sql += ` and user.status=${status}`
         }
 
         if (end_date !== '') {
-            if (whereTag) {
-                _sql += ` and  user.create_time  between '${start_date}' and '${end_date}'`
-            } else {
-                whereTag = true
-                _sql += ` where user.create_time between '${start_date}' and '${end_date}'`
-            }
+            _sql += ` and  user.create_time  between '${start_date}' and '${end_date}'`
         }
         _sql += ` LIMIT ? , ?`
         let result = await dbUtils.query(_sql, [(pn - 1) * page_size, pn * page_size])
-        for (let i = 0; i < result.length;i++){
-            result[i].role_ids =  await this.getUserRole(result[i].id)
+        for (let i = 0; i < result.length; i++) {
+            result[i].role_ids = await this.getUserRole(result[i].id)
         }
         return result
     },
@@ -127,18 +95,16 @@ module.exports = {
             sex,
             status
         } = query
-        let whereTag = false
-        let _sql = "SELECT COUNT(*) AS total_count FROM user"
+        let _sql = "SELECT COUNT(*) AS total_count FROM user where 1=1 "
         if (user_name !== '') {
-            whereTag = true
-            _sql += ` where user.user_name like '%${user_name}%'`
+            _sql += ` and user.user_name like '%${user_name}%'`
         }
         if (dept_id !== '') {
             async function getTree(id) {
                 let result = await departmentModels.getAllByParentId(id)
                 if (result && result.length) {
                     for (let i = 0; i < result.length; i++) {
-                        let children  = await getTree(result[i].id)
+                        let children = await getTree(result[i].id)
                         if (children.length) {
                             result[i].children = children
                         }
@@ -149,61 +115,32 @@ module.exports = {
 
             let dept = await getTree(dept_id)
             let dept_ids = [dept_id]
-            dept.forEach(function(item){
+            dept.forEach(function (item) {
                 dept_ids.push(item.id)
             })
-            if (whereTag) {
-                _sql += ` and user.dept_id in (${dept_ids})`
-            } else {
-                whereTag = true
-                _sql += ` where user.dept_id in (${dept_ids})`
-            }
+            _sql += ` and user.dept_id in (${dept_ids})`
         }
 
         if (mobile !== '') {
-            if (whereTag) {
-                _sql += ` and user.mobile like '%${mobile}%'`
-            } else {
-                whereTag = true
-                _sql += ` where user.mobile like '%${mobile}%'`
-            }
+
+            _sql += ` and user.mobile like '%${mobile}%'`
         }
 
         if (email !== '') {
-            if (whereTag) {
-                _sql += ` and user.email like '%${email}%'`
-            } else {
-                whereTag = true
-                _sql += ` where user.email like '%${email}%'`
-            }
+            _sql += ` and user.email like '%${email}%'`
         }
 
         if (sex !== '') {
-            if (whereTag) {
-                _sql += ` and user.sex=${sex}`
-            } else {
-                whereTag = true
-                _sql += ` where user.sex=${sex}`
-            }
+            _sql += ` and user.sex=${sex}`
         }
         if (status !== '') {
-            if (whereTag) {
-                _sql += ` and user.status=${status}`
-            } else {
-                whereTag = true
-                _sql += ` where user.status=${status}`
-            }
+            _sql += ` and user.status=${status}`
         }
 
         if (end_date !== '') {
-            if (whereTag) {
-                _sql += ` and  user.create_time  between '${start_date}' and '${end_date}'`
-            } else {
-                whereTag = true
-                _sql += ` where user.create_time between '${start_date}' and '${end_date}'`
-            }
+            _sql += ` and  user.create_time  between '${start_date}' and '${end_date}'`
         }
-        let result = await dbUtils.query(_sql ,[])
+        let result = await dbUtils.query(_sql, [])
         return result
     },
 
@@ -229,7 +166,7 @@ module.exports = {
      */
     async updateDept(model, dept_id) {
         let _sql = "UPDATE ?? SET ? WHERE dept_id = ?"
-        let result = await dbUtils.query(_sql,['user',model,dept_id])
+        let result = await dbUtils.query(_sql, ['user', model, dept_id])
         return result
     },
 

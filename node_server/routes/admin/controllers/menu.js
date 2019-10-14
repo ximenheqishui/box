@@ -1,10 +1,5 @@
 const menuModels = require('../models/menu')
 
-/**
- * 要改的地方
- *    1、获取的时候传必要的参数   不要用两级路由    遵循 restful-api 规范   去掉getUsableMenu这个方法
-* */
-
 module.exports = {
 
     /**
@@ -13,14 +8,13 @@ module.exports = {
      * @apiGroup menu
      *
      * @apiParam {String} icon  字体图标
-     * @apiParam {Number} last_menu  是否是地最后一级菜单0,1
+     * @apiParam {Number} last_menu  是否为最后一级  0不是最后一层   1 是最后一层
      * @apiParam {String} name 菜单名称
      * @apiParam {Number} parent_id 父节点的ID
      * @apiParam {String} parent_name 父节点名称
-     * @apiParam {String} url  页面功能请求的接口的路径
      * @apiParam {Number} sort_order  排序
-     * @apiParam {Number} status 节点是否启用
-     * @apiParam {Number} type 节点是按钮还是菜单
+     * @apiParam {Number} status  是否启用  0 是启用  1 是不启用
+     * @apiParam {Number} type 节点是按钮还是菜单   1 菜单类型  2 按钮类型
      * @apiParam {String} unique_id 节点唯一标识 要唯一
      * @apiParam {String} path  页面前端路由
      *
@@ -59,30 +53,32 @@ module.exports = {
      * @apiName DelMenu
      * @apiGroup menu
      *
-     * @apiParam {String} id  id组成的字符串以逗号隔开
-     *
+     * @apiParam {String} id  以逗号隔开的id字符串
      *
      */
     async delMenu(req, res, next) {
         try {
             if (req.body.id) {
                 let ids = req.body.id.split(',')
-                if (ids.length === 1) {
-                    let arr = [ids[0]]
-                    async function getTree(id) {
-                        let result = await menuModels.getAllByParentId(id)
-                        if (result && result.length) {
-                            for (let i = 0; i < result.length; i++) {
-                                arr.push(result[i].id)
-                                await getTree(result[i].id)
-                            }
+                let allIds = []
+                // 查询树的递归函数
+                async function getTree(id) {
+                    let result = await menuModels.getByParentId(req.query,id)
+                    if (result && result.length) {
+                        for (let i = 0; i < result.length; i++) {
+                            allIds.push(result[i].id)
+                            await getTree(result[i].id)
                         }
                     }
-                    await getTree(parseInt(arr[0]))
-                    await menuModels.delById(arr)
-                } else {
-                    await menuModels.delById(ids)
                 }
+                // 查询id下的所有子节点
+                for (let i = 0; i < ids.length; i++){
+                    await getTree(parseInt(ids[i]))
+                }
+                // 把当前的id也加入数组中
+                allIds = allIds.concat(ids)
+                // 删除所有的在allIds的菜单
+                await menuModels.delById(allIds)
             }
             await res.json(req.returnData)
         } catch (e) {
@@ -96,14 +92,13 @@ module.exports = {
      *
      * @apiParam {Number} id  id
      * @apiParam {String} icon  字体图标
-     * @apiParam {Number} last_menu  是否是地最后一级菜单0,1
+     * @apiParam {Number} last_menu  是否为最后一级  0不是最后一层   1 是最后一层
      * @apiParam {String} name 菜单名称
      * @apiParam {Number} parent_id 父节点的ID
      * @apiParam {String} parent_name 父节点名称
-     * @apiParam {String} url  页面功能请求的接口的路径
      * @apiParam {Number} sort_order  排序
-     * @apiParam {Number} status 节点是否启用
-     * @apiParam {Number} type 节点是按钮还是菜单
+     * @apiParam {Number} status  是否启用  0 是启用  1 是不启用
+     * @apiParam {Number} type 节点是按钮还是菜单   1 菜单类型  2 按钮类型
      * @apiParam {String} unique_id 节点唯一标识 要唯一
      * @apiParam {String} path  页面前端路由
      *
@@ -135,16 +130,19 @@ module.exports = {
             next(e)
         }
     },
+
     /**
      * @api {get} /admin/menu 获取所有菜单
      * @apiName getMenu
      * @apiGroup menu
      *
+     * @apiParam {Number} status  是否启用  0 是启用  1 是不启用
+     *
      */
     async getMenu(req, res, next) {
         try {
             async function getTree(id) {
-                let result = await menuModels.getAllByParentId(id)
+                let result = await menuModels.getByParentId(req.query,id)
                 if (result && result.length) {
                     for (let i = 0; i < result.length; i++) {
                         result[i].children = await getTree(result[i].id)
@@ -152,38 +150,11 @@ module.exports = {
                 }
                 return result
             }
-
             let result = await getTree(0)
             req.returnData.data = result
             await res.json(req.returnData)
         } catch (e) {
             next(e)
         }
-    },
-    /**
-     * @api {get} /admin/menu/usable 获取启用的菜单
-     * @apiName getUsableMenu
-     * @apiGroup menu
-     *
-     */
-    async getUsableMenu(req, res, next) {
-        try {
-            async function getTree(id) {
-                let result = await menuModels.getUsableByParentId(id)
-                if (result && result.length) {
-                    for (let i = 0; i < result.length; i++) {
-                        result[i].children = await getTree(result[i].id)
-                    }
-                }
-                return result
-            }
-
-            let result = await getTree(0)
-            req.returnData.data = result
-
-            await res.json(req.returnData)
-        } catch (e) {
-            next(e)
-        }
-    },
+    }
 }

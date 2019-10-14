@@ -315,7 +315,7 @@
       },
       getTree () {
         let _this = this
-        _this.api.getUsableMenu({}).then(res => {
+        _this.api.getMenu({ status: 0 }).then(res => {
           if (res.code === 0) {
             if (res.data && res.data.length) {
               _this.menuTree = res.data

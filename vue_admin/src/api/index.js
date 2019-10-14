@@ -50,13 +50,6 @@ export default {
       params: data
     })
   },
-  getUsableMenu: function (data) {
-    return axios({
-      url: '/menu/usable',
-      method: 'get',
-      params: data
-    })
-  },
   addMenu: function (data) {
     return axios({
       url: '/menu',

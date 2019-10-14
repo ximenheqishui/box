@@ -87,19 +87,19 @@ module.exports = {
         try {
             let user = req.session.user
             user.role_ids = await userModels.getUserRole(user.id)
-            let menuids = []
+            let menuIds = []
             for (let i = 0; i < user.role_ids.length; i++) {
-                let menuid = await roleModels.getRoleMenu(user.role_ids[i])
-                menuid.forEach(function (item) {
-                    if (menuids.indexOf(item) == -1) {
-                        menuids.push(item)
+                let menuId = await roleModels.getRoleMenu(user.role_ids[i])
+                menuId.forEach(function (item) {
+                    if (menuIds.indexOf(item) == -1) {
+                        menuIds.push(item)
                     }
                 })
             }
             let permission = []
 
             async function getTree(id) {
-                let result = await menuModels.getUsableByParentIdInids(id, menuids)
+                let result = await menuModels.getUsableByParentIdInIds(id, menuIds)
                 let noButtonResult = []
                 if (result && result.length) {
                     for (let i = 0; i < result.length; i++) {
@@ -115,7 +115,7 @@ module.exports = {
 
             let noButtonResult = []
             let adminMenu = []
-            if (menuids.length) {
+            if (menuIds.length) {
                 noButtonResult = await getTree(0)
             }
             noButtonResult.forEach(function (item) {
