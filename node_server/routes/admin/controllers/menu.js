@@ -144,7 +144,10 @@ module.exports = {
                 let result = await menuModels.getByParentId(req.query,id)
                 if (result && result.length) {
                     for (let i = 0; i < result.length; i++) {
-                        result[i].children = await getTree(result[i].id)
+                        let children  = await getTree(result[i].id)
+                        if (children.length) {
+                            result[i].children = children
+                        }
                     }
                 }
                 return result

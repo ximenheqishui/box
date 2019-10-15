@@ -7,7 +7,4 @@ router.delete('/', department.delDepartment)
 router.get('/', department.getDepartment)
 router.put('/', department.upDateDepartment)
 
-// router.post('/menu', menu.addRoleMenu)
-// router.get('/menu', menu.getRoleMenu)
-
 module.exports = router;

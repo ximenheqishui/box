@@ -59,7 +59,7 @@
         <label>上级节点：</label>
         {{ form.parent_name }}
       </div>
-      <el-form :model="form" :rules="rules" size="small" ref="ruleForm" label-width="120px" @keyup.enter.native="submitForm($event,'ruleForm')">
+      <el-form :model="form" :rules="rules" size="small" ref="ruleForm" label-width="120px" @keyup.enter.native="submitForm('ruleForm')">
         <el-form-item label="名称" prop="name">
           <el-input  placeholder="请输入名称" v-model="form.name"></el-input>
         </el-form-item>
@@ -99,7 +99,7 @@
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button size="small" @click="dialog = false">取 消</el-button>
-        <el-button size="small" type="primary" :disabled="disableSubmit" @click="submitForm($event,'ruleForm')">保 存</el-button>
+        <el-button size="small" type="primary" :disabled="disableSubmit" @click="submitForm('ruleForm')">保 存</el-button>
       </div>
     </el-dialog>
     <el-dialog :title="isAdd ?  '添加按钮': '修改按钮'" :visible.sync="dialog2" width="600px">
@@ -107,7 +107,7 @@
         <label>上级节点：</label>
         {{ form.parent_name }}
       </div>
-      <el-form :model="form" :rules="rules2" size="small" ref="ruleForm2" label-width="120px" @keyup.enter.native="submitForm($event,'ruleForm2')">
+      <el-form :model="form" :rules="rules2" size="small" ref="ruleForm2" label-width="120px" @keyup.enter.native="submitForm('ruleForm2')">
         <el-form-item label="名称" prop="name">
           <el-input  placeholder="请输入名称" v-model="form.name"></el-input>
         </el-form-item>
@@ -130,7 +130,7 @@
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button size="small" @click="dialog2 = false">取 消</el-button>
-        <el-button size="small" type="primary" :disabled="disableSubmit" @click="submitForm($event,'ruleForm2')">保 存</el-button>
+        <el-button size="small" type="primary" :disabled="disableSubmit" @click="submitForm('ruleForm2')">保 存</el-button>
       </div>
     </el-dialog>
   </div>
@@ -215,7 +215,7 @@
           })
         })
       },
-      submitForm (e, form) {
+      submitForm (form) {
         let _this = this
         this.$refs[form].validate((valid) => {
           if (valid) {

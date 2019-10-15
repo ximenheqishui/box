@@ -9,7 +9,7 @@
             用户登录 login
           </div>
           <el-form-item label="" prop="account">
-            <el-input  class="input1" placeholder="请输入用户名" v-model="form.account"  autocomplete="off">
+            <el-input autofocus  class="input1" placeholder="请输入用户名" v-model="form.account"  autocomplete="off">
             <template slot="prepend"><span class="user"></span></template>
           </el-input>
           </el-form-item>

@@ -1,13 +1,13 @@
 <template>
   <div class="main department">
-    <div class="table-tool">
+    <div class="tool-box">
       <div class="left">
         <el-button size="mini" type="primary"  @click="append(0)">添加顶级部门</el-button>
         <el-button size="mini" type="primary"  @click="deleteMore()">批量删除</el-button>
       </div>
       <div class="right"></div>
     </div>
-    <div class="menu-tree">
+    <div class="department-tree">
       <el-input
         size="small"
         placeholder="输入关键字进行过滤"
@@ -50,18 +50,17 @@
       </span>
       </el-tree>
     </div>
-    <el-dialog class="dialog-center" :title="isAdd ?  '添加部门': '修改部门'" :visible.sync="dialog" width="600px">
-      <div>
-        <div style="margin-bottom: 18px;line-height: 30px">
-          <label style="width: 120px;text-align: right;display: inline-block">上级部门：</label>{{form.parent_name ? form.parent_name : '无'}}
-        </div>
+    <el-dialog :title="isAdd ?  '添加部门': '修改部门'" :visible.sync="dialog" width="600px">
+      <div  class="header" v-if="form.parent_name">
+        <label>上级部门：</label>
+        {{ form.parent_name }}
       </div>
-      <el-form :model="form" :rules="rules" size="small" ref="ruleForm" label-width="120px" @keyup.enter.native="submitForm($event,'')">
+      <el-form :model="form" :rules="rules" size="small" ref="ruleForm" label-width="120px" @keyup.enter.native="submitForm()">
         <el-form-item label="名称" prop="name">
-          <el-input  v-model="form.name"></el-input>
+          <el-input v-model="form.name" placeholder="请输入部门名称" ></el-input>
         </el-form-item>
         <el-form-item v-if="!isAdd" label="部门负责人" prop="leader">
-          <el-select v-model="form.leader" multiple placeholder="请选择">
+          <el-select v-model="form.leader" multiple placeholder="请选择负责人">
             <el-option
               v-for="item in options"
               :key="item.id"
@@ -77,17 +76,16 @@
         <el-form-item label="是否启用" prop="status">
           <el-switch
             v-model="form.status"
-            active-value="0"
-            inactive-value="1">
+            :active-value="0"
+            :inactive-value="1">
           </el-switch>
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button size="small" @click="dialog = false">取 消</el-button>
-        <el-button size="small" type="primary" :disabled="disableSubmit" @click="submitForm($event,'')">保 存</el-button>
+        <el-button size="small" type="primary" :disabled="disableSubmit" @click="submitForm()">保 存</el-button>
       </div>
     </el-dialog>
-
   </div>
 </template>
 
@@ -99,7 +97,7 @@
     parent_id: '', // 父节点id
     parent_name: '', // 父节点名称
     sort_order: '', // 排序值
-    status: '0' // 是否启用  0 是启用  1 是不启用
+    status: 0 // 是否启用  0 是启用  1 是不启用
   }
   export default {
     name: 'department',
@@ -115,7 +113,7 @@
         },
         dialog: false, // dialog 弹框
         isAdd: true, // 是否是添加
-        dataT: '', // 存储添加子节点的数据
+        currentData: '', // 存储添加子节点的数据  引用赋值  保存当前数据的指针
         disableSubmit: false, // 是否禁用提交按钮
         form: JSON.parse(JSON.stringify(defaultForm)),
         rules: {
@@ -143,15 +141,15 @@
           if (res.code === 0) {
             this.data = res.data
           }
-        }).catch(error => { // 状态码非2xx时
-          console.log(error)
+        }).catch(error => {
+          this.$message({
+            message: error.message || '服务器忙...',
+            type: 'error'
+          })
         })
       },
-      submitForm (e, tag) {
+      submitForm () {
         let _this = this
-        if (e.type === 'keyup') {
-          if (e.keyCode !== 13) return
-        }
         this.$refs.ruleForm.validate((valid) => {
           if (valid) {
             if (!_this.disableSubmit) {
@@ -164,23 +162,28 @@
                 _this.disableSubmit = false
                 if (res.code === 0) {
                   _this.dialog = false
-                  let tdata = JSON.parse(JSON.stringify(_this.form))
-                  tdata.id = res.data.id
-                  console.log(JSON.stringify(tdata))
-                  if (_this.dataT) {
-                    if (!_this.dataT.children) {
-                      this.$set(_this.dataT, 'children', [])
+                  let newData = JSON.parse(JSON.stringify(_this.form))
+                  newData.id = res.data.id
+                  if (_this.currentData) {
+                    if (!_this.currentData.children) {
+                      this.$set(_this.currentData, 'children', [])
                     }
-                    _this.dataT.children.push(tdata)
+                    _this.currentData.children.push(newData)
                   } else {
-                    _this.data.push(tdata)
+                    _this.data.push(newData)
                   }
                 } else {
-                  console.log('添加失败')
+                  _this.$message({
+                    message: res.message,
+                    type: 'error'
+                  })
                 }
-              }).catch(error => { // 状态码非2xx时
+              }).catch(error => {
                 _this.disableSubmit = false
-                console.log(error)
+                _this.$message({
+                  message: error.message || '服务器忙...',
+                  type: 'error'
+                })
               })
             } else {
               _this.api.updateDepartment(_this.form).then(res => {
@@ -188,24 +191,24 @@
                 if (res.code === 0) {
                   _this.dialog = false
                   // 给对象赋值
-                  _this.dataT.id = _this.form.id
-                  _this.dataT.url = _this.form.url
-                  _this.dataT.type = _this.form.type
-                  _this.dataT.name = _this.form.name
-                  _this.dataT.path = _this.form.path
-                  _this.dataT.parent_id = _this.form.parent_id
-                  _this.dataT.parent_name = _this.form.parent_name
-                  _this.dataT.sort_order = _this.form.sort_order
-                  _this.dataT.icon = _this.form.icon
-                  _this.dataT.unique_id = _this.form.unique_id
-                  _this.dataT.status = _this.form.status
-                  _this.dataT.last_menu = _this.form.last_menu
+                  _this.currentData.id = _this.form.id
+                  _this.currentData.name = _this.form.name
+                  _this.currentData.parent_id = _this.form.parent_id
+                  _this.currentData.parent_name = _this.form.parent_name
+                  _this.currentData.sort_order = _this.form.sort_order
+                  _this.currentData.status = _this.form.status
                 } else {
-                  console.log('添加失败')
+                  _this.$message({
+                    message: res.message,
+                    type: 'error'
+                  })
                 }
-              }).catch(error => { // 状态码非2xx时
+              }).catch(error => {
                 _this.disableSubmit = false
-                console.log(error)
+                _this.$message({
+                  message: error.message || '服务器忙...',
+                  type: 'error'
+                })
               })
             }
           } else {
@@ -218,49 +221,51 @@
         this.$refs.ruleForm.resetFields()
       },
       append (data) {
-        this.dataT = data
+        this.currentData = data
         this.isAdd = true
-        // 判断是否最后一层
-        if (data) {
-          this.dialog = true
-          this.$nextTick(() => {
-            this.resetForm()
-            this.form = JSON.parse(JSON.stringify(defaultForm))
+        this.dialog = true
+        this.$nextTick(() => {
+          this.resetForm()
+          this.form = JSON.parse(JSON.stringify(defaultForm))
+          if (data) {
             this.form.parent_id = data.id
             this.form.parent_name = data.name
-          })
-        } else {
-          this.dialog = true
-          this.$nextTick(() => {
-            this.resetForm()
-            this.form = JSON.parse(JSON.stringify(defaultForm))
-          })
-        }
+          }
+        })
       },
       change (data) {
-        this.dataT = data
+        this.currentData = data
         this.isAdd = false
         this.dialog = true
-        this.getDeparUser(data.id)
+        this.getDepartUser(data.id)
         this.$nextTick(() => {
           this.resetForm()
           this.form = JSON.parse(JSON.stringify(data))
-          this.form.status = String(this.form.status)
         })
       },
       remove (node, data) {
         let _this = this
-        _this.api.delDepartment(data).then(res => {
+        _this.api.delDepartment({ id: String(data.id) }).then(res => {
           if (res.code === 0) {
             const parent = node.parent
             const children = parent.data.children || parent.data
             const index = children.findIndex(d => d.id === data.id)
             children.splice(index, 1)
+            this.$message({
+              message: res.message,
+              type: 'success'
+            })
           } else {
-            console.log('添加失败')
+            this.$message({
+              message: res.message,
+              type: 'error'
+            })
           }
-        }).catch(error => { // 状态码非2xx时
-          console.log(error)
+        }).catch(error => {
+          this.$message({
+            message: error.message || '服务器忙...',
+            type: 'error'
+          })
         })
       },
       deleteMore () {
@@ -270,21 +275,31 @@
         }
         this.api.delDepartment({ id: key.join(',') }).then(res => {
           if (res.code === 0) {
+            this.$message({
+              message: res.message,
+              type: 'success'
+            })
             this.getDepartment()
           } else {
-            console.log('添加失败')
+            this.$message({
+              message: res.message,
+              type: 'error'
+            })
           }
-        }).catch(error => { // 状态码非2xx时
-          console.log(error)
+        }).catch(error => {
+          this.$message({
+            message: error.message || '服务器忙...',
+            type: 'error'
+          })
         })
       },
-      getDeparUser (id) {
+      getDepartUser (id) {
         this.api.getDepartmentUser({ dept_id: id }).then(res => {
           if (res.code === 0) {
             this.options = res.data
             this.form.leader = res.leader
           }
-        }).catch(error => { // 状态码非2xx时
+        }).catch(error => {
           console.log(error)
         })
       }
@@ -297,10 +312,7 @@
 
 <style lang="scss" type="text/scss">
   .department{
-    .tool{
-      margin-bottom: 20px;
-    }
-    .menu-tree{
+    .department-tree{
       max-width: 700px;
       .el-input{
         margin-bottom: 10px;
@@ -315,7 +327,16 @@
       }
     }
     .el-dialog__body{
-      padding: 15px 10px;
+      padding: 15px 20px;
+      .header{
+        margin-bottom: 18px;
+        line-height: 30px;
+        label{
+          width: 120px;
+          text-align: right;
+          display: inline-block;
+        }
+      }
     }
   }
 </style>

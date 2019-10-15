@@ -129,16 +129,9 @@ export default {
       params: data
     })
   },
-  getUsableDepartment: function (data) {
-    return axios({
-      url: '/sys/permission/getUsableDeptTree',
-      method: 'get',
-      params: data
-    })
-  },
   addDepartment: function (data) {
     return axios({
-      url: 'department',
+      url: '/department',
       method: 'post',
       data
     })
@@ -152,9 +145,9 @@ export default {
   },
   delDepartment: function (data) {
     return axios({
-      url: `/department`,
+      url: '/department',
       method: 'DELETE',
-      data: { id: data.id + '' }
+      data: data
     })
   },
   /**

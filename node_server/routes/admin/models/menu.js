@@ -25,13 +25,13 @@ module.exports = {
             status
         } = query
 
-        let _sql = "SELECT * FROM menu WHERE parent_id = ? "
+        let _sql = "SELECT * FROM ?? WHERE parent_id = ? "
 
         if (status !== '' &&  status !== undefined ) {
-            _sql += ` and menu.status=${status}`
+            _sql += ` and status=${status}`
         }
 
-        let result = await dbUtils.query(_sql, [pid])
+        let result = await dbUtils.query(_sql, ['menu',pid])
         return result
     },
 
