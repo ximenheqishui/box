@@ -68,22 +68,18 @@ module.exports = {
     },
 
     /**
-     * @api {get} /admin/role 分页获取角色
+     * @api {get} /admin/role  获取角色
      * @apiName getRole
      * @apiGroup role
      *
-     * @apiParam {Number} pn  第几页
-     * @apiParam {Number} pageSize 每页多少条
+     * @apiParam {Number} pn  第几页: 不存在获取所有数据
+     * @apiParam {Number} pageSize 每页多少条：不存在获取所有数据
      */
     async getRole(req, res, next) {
         try {
             let {pn, pageSize} = req.query
             if (pn && pageSize) {
-                let result = {}
-                let resultTotal = await roleModels.count()
-                result.total = resultTotal[0].total_count
-                result.list = await roleModels.getByPage(pn, pageSize)
-                req.returnData.data = result
+                req.returnData.data = await roleModels.getByPage(pn, pageSize)
             } else {
                 req.returnData.data =  await roleModels.getAll()
             }

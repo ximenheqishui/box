@@ -1,7 +1,6 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import routes from './routes'
-import { getToken } from '@/utils/auth'
 import { Message } from 'element-ui'
 import store from '@/store/index.js'
 

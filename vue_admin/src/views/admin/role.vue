@@ -130,10 +130,11 @@
     data () {
       return {
         loading: true,
-        searchData: {
-          pageSizes: [10, 20, 50, 100],
-          pn: 1,
-          pageSize: 10
+        treeLoading: false,
+        menuDialog: false,
+        defaultProps: {
+          children: 'children',
+          label: 'name'
         },
         dialog: {
           isAdd: true,
@@ -148,24 +149,19 @@
             ]
           },
           roleDialog: false,
-          disableSubmit: false,
-          defaultProps: {
-            children: 'children',
-            label: 'name'
-          }
+          disableSubmit: false
         },
         menuTree: [],
         multipleSelection: [],
-        defaultProps: {
-          children: 'children',
-          label: 'name'
+        searchData: {
+          pageSizes: [10, 20, 50, 100],
+          pn: 1,
+          pageSize: 10
         },
-        menuDialog: false,
         resultData: {
           list: [],
           total: 0
         },
-        treeLoading: false,
         roleId: ''
       }
     },
@@ -227,9 +223,17 @@
               type: 'success',
               message: '删除成功!'
             })
+          } else {
+            this.$message({
+              message: res.message,
+              type: 'error'
+            })
           }
-        }).catch(error => { // 状态码非2xx时
-          console.log(error)
+        }).catch(error => {
+          this.$message({
+            message: error.message || '服务器忙...',
+            type: 'error'
+          })
         })
       },
       indexMethod (index) {

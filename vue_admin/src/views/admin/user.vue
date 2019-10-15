@@ -479,7 +479,7 @@
       // 获取所有的角色
       getRole () {
         let _this = this
-        _this.api.getRoleAll({}).then(res => {
+        _this.api.getRole({}).then(res => {
           if (res.code === 0) {
             _this.role = res.data
           }

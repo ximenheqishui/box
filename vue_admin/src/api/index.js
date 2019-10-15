@@ -81,13 +81,6 @@ export default {
       params: data
     })
   },
-  getRoleAll: function (data) {
-    return axios({
-      url: '/role',
-      method: 'get',
-      params: data
-    })
-  },
   addRole: function (data) {
     return axios({
       url: '/role',
