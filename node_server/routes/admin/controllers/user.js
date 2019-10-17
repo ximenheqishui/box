@@ -4,27 +4,39 @@ const cryptoUtil= require("../../../util/crypto-util")
 module.exports = {
 
     /**
-     * @api {post} /admin/role 添加角色
-     * @apiName addRole
-     * @apiGroup role
+     * @api {post} /admin/user 添加用户
+     * @apiName addUser
+     * @apiGroup user
      *
-     * @apiParam {String} name  名称
-     * @apiParam {String} description  描述
+     * @apiParam {String} user_name  用户名称
+     * @apiParam {String} email  邮箱
+     * @apiParam {number} mobile  手机号
+     * @apiParam {number} sex  性别：0未知、1是男、2是女
+     * @apiParam {number} dept_id  部门id
+     * @apiParam {string} dept_path  部门所在层的id的数组字符串，前端回显用
+     * @apiParam {Number} status  是否启用 ：0 是启用、1 是不启用
+     * @apiParam {string} avatar  用户头像url
+     * @apiParam {string} password  用户密码
      *
      */
     async addUser(req, res, next) {
         try {
             let requestData = {
                 user_name: req.body.user_name,
-                password: cryptoUtil.createPass(req.body.password),
                 email: req.body.email,
                 mobile: req.body.mobile,
-                sex: parseInt(req.body.sex) || 0,
-                dept_id: parseInt(req.body.dept_id) || 0,
+                sex: req.body.sex || 0,
+                dept_id: req.body.dept_id || 0,
                 dept_path: req.body.dept_path,
-                status: parseInt(req.body.status) || 0,
+                status: req.body.status || 0,
                 avatar: req.body.avatar,
-                create_time: new Date()
+                create_time: new Date(),
+                update_time: new Date(),
+            }
+            if (req.body.password !== '') {
+                requestData.password = cryptoUtil.createPass(req.body.password)
+            } else {
+                requestData.password = cryptoUtil.createPass('123456')
             }
             let result = await userModels.create(requestData)
             await userModels.userRole(req.body.role_ids, result.insertId)
@@ -73,14 +85,16 @@ module.exports = {
             } else {
                 requestData = {
                     user_name: req.body.user_name,
-                    password: cryptoUtil.createPass(req.body.password),
                     email: req.body.email,
                     mobile: req.body.mobile,
-                    sex: parseInt(req.body.sex) || 0,
-                    dept_id: parseInt(req.body.dept_id) || 0,
+                    sex: req.body.sex || 0,
+                    dept_id: req.body.dept_id || 0,
                     dept_path: req.body.dept_path,
-                    status: parseInt(req.body.status) || 0,
+                    status: req.body.status || 0,
                     avatar: req.body.avatar
+                }
+                if (req.body.password !== '') {
+                    requestData.password = cryptoUtil.createPass(req.body.password)
                 }
                 await userModels.update(requestData, req.body.id)
                 await userModels.userRole(req.body.role_ids, req.body.id)

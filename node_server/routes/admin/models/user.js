@@ -3,6 +3,11 @@ const departmentModels = require('./department')
 
 module.exports = {
 
+
+    /**
+     * 创建用户
+     * @param  {Object} model  用户对象
+     */
     async create(model) {
         let result = await dbUtils.insertData('user', model)
         return result
@@ -35,7 +40,7 @@ module.exports = {
         }
         if (dept_id !== '') {
             async function getTree(id) {
-                let result = await departmentModels.getAllByParentId(id)
+                let result = await departmentModels.getByParentId({}, id)
                 if (result && result.length) {
                     for (let i = 0; i < result.length; i++) {
                         let children = await getTree(result[i].id)
@@ -101,7 +106,7 @@ module.exports = {
         }
         if (dept_id !== '') {
             async function getTree(id) {
-                let result = await departmentModels.getAllByParentId(id)
+                let result = await departmentModels.getByParentId({},id)
                 if (result && result.length) {
                     for (let i = 0; i < result.length; i++) {
                         let children = await getTree(result[i].id)
@@ -171,9 +176,9 @@ module.exports = {
     },
 
     /**
-     * 根据更新角色权限
-     * @param  {array} menuIds 菜单的id数组
-     * @param  {int} roleId 角色的id
+     *  添加用户的角色
+     * @param  {array} roleIds 角色的id
+     * @param  {int} userId  用户的id
      */
     async userRole(roleIds, userId) {
 

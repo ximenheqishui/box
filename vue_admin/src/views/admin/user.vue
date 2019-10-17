@@ -1,7 +1,7 @@
 <template>
   <div class="user">
-    <div class="search">
-      <el-form @keyup.enter.native="search" ref="form" :inline="true" :model="searchData" class="" label-width="80px" size="small">
+    <div class="search-box">
+      <el-form @keyup.enter.native="search" ref="form" :inline="true" :model="searchData" label-width="80px" size="small">
          <el-form-item label="用户名" prop="user_name">
             <el-input   clearable v-model="searchData.user_name" placeholder="请输入用户名"></el-input>
           </el-form-item>
@@ -27,7 +27,7 @@
                   v-for="item in sex"
                   :key="item.id"
                   :label="item.name"
-                  :value="item.id">
+                  :value="item.value">
                 </el-option>
               </el-select>
             </el-form-item>
@@ -37,7 +37,7 @@
                   v-for="item in status"
                   :key="item.id"
                   :label="item.name"
-                  :value="item.id">
+                  :value="item.value">
                 </el-option>
               </el-select>
             </el-form-item>
@@ -58,7 +58,7 @@
         </el-form-item>
       </el-form>
     </div>
-    <div class="table-tool">
+    <div class="tool-box">
       <div class="left">
         <el-button @click="showDialog(false)"  size="mini" type="primary">添加用户</el-button>
         <el-button @click="deleteMore()"  size="mini" type="primary">批量删除</el-button>
@@ -72,6 +72,7 @@
       </div>
     </div>
     <div
+      class="list-box"
       element-loading-text="数据加载中"
       v-loading="pageLoading || searchLoading"
       element-loading-background="rgba(255, 255, 255, 0.6)">
@@ -136,6 +137,7 @@
         <el-table-column
           prop="operation"
           width="120"
+          fixed="right"
           label="操作">
           <template slot-scope="scope">
             <el-button @click.native.prevent="showDialog(scope)" type="text" size="small">
@@ -162,29 +164,29 @@
     <el-dialog  :title="dialog.isAdd ?  '添加用户': '修改用户'" :visible.sync="dialog.tag" height="80px" width="700px">
       <el-form size="small" :model="dialog.form" :rules="dialog.rules" ref="ruleForm" label-width="120px" @keyup.enter.native="submitFormD">
         <el-form-item label="用户名" prop="user_name">
-          <el-input  v-model="dialog.form.user_name"></el-input>
+          <el-input placeholder="请输入用户名"  v-model="dialog.form.user_name"></el-input>
         </el-form-item>
         <el-row>
           <el-col :span="12">
             <el-form-item label="邮箱" prop="email">
-              <el-input type="email"  v-model="dialog.form.email"></el-input>
+              <el-input placeholder="请输入用邮箱" type="email"  v-model="dialog.form.email"></el-input>
             </el-form-item>
           </el-col>
           <el-col :span="12">
             <el-form-item label="手机号" prop="mobile">
-              <el-input  v-model="dialog.form.mobile"></el-input>
+              <el-input placeholder="请输入用手机号"  v-model="dialog.form.mobile"></el-input>
             </el-form-item>
           </el-col>
         </el-row>
         <el-row>
           <el-col :span="12">
-            <el-form-item label="密码" prop="password">
-              <el-input type="password" v-model="dialog.form.password"></el-input>
+            <el-form-item  label="密码" prop="password">
+              <el-input placeholder="请输入密码" type="password" v-model="dialog.form.password"></el-input>
             </el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item label="重复密码" prop="password2">
-              <el-input type="password" v-model="dialog.form.password2"></el-input>
+            <el-form-item  label="重复密码" prop="password2">
+              <el-input placeholder="请输入密码" type="password" v-model="dialog.form.password2"></el-input>
             </el-form-item>
           </el-col>
         </el-row>
@@ -207,8 +209,8 @@
         <el-form-item label="是否启用" prop="status">
           <el-switch
             v-model="dialog.form.status"
-            active-value="0"
-            inactive-value="1">
+            :active-value="0"
+            :inactive-value="1">
           </el-switch>
         </el-form-item>
         <el-form-item label="部门" prop="dept_id">
@@ -222,7 +224,7 @@
           </el-cascader>
         </el-form-item>
         <el-form-item label="角色">
-          <el-select style="width: 100%" v-model="dialog.form.role_ids"  multiple clearable filterable  placeholder="请选择">
+          <el-select style="width: 100%" v-model="dialog.form.role_ids"  multiple clearable filterable  placeholder="请选择角色">
             <el-option
               v-for="item in role"
               :key="item.id"
@@ -252,7 +254,7 @@
     dept_id: '',
     dept_path: [],
     role_ids: [],
-    status: '0',
+    status: 0,
     avatar: ''
   }
   export default {
@@ -574,13 +576,19 @@
                 _this.dialog.disableSubmit = false
                 if (res.code === 0) {
                   _this.dialog.tag = false
-                  _this.getData(0)
+                  _this.getData(1)
                 } else {
-                  console.log('添加失败')
+                  _this.$message({
+                    message: res.message,
+                    type: 'error'
+                  })
                 }
-              }).catch(error => { // 状态码非2xx时
+              }).catch(error => {
                 _this.dialog.disableSubmit = false
-                console.log(error)
+                _this.$message({
+                  message: error.message || '服务器忙...',
+                  type: 'error'
+                })
               })
             } else {
               _this.api.updateUser(form).then(res => {
