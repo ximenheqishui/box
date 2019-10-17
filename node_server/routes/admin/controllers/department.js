@@ -87,13 +87,9 @@ module.exports = {
                 parent_name: req.body.parent_name,
                 sort_order: req.body.sort_order,
                 status: req.body.status,
+                leader: req.body.leader
             }
             await departmentModels.update(requestData, req.body.id)
-            // 部门负责人最后统一处理 暂时先不处理
-            await userModels.updateDept({leader:0},req.body.id)
-            for(let i=0;i< req.body.leader;i++){
-                await userModels.update({leader:1},req.body.leader[i])
-            }
             await res.json(req.returnData)
         } catch (e) {
             next(e)

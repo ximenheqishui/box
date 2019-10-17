@@ -157,12 +157,14 @@
             } else {
               return false
             }
+            let form = JSON.parse(JSON.stringify(_this.form))
+            form.leader = form.leader.join(',')
             if (_this.isAdd) {
-              _this.api.addDepartment(_this.form).then(res => {
+              _this.api.addDepartment(form).then(res => {
                 _this.disableSubmit = false
                 if (res.code === 0) {
                   _this.dialog = false
-                  let newData = JSON.parse(JSON.stringify(_this.form))
+                  let newData = JSON.parse(JSON.stringify(form))
                   newData.id = res.data.id
                   if (_this.currentData) {
                     if (!_this.currentData.children) {
@@ -186,17 +188,18 @@
                 })
               })
             } else {
-              _this.api.updateDepartment(_this.form).then(res => {
+              _this.api.updateDepartment(form).then(res => {
                 _this.disableSubmit = false
                 if (res.code === 0) {
                   _this.dialog = false
                   // 给对象赋值
-                  _this.currentData.id = _this.form.id
-                  _this.currentData.name = _this.form.name
-                  _this.currentData.parent_id = _this.form.parent_id
-                  _this.currentData.parent_name = _this.form.parent_name
-                  _this.currentData.sort_order = _this.form.sort_order
-                  _this.currentData.status = _this.form.status
+                  _this.currentData.id = form.id
+                  _this.currentData.name = form.name
+                  _this.currentData.parent_id = form.parent_id
+                  _this.currentData.parent_name = form.parent_name
+                  _this.currentData.sort_order = form.sort_order
+                  _this.currentData.status = form.status
+                  _this.currentData.leader = form.leader
                 } else {
                   _this.$message({
                     message: res.message,
@@ -237,10 +240,12 @@
         this.currentData = data
         this.isAdd = false
         this.dialog = true
-        this.getDepartUser(data.id)
+
         this.$nextTick(() => {
           this.resetForm()
           this.form = JSON.parse(JSON.stringify(data))
+          this.form.leader = []
+          this.getDepartUser(data)
         })
       },
       remove (node, data) {
@@ -293,11 +298,19 @@
           })
         })
       },
-      getDepartUser (id) {
-        this.api.getDepartmentUser({ dept_id: id }).then(res => {
+      getDepartUser (data) {
+        this.options = []
+        this.api.getUser({ dept_id: data.id }).then(res => {
           if (res.code === 0) {
             this.options = res.data
-            this.form.leader = res.leader
+            if (data.leader) {
+              let leader = data.leader.split(',')
+              this.form.leader = leader.map(function (item) {
+                return parseInt(item)
+              })
+            } else {
+              this.form.leader = []
+            }
           }
         }).catch(error => {
           console.log(error)

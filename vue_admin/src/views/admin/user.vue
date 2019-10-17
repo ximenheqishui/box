@@ -143,7 +143,7 @@
             <el-button @click.native.prevent="showDialog(scope)" type="text" size="small">
               修改
             </el-button>
-            <el-button @click.native.prevent="deleteRow(scope.$index, resultData.list,scope.row.id)" type="text" size="small">
+            <el-button @click.native.prevent="deleteRow(scope, resultData.list)" type="text" size="small">
               移除
             </el-button>
           </template>
@@ -192,7 +192,7 @@
         </el-row>
         <el-form-item label="性别" prop="sex">
               <el-radio-group v-model="dialog.form.sex">
-                <el-radio v-for="item in sex" :key="item.id" :label="item.id">{{item.name}}</el-radio>
+                <el-radio v-for="item in sex" :key="item.id" :label="item.value">{{item.name}}</el-radio>
               </el-radio-group>
             </el-form-item>
         <el-form-item label="头像" prop="avatar">
@@ -523,10 +523,11 @@
         })
       },
       // 删除一条
-      deleteRow (index, rows, id) {
+      deleteRow (scope, rows) {
         let _this = this
-        _this.api.delUser({ id: id }).then(res => {
+        _this.api.delUser({ id: scope.row.id }).then(res => {
           if (res.code === 0) {
+            let index = rows.indexOf(scope.row)
             rows.splice(index, 1)
             this.$message({
               type: 'success',
@@ -597,11 +598,17 @@
                   _this.dialog.tag = false
                   _this.getData(0)
                 } else {
-                  console.log('修改失败')
+                  _this.$message({
+                    message: res.message,
+                    type: 'error'
+                  })
                 }
-              }).catch(error => { // 状态码非2xx时
+              }).catch(error => {
                 _this.dialog.disableSubmit = false
-                console.log(error)
+                _this.$message({
+                  message: error.message || '服务器忙...',
+                  type: 'error'
+                })
               })
             }
           } else {

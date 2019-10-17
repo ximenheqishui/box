@@ -150,16 +150,6 @@ export default {
       data: data
     })
   },
-  /**
-   * @description 用户相关的接口
-   * */
-  getDepartmentUser (data) {
-    return axios({
-      url: '/user/department',
-      method: 'get',
-      params: data
-    })
-  },
   getUser: function (data) {
     return axios({
       url: '/user',

@@ -17,6 +17,7 @@ module.exports = {
 
     /**
      * 根据菜单父节点名查找菜单
+     * @param  {Object} query  查询参数
      * @param  {int} pid  菜单的父节点
      * @return {object|null}     查找结果
      */

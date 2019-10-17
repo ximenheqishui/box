@@ -47,9 +47,9 @@ module.exports = {
         }
     },
     /**
-     * @api {delete} /admin/role 删除角色
-     * @apiName DelRole
-     * @apiGroup role
+     * @api {delete} /admin/user 删除用户
+     * @apiName DelUser
+     * @apiGroup user
      *
      * @apiParam {String} id  id组成的字符串以逗号隔开
      */
@@ -65,13 +65,20 @@ module.exports = {
         }
     },
     /**
-     * @api {put} /admin/role 修改角色
-     * @apiName updateRole
-     * @apiGroup role
+     * @api {put}  /admin/user 修改用户
+     * @apiName updateUser
+     * @apiGroup user
      *
-     * @apiParam {Number} id  id
-     * @apiParam {String} name 角色名称
-     * @apiParam {String} description 描述
+     * @apiParam {Number} id  用户id
+     * @apiParam {String} user_name  用户名称
+     * @apiParam {String} email  邮箱
+     * @apiParam {number} mobile  手机号
+     * @apiParam {number} sex  性别：0未知、1是男、2是女
+     * @apiParam {number} dept_id  部门id
+     * @apiParam {string} dept_path  部门所在层的id的数组字符串，前端回显用
+     * @apiParam {Number} status  是否启用 ：0 是启用、1 是不启用
+     * @apiParam {string} avatar  用户头像url
+     * @apiParam {string} password  用户密码
      *
      */
     async upDateUser(req, res, next) {
@@ -105,43 +112,24 @@ module.exports = {
         }
     },
     /**
-     * @api {get} /admin/role 分页获取角色
-     * @apiName getRole
-     * @apiGroup role
+     * @api {get} /admin/user 获取用户
+     * @apiName getUser
+     * @apiGroup user
      *
-     * @apiParam {Number} pn  第几页
-     * @apiParam {Number} pageSize 每页多少条
+     * @apiParam {Number} pn  第几页: 不存在获取所有符合筛选条件数据
+     * @apiParam {Number} pageSize 每页多少条：不存在获取所有符合筛选条件数据
+     * @apiParam {String} user_name  用户名称
+     * @apiParam {String} email  邮箱
+     * @apiParam {number} mobile  手机号
+     * @apiParam {number} sex  性别：0未知、1是男、2是女
+     * @apiParam {number} dept_id  部门id
+     * @apiParam {Number} status  是否启用 ：0 是启用、1 是不启用
+     * @apiParam {string} start_date  开始时间
+     * @apiParam {string} end_date  结束时间
      */
     async getUser(req, res, next) {
         try {
-            let result = {}
-            result.totalCount = await userModels.count(req.query)
-            result.totalCount = result.totalCount[0].total_count
-            result.list = await userModels.getByPage(req.query)
-            req.returnData.data = result
-            await res.json(req.returnData)
-        } catch (e) {
-            next(e)
-        }
-    },
-    /**
-     * @api {get} /admin/role 分页获取角色
-     * @apiName getRole
-     * @apiGroup role
-     *
-     * @apiParam {Number} pn  第几页
-     * @apiParam {Number} pageSize 每页多少条
-     */
-    async getDepartmentUser(req, res, next) {
-        try {
-            let {dept_id} = req.query
-            req.returnData.data = await userModels.getDepartmentUser(dept_id)
-            req.returnData.leader = []
-            req.returnData.data.forEach(function (item) {
-                if (item.leader == 1) {
-                    req.returnData.leader.push(item.id)
-                }
-            })
+            req.returnData.data =  await userModels.getUser(req.query)
             await res.json(req.returnData)
         } catch (e) {
             next(e)

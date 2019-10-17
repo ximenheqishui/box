@@ -14,164 +14,24 @@ module.exports = {
     },
 
     /**
-     * 分页查询数据
-     * @param  {int} pn  第几页
-     * @param {int} pageSize   每页多少条
-     */
-    async getByPage(query) {
-        let {
-            pn,
-            page_size,
-            user_name,
-            dept_id,
-            end_date,
-            start_date,
-            mobile,
-            email,
-            sex,
-            status
-        } = query
-        let _sql = "select user.*,dictionary.name as sex_name,department.name as dept_name " +
-            "FROM user " +
-            "LEFT JOIN  dictionary on user.sex = dictionary.value and dictionary.type = 'sex' " +
-            "LEFT JOIN  department on user.dept_id = department.id where 1=1"
-        if (user_name !== '') {
-            _sql += ` and user.user_name like '%${user_name}%'`
-        }
-        if (dept_id !== '') {
-            async function getTree(id) {
-                let result = await departmentModels.getByParentId({}, id)
-                if (result && result.length) {
-                    for (let i = 0; i < result.length; i++) {
-                        let children = await getTree(result[i].id)
-                        if (children.length) {
-                            result[i].children = children
-                        }
-                    }
-                }
-                return result
-            }
-
-            let dept = await getTree(dept_id)
-            let dept_ids = [dept_id]
-            dept.forEach(function (item) {
-                dept_ids.push(item.id)
-            })
-            _sql += ` and user.dept_id in (${dept_ids})`
-        }
-
-        if (mobile !== '') {
-            _sql += ` and user.mobile like '%${mobile}%'`
-        }
-
-        if (email !== '') {
-            _sql += ` and user.email like '%${email}%'`
-        }
-
-        if (sex !== '') {
-            _sql += ` and user.sex=${sex}`
-        }
-        if (status !== '') {
-            _sql += ` and user.status=${status}`
-        }
-
-        if (end_date !== '') {
-            _sql += ` and  user.create_time  between '${start_date}' and '${end_date}'`
-        }
-        _sql += ` LIMIT ? , ?`
-        let result = await dbUtils.query(_sql, [(pn - 1) * page_size, pn * page_size])
-        for (let i = 0; i < result.length; i++) {
-            result[i].role_ids = await this.getUserRole(result[i].id)
-        }
-        return result
-    },
-
-    /**
-     * 计总数
-     */
-    async count(query) {
-        let {
-            user_name,
-            dept_id,
-            end_date,
-            start_date,
-            mobile,
-            email,
-            sex,
-            status
-        } = query
-        let _sql = "SELECT COUNT(*) AS total_count FROM user where 1=1 "
-        if (user_name !== '') {
-            _sql += ` and user.user_name like '%${user_name}%'`
-        }
-        if (dept_id !== '') {
-            async function getTree(id) {
-                let result = await departmentModels.getByParentId({},id)
-                if (result && result.length) {
-                    for (let i = 0; i < result.length; i++) {
-                        let children = await getTree(result[i].id)
-                        if (children.length) {
-                            result[i].children = children
-                        }
-                    }
-                }
-                return result
-            }
-
-            let dept = await getTree(dept_id)
-            let dept_ids = [dept_id]
-            dept.forEach(function (item) {
-                dept_ids.push(item.id)
-            })
-            _sql += ` and user.dept_id in (${dept_ids})`
-        }
-
-        if (mobile !== '') {
-
-            _sql += ` and user.mobile like '%${mobile}%'`
-        }
-
-        if (email !== '') {
-            _sql += ` and user.email like '%${email}%'`
-        }
-
-        if (sex !== '') {
-            _sql += ` and user.sex=${sex}`
-        }
-        if (status !== '') {
-            _sql += ` and user.status=${status}`
-        }
-
-        if (end_date !== '') {
-            _sql += ` and  user.create_time  between '${start_date}' and '${end_date}'`
-        }
-        let result = await dbUtils.query(_sql, [])
-        return result
-    },
-
-    /**
-     * 根据id删除角色
-     * @param  {int} id 菜单id
+     * 根据id删除用户
+     * @param  {array} ids 菜单id
      * @return {object|null}     删除结果
      */
-    async delById(id) {
-        let result = await dbUtils.deleteDataByIds('user', id)
+    async delById(ids) {
+        let result = await dbUtils.deleteDataByIds('user', ids)
+        // 删掉所有权限
+        let _sql = "DELETE FROM ?? WHERE user_id in (?)"
+        await dbUtils.query(_sql, ['user_role', ids])
         return result
     },
 
+
     /**
-     * 根据id更新角色
+     * 根据id更新用户
      */
     async update(model, id) {
         let result = await dbUtils.updateData('user', model, id)
-        return result
-    },
-    /**
-     * 根据id更新角色
-     */
-    async updateDept(model, dept_id) {
-        let _sql = "UPDATE ?? SET ? WHERE dept_id = ?"
-        let result = await dbUtils.query(_sql, ['user', model, dept_id])
         return result
     },
 
@@ -186,8 +46,8 @@ module.exports = {
         let _sql = "DELETE FROM ?? WHERE user_id = ?"
         await dbUtils.query(_sql, ['user_role', userId])
 
+        // 再添加新的
         if (roleIds.length) {
-            // 再添加新的
             let arr = []
             for (let i = 0; i < roleIds.length; i++) {
                 let str = `(${roleIds[i]},${userId})`
@@ -197,15 +57,14 @@ module.exports = {
             _sql = `INSERT INTO user_role(role_id,user_id) VALUES ${values}`
             await dbUtils.query(_sql, [])
         }
-        return
     },
 
     /**
-     * 根据roleId获取权限
-     * @param  {int} roleId 角色的id
+     * 根据用户id获取角色
+     * @param  {int} userId 角色的id
      */
     async getUserRole(userId) {
-        let _sql = "SELECT * FROM ?? WHERE user_id = ? "
+        let _sql = "SELECT role_id FROM ?? WHERE user_id = ? "
         let result = await dbUtils.query(_sql, ['user_role', userId])
         let arr = []
         result.forEach(function (item) {
@@ -214,15 +73,97 @@ module.exports = {
         return arr
     },
 
-
     /**
      * 分页查询数据
-     * @param  {int} pn  第几页
-     * @param {int} pageSize   每页多少条
+     * @param  {object} query  查询参数
      */
-    async getDepartmentUser(dept_id) {
-        let _sql = `select * FROM user where dept_id = ?`
-        let result = await dbUtils.query(_sql, [dept_id])
+    async getUser(query) {
+        let {
+            pn,
+            page_size,
+            user_name,
+            dept_id,
+            end_date,
+            start_date,
+            mobile,
+            email,
+            sex,
+            status
+        } = query
+        let result = {}
+
+        let _sqlUser = "select user.*,dictionary.name as sex_name,department.name as dept_name " +
+            "FROM user " +
+            "LEFT JOIN  dictionary on user.sex = dictionary.value and dictionary.type = 'sex' " +
+            "LEFT JOIN  department on user.dept_id = department.id where 1=1"
+
+        let _sqlCount = "SELECT COUNT(*) AS total_count FROM user where 1=1 "
+
+        let _sql = ''
+
+        if (user_name !== '' && user_name !== undefined ) {
+            _sql += ` and user.user_name like '%${user_name}%'`
+        }
+        if (dept_id !== '' && dept_id !== undefined ) {
+            let dept_ids = []
+            async function getTree(id) {
+                dept_ids.push(id)
+                let result = await departmentModels.getByParentId({}, id)
+                if (result && result.length) {
+                    for (let i = 0; i < result.length; i++) {
+                        await getTree(result[i].id)
+                    }
+                }
+            }
+            await getTree(dept_id)
+            _sql += ` and user.dept_id in (${dept_ids})`
+        }
+
+        if (mobile !== '' && mobile !== undefined) {
+            _sql += ` and user.mobile like '%${mobile}%'`
+        }
+
+        if (email !== '' && email !== undefined) {
+            _sql += ` and user.email like '%${email}%'`
+        }
+
+        if (sex !== '' && sex !== undefined) {
+            _sql += ` and user.sex=${sex}`
+        }
+        if (status !== '' && status !== undefined) {
+            _sql += ` and user.status=${status}`
+        }
+
+        if (end_date !== '' && end_date !== undefined) {
+            _sql += ` and  user.create_time  between '${start_date}' and '${end_date}'`
+        }
+
+        // 分页和不分页的结果
+        if (pn && page_size) {
+            let resultTotal= await dbUtils.query(_sqlCount + _sql, [])
+            result.total = resultTotal[0].total_count
+            _sql += ` LIMIT ${(pn - 1) * page_size} , ${pn * page_size}`
+            result.list = await dbUtils.query(_sqlUser + _sql, [])
+            for (let i = 0; i < result.list.length; i++) {
+                result.list[i].role_ids = await this.getUserRole(result.list[i].id)
+            }
+        } else {
+            result = await dbUtils.query(_sqlUser + _sql, [])
+            for (let i = 0; i < result.length; i++) {
+                result[i].role_ids = await this.getUserRole(result[i].id)
+            }
+        }
         return result
     },
+
+    /**
+     *  根据部门id更新用户是否是领导者信息
+     * @param  {int} dept_id 部门的id
+     * @param  {object} model  用户的模型
+     */
+    async updateDept(model, dept_id) {
+        let _sql = "UPDATE ?? SET ? WHERE dept_id = ?"
+        let result = await dbUtils.query(_sql, ['user', model, dept_id])
+        return result
+    }
 }
