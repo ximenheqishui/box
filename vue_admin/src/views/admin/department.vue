@@ -158,7 +158,7 @@
               return false
             }
             let form = JSON.parse(JSON.stringify(_this.form))
-            form.leader = form.leader.join(',')
+            // form.leader = form.leader.join(',')
             if (_this.isAdd) {
               _this.api.addDepartment(form).then(res => {
                 _this.disableSubmit = false
@@ -303,14 +303,13 @@
         this.api.getUser({ dept_id: data.id }).then(res => {
           if (res.code === 0) {
             this.options = res.data
-            if (data.leader) {
-              let leader = data.leader.split(',')
-              this.form.leader = leader.map(function (item) {
-                return parseInt(item)
-              })
-            } else {
-              this.form.leader = []
-            }
+          }
+        }).catch(error => {
+          console.log(error)
+        })
+        this.api.getDepartmentLeader({ dept_id: data.id }).then(res => {
+          if (res.code === 0) {
+            this.form.leader = res.data
           }
         }).catch(error => {
           console.log(error)

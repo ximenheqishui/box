@@ -6,5 +6,6 @@ router.post('/', department.addDepartment)
 router.delete('/', department.delDepartment)
 router.get('/', department.getDepartment)
 router.put('/', department.upDateDepartment)
+router.get('/leader', department.getDepartmentLeader)
 
 module.exports = router;

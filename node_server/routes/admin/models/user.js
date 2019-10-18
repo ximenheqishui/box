@@ -23,6 +23,10 @@ module.exports = {
         // 删掉所有权限
         let _sql = "DELETE FROM ?? WHERE user_id in (?)"
         await dbUtils.query(_sql, ['user_role', ids])
+
+        // 删掉所有部门领导者
+        _sql = "DELETE FROM ?? WHERE user_id in (?)"
+        await dbUtils.query(_sql, ['department_user', ids])
         return result
     },
 

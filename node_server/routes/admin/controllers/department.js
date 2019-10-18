@@ -42,9 +42,10 @@ module.exports = {
             if (req.body.id) {
                 let ids = req.body.id.split(',')
                 let allIds = []
+
                 // 查询树的递归函数
                 async function getTree(id) {
-                    let result = await departmentModels.getByParentId(req.query,id)
+                    let result = await departmentModels.getByParentId(req.query, id)
                     if (result && result.length) {
                         for (let i = 0; i < result.length; i++) {
                             allIds.push(result[i].id)
@@ -52,13 +53,14 @@ module.exports = {
                         }
                     }
                 }
+
                 // 查询id下的所有子节点
-                for (let i = 0; i < ids.length; i++){
+                for (let i = 0; i < ids.length; i++) {
                     await getTree(parseInt(ids[i]))
                 }
                 // 把当前的id也加入数组中
                 allIds = allIds.concat(ids)
-                // 删除所有的在allIds的菜单
+                // 删除所有的在allIds的部门
                 await departmentModels.delById(allIds)
             }
             await res.json(req.returnData)
@@ -77,6 +79,7 @@ module.exports = {
      * @apiParam {String} parent_name 父节点名称
      * @apiParam {Number} sort_order  排序
      * @apiParam {Number} status  是否启用  0 是启用  1 是不启用
+     * @apiParam {array} leader  用户领导者的数组
      *
      */
     async upDateDepartment(req, res, next) {
@@ -86,10 +89,10 @@ module.exports = {
                 parent_id: req.body.parent_id || 0,
                 parent_name: req.body.parent_name,
                 sort_order: req.body.sort_order,
-                status: req.body.status,
-                leader: req.body.leader
+                status: req.body.status
             }
             await departmentModels.update(requestData, req.body.id)
+            await departmentModels.updateDepartmentLeader(req.body.leader, req.body.id)
             await res.json(req.returnData)
         } catch (e) {
             next(e)
@@ -105,10 +108,10 @@ module.exports = {
     async getDepartment(req, res, next) {
         try {
             async function getTree(id) {
-                let result = await departmentModels.getByParentId(req.query,id)
+                let result = await departmentModels.getByParentId(req.query, id)
                 if (result && result.length) {
                     for (let i = 0; i < result.length; i++) {
-                       let children  = await getTree(result[i].id)
+                        let children = await getTree(result[i].id)
                         if (children.length) {
                             result[i].children = children
                         }
@@ -116,8 +119,26 @@ module.exports = {
                 }
                 return result
             }
+
             let result = await getTree(0)
             req.returnData.data = result
+            await res.json(req.returnData)
+        } catch (e) {
+            next(e)
+        }
+    },
+
+
+    /**
+     * @api {get} /admin/department/leader 获取部门领导者
+     * @apiName getDepartmentLeader
+     * @apiGroup department
+     *
+     * @apiParam {Number} department_id  是否启用 ：0 是启用、1 是不启用、空或者不存在为全部
+     */
+    async getDepartmentLeader(req, res, next) {
+        try {
+            req.returnData.data = await departmentModels.getDepartmentLeader(req.query.department_id)
             await res.json(req.returnData)
         } catch (e) {
             next(e)

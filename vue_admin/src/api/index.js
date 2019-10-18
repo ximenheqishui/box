@@ -129,6 +129,13 @@ export default {
       params: data
     })
   },
+  getDepartmentLeader: function (data) {
+    return axios({
+      url: '/department/leader',
+      method: 'get',
+      params: data
+    })
+  },
   addDepartment: function (data) {
     return axios({
       url: '/department',
