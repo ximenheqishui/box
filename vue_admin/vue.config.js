@@ -21,6 +21,14 @@ module.exports = {
         pathRewrite: {
           '^/admin': '/admin'
         }
+      },
+      '/common': {
+        target: 'http://localhost:3000',
+        ws: true,
+        changeOrigin: true,
+        pathRewrite: {
+          '^/common': '/common'
+        }
       }
     }
   },

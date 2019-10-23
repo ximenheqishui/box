@@ -1,5 +1,5 @@
-var baseUrl =  'http://192.168.199.147:3000'
+var baseUrl =  'http://192.168.199.147:7000'
 var baseConfig = {
-  apiHost: 'http://192.168.199.147:7000/admin',
+  apiHost: baseUrl + '/admin',
   systemName: 'li-box'
 }

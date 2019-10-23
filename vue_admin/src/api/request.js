@@ -3,7 +3,6 @@
  * axios 配置
  */
 import store from '@/store'
-// import qs from 'qs'
 import { getToken } from '@/utils/auth'
 import axios from 'axios'
 import { MessageBox } from 'element-ui'
@@ -16,12 +15,6 @@ axios.interceptors.request.use(
      if (getToken()) {
        config.headers['Admin-Token'] = getToken()
      }
-    // 这个是java用tomcat的时候不接受[] 所以进行了转意
-    // if (config.method === 'get') {
-    //   config.paramsSerializer = function (params) {
-    //     return qs.stringify(params, { arrayFormat: 'repeat' })
-    //   }
-    // }
     return config
   },
   error => {
