@@ -1,5 +1,6 @@
 const express = require('express');
 const router = express.Router();
+const redis = require("../../../util/redis")
 
 const commonRouter = require('./common')
 const menuRouter = require('./menu')
@@ -10,7 +11,7 @@ const userRouter = require('./user')
 /**
  * @description 模拟请求延迟
  * */
-router.use(async function (res, req, next) {
+router.use(async function (req, res, next) {
     await new Promise(resolve => {
         setTimeout(function () {
             resolve()
@@ -30,12 +31,14 @@ router.use(async function (req, res, next) {
     }
 
     // 不需要登录的接口
-    if (req.path === '/login' || req.path === '/excelExport' ) {
+    if (req.path === '/login' || req.path === '/excelExport') {
         next()
     } else {
-        if (!req.session.user || req.cookies['Admin-Token'] !== req.session.token ) {
+        let user = await redis.getDate(req.get('Admin-Token'))
+        req.user = user
+        if (!user) {
             res.json({code: 2, message: '登录超时请重新登录'})
-        }else{
+        } else {
             next()
         }
     }
@@ -52,7 +55,7 @@ router.use('/user', userRouter)
 router.use(function (err, req, res) {
     res.status(err.status || 500);
     res.json({
-        message:err.message,
+        message: err.message,
         error: req.app.get('env') === 'development' ? err : {}
     })
 });

@@ -3,6 +3,7 @@ const userModels = require('../models/user')
 const roleModels = require('../models/role')
 const menuModels = require('../models/menu')
 const cryptoUtil = require("../../../util/crypto-util")
+const redis = require("../../../util/redis")
 const Excel = require('exceljs/modern.nodejs');
 
 module.exports = {
@@ -38,11 +39,8 @@ module.exports = {
             let result = await commonModels.getUser(req.body.account)
             if (result && result.length) {
                 if (cryptoUtil.createPass(req.body.password) === result[0].password) {
-                    let token = cryptoUtil.createToken(result[0].user_name)
-                    req.session.user = result[0]
-                    req.session.token = token
+                    let token = await redis.setLoginSession(result[0])
                     req.returnData.token = token
-                    // req.session.cookie.maxAge  = 1000
                 } else {
                     req.returnData.code = 1
                     req.returnData.message = '密码不正确'
@@ -67,8 +65,7 @@ module.exports = {
      */
     async logout(req, res, next) {
         try {
-            req.session.token = ''
-            req.session.user = ''
+            redis.delToken(req.get('Admin-Token'))
             await res.json(req.returnData)
         } catch (e) {
             next(e)
@@ -85,7 +82,7 @@ module.exports = {
      */
     async userInfo(req, res, next) {
         try {
-            let user = req.session.user
+            let user = req.user
             user.role_ids = await userModels.getUserRole(user.id)
             let menuIds = []
             for (let i = 0; i < user.role_ids.length; i++) {

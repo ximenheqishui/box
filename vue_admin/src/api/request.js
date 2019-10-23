@@ -13,9 +13,9 @@ axios.defaults.baseURL = baseConfig.apiHost
 
 axios.interceptors.request.use(
   config => {
-     // if (getToken()) {
-     //   config.headers['Admin-Token'] = getToken()
-     // }
+     if (getToken()) {
+       config.headers['Admin-Token'] = getToken()
+     }
     // 这个是java用tomcat的时候不接受[] 所以进行了转意
     // if (config.method === 'get') {
     //   config.paramsSerializer = function (params) {

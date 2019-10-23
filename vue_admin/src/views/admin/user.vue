@@ -64,8 +64,8 @@
         <el-button @click="deleteMore()"  size="mini" type="primary">批量删除</el-button>
       </div>
       <div class="right">
-        <a :href=" !(!resultData.totalCount || searchLoading) ? downloadUrl : 'javascript:void(0)'" target="_blank" style="display: inline-block;box-sizing: border-box">
-          <el-button class="icon-change" :disabled="!resultData.totalCount"  :loading="searchLoading" size="mini" type="primary" icon="icon iconfont icon-daochu">
+        <a :href=" !(!resultData.total || searchLoading) ? downloadUrl : 'javascript:void(0)'" target="_blank" style="display: inline-block;box-sizing: border-box">
+          <el-button class="icon-change" :disabled="!resultData.total"  :loading="searchLoading" size="mini" type="primary" icon="icon iconfont icon-daochu">
             导出
           </el-button>
         </a>
@@ -150,14 +150,14 @@
         </el-table-column>
       </el-table>
       <el-pagination
-        v-show="resultData.totalCount"
+        v-show="resultData.total"
         @size-change="handleSizeChange"
         @current-change="handleCurrentChange"
         :current-page.sync ="searchData.pn"
         :page-sizes="searchData.pageSizes"
         :page-size.sync="searchData.page_size"
         layout="total, sizes, prev, pager, next, jumper"
-        :total="resultData.totalCount">
+        :total="resultData.total">
       </el-pagination>
     </div>
 
@@ -340,7 +340,7 @@
         },
         lastPostData: {},
         resultData: {
-          totalCount: 0,
+          total: 0,
           list: []
         }
       }

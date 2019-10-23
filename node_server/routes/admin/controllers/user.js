@@ -88,7 +88,7 @@ module.exports = {
                 requestData = {
                     password: cryptoUtil.createPass(req.body.password)
                 }
-                await userModels.update(requestData, req.session.user.id)
+                await userModels.update(requestData, req.user.id)
             } else {
                 requestData = {
                     user_name: req.body.user_name,
