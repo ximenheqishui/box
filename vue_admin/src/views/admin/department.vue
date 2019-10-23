@@ -243,8 +243,9 @@
 
         this.$nextTick(() => {
           this.resetForm()
-          this.form = JSON.parse(JSON.stringify(data))
-          this.form.leader = []
+          let form = JSON.parse(JSON.stringify(data))
+          form.leader = []
+          this.form = form
           this.getDepartUser(data)
         })
       },

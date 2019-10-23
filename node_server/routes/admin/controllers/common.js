@@ -36,10 +36,10 @@ module.exports = {
      */
     async login(req, res, next) {
         try {
-            let result = await commonModels.getUser(req.body.account)
+            let result = await userModels.getUserOne(null,req.body.account,null)
             if (result && result.length) {
                 if (cryptoUtil.createPass(req.body.password) === result[0].password) {
-                    let token = await redis.setLoginSession(result[0])
+                    let token = await redis.setLoginToken(result[0])
                     req.returnData.token = token
                 } else {
                     req.returnData.code = 1

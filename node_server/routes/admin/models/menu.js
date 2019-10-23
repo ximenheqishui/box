@@ -31,6 +31,7 @@ module.exports = {
         if (status !== '' &&  status !== undefined ) {
             _sql += ` and status=${status}`
         }
+        _sql += ' ORDER BY sort_order ASC'
 
         let result = await dbUtils.query(_sql, ['menu',pid])
         return result
@@ -69,7 +70,7 @@ module.exports = {
      * @return {object|null}   查找结果
      */
     async getUsableByParentIdInIds(pid,ids) {
-        let _sql = "SELECT * FROM ?? WHERE parent_id = ? and status = 0 and id IN (?)"
+        let _sql = "SELECT * FROM ?? WHERE parent_id = ? and status = 0 and id IN (?) ORDER BY sort_order ASC"
         let result = await dbUtils.query(_sql, ['menu', pid, ids])
         return result
     }

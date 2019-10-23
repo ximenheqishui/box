@@ -103,10 +103,14 @@ module.exports = {
 
         let _sqlCount = "SELECT COUNT(*) AS total_count FROM user where 1=1 "
 
+
+
         let _sql = ''
+        let arr = []
 
         if (user_name !== '' && user_name !== undefined ) {
-            _sql += ` and user.user_name like '%${user_name}%'`
+            _sql += ` and user.user_name like ?`
+            arr.push(`%${user_name}%`)
         }
         if (dept_id !== '' && dept_id !== undefined ) {
             let dept_ids = []
@@ -124,39 +128,77 @@ module.exports = {
         }
 
         if (mobile !== '' && mobile !== undefined) {
-            _sql += ` and user.mobile like '%${mobile}%'`
+            _sql += ` and user.mobile like ?`
+            arr.push(`%${mobile}%`)
         }
 
         if (email !== '' && email !== undefined) {
-            _sql += ` and user.email like '%${email}%'`
+            _sql += ` and user.email like ?`
+            arr.push(`%${email}%`)
         }
 
         if (sex !== '' && sex !== undefined) {
-            _sql += ` and user.sex=${sex}`
+            _sql += ` and user.sex=?`
+            arr.push(sex)
         }
         if (status !== '' && status !== undefined) {
-            _sql += ` and user.status=${status}`
+            _sql += ` and user.status=?`
+            arr.push(status)
         }
 
         if (end_date !== '' && end_date !== undefined) {
-            _sql += ` and  user.create_time  between '${start_date}' and '${end_date}'`
+            _sql += ` and  user.create_time  between ? and ?`
+            arr.push(start_date)
+            arr.push(end_date)
         }
 
+        _sql += ' ORDER BY create_time DESC'
         // 分页和不分页的结果
         if (pn && page_size) {
-            let resultTotal= await dbUtils.query(_sqlCount + _sql, [])
+            let resultTotal= await dbUtils.query(_sqlCount + _sql, arr)
             result.total = resultTotal[0].total_count
             _sql += ` LIMIT ${(pn - 1) * page_size} , ${pn * page_size}`
-            result.list = await dbUtils.query(_sqlUser + _sql, [])
+            result.list = await dbUtils.query(_sqlUser + _sql, arr)
             for (let i = 0; i < result.list.length; i++) {
                 result.list[i].role_ids = await this.getUserRole(result.list[i].id)
             }
         } else {
-            result = await dbUtils.query(_sqlUser + _sql, [])
+            result = await dbUtils.query(_sqlUser + _sql, arr)
             for (let i = 0; i < result.length; i++) {
                 result[i].role_ids = await this.getUserRole(result[i].id)
             }
         }
+        return result
+    },
+
+
+    /**
+     * 根据id查询用户
+     * @param  {int} id  用户id
+     * @param  {string} user_name 用户名
+     * @param  {string} mobile 手机号
+     */
+    async getUserOne(id,user_name,mobile) {
+        let _sql = "select user.*,dictionary.name as sex_name,department.name as dept_name " +
+            "FROM user " +
+            "LEFT JOIN  dictionary on user.sex = dictionary.value and dictionary.type = 'sex' " +
+            "LEFT JOIN  department on user.dept_id = department.id where 1=1"
+
+        let arr = []
+        if (user_name) {
+            _sql += ` and user.user_name = ?`
+            arr.push(user_name)
+        }
+        if (id) {
+            _sql += ` and user.id = ?`
+            arr.push(id)
+        }
+        if (mobile) {
+            _sql += ` and user.mobile = ?`
+            arr.push(mobile)
+        }
+
+        let result = await dbUtils.query(_sql, arr)
         return result
     },
 

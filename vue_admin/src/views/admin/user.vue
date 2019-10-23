@@ -81,7 +81,6 @@
         :border="true"
         :stripe="true"
         :data="resultData.list"
-        :default-sort = "{prop: 'create_time', order: 'descending'}"
         @selection-change="handleSelectionChange"
         @sort-change="handleSortChange"
         style="width: 100%">

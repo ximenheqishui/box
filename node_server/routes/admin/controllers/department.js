@@ -138,7 +138,7 @@ module.exports = {
      */
     async getDepartmentLeader(req, res, next) {
         try {
-            req.returnData.data = await departmentModels.getDepartmentLeader(req.query.department_id)
+            req.returnData.data = await departmentModels.getDepartmentLeader(req.query.dept_id)
             await res.json(req.returnData)
         } catch (e) {
             next(e)

@@ -14,12 +14,12 @@ client.on("error", (err) => {
     console.log("Error " + err);
 });
 
-let setLoginSession = async (user) => {
+let setLoginToken = async (user) => {
     let secret = user.user_name + new Date().getTime();
-    let session = crypto.createHmac('sha256', secret).update("I am lily").digest('hex');//加密生成返回session
-    await client.hmset(session, user);
-    await client.expire(session, 60 * 60 * 24) //设置key 为session的超时时间  单位为秒
-    return session;  //返回session
+    let token = crypto.createHmac('sha256', secret).update("I am lily").digest('hex');
+    await client.hmset(token, user);
+    await client.expire(token, 60 * 60 * 24) //设置key 为token的超时时间  单位为秒
+    return token;  //token
 }
 
 let delToken = (token) => {
@@ -48,7 +48,7 @@ let getDate = (token) => {
 
 module.exports = {
     client: client,
-    setLoginSession: setLoginSession,
+    setLoginToken: setLoginToken,
     getDate: getDate,
     delToken: delToken
 }

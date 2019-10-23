@@ -1,4 +1,5 @@
 const userModels = require('../models/user')
+const departmentModels = require('../models/department')
 const cryptoUtil= require("../../../util/crypto-util")
 
 module.exports = {
@@ -58,6 +59,7 @@ module.exports = {
             if (req.body.id) {
                 let ids = req.body.id.split(',')
                 await userModels.delById(ids)
+                await departmentModels.delDepartmentLeader(ids)
             }
             await res.json(req.returnData)
         } catch (e) {
@@ -103,8 +105,14 @@ module.exports = {
                 if (req.body.password !== '') {
                     requestData.password = cryptoUtil.createPass(req.body.password)
                 }
+
+                let result =  await userModels.getUserOne(req.body.id,null,null)
+
                 await userModels.update(requestData, req.body.id)
                 await userModels.userRole(req.body.role_ids, req.body.id)
+                if (result[0].dept_id != requestData.dept_id ) {
+                     await departmentModels.delDepartmentLeader([req.body.id])
+                }
             }
             await res.json(req.returnData)
         } catch (e) {

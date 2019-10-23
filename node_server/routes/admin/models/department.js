@@ -26,6 +26,7 @@ module.exports = {
         if (status !== '' &&  status !== undefined ) {
             _sql += ` and status=${status}`
         }
+        _sql += ' ORDER BY sort_order ASC'
         let result = await dbUtils.query(_sql, ['department', pid])
         return result
     },
@@ -78,6 +79,18 @@ module.exports = {
             result = await dbUtils.query(_sql,[])
         }
         return result
+    },
+
+
+    /**
+     * 用户修改时候删除时删除对应的部门领导者
+     * @param  {array} user_ids  部门id
+     * @return {object|null}     修改结果
+     */
+    async delDepartmentLeader(user_ids) {
+        // 先删掉所有权限
+        let _sql = "DELETE FROM ?? WHERE user_id in (?)"
+        await dbUtils.query(_sql, ['department_user', user_ids])
     },
 
 
