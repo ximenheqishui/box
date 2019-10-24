@@ -32,27 +32,19 @@
                                 <i class="icon iconfont" :class="item2.icon"></i>
                                 <span>{{item2.name}}</span>
                             </template>
-                            <el-menu-item v-for="item3 in item2.children" :index="item3.path" :key="item3.path">
-                                <i class="icon iconfont" :class="item3.icon"></i>
-                                <span slot="title">{{ item3.name }}</span>
-                            </el-menu-item>
+                            <menu-item  v-for="item3 in item2.children"  v-bind:key="item3.path" v-bind:path="item3.path" v-bind:name="item3.name" v-bind:icon="item3.icon"></menu-item>
                         </el-submenu>
-                        <el-menu-item v-else :index="item2.path" :key="item2.path">
-                            <i class="icon iconfont" :class="item2.icon"></i>
-                            <span slot="title">{{ item2.name }}</span>
-                        </el-menu-item>
+                        <menu-item v-else v-bind:key="item2.path" v-bind:path="item2.path" v-bind:name="item2.name" v-bind:icon="item2.icon"></menu-item>
                     </template>
                 </el-submenu>
-                <el-menu-item v-else :index="item.path" :key="item.path">
-                  <i class="icon iconfont" :class="item.icon"></i>
-                  <span slot="title">{{ item.name }}</span>
-                </el-menu-item>
+                <menu-item v-else v-bind:key="item.path" v-bind:path="item.path" v-bind:name="item.name" v-bind:icon="item.icon"></menu-item>
             </template>
         </el-menu>
     </el-aside>
 </template>
 
 <script>
+  import menuItem from './menuItem'
   export default {
     data () {
       return {
@@ -60,6 +52,7 @@
         isCollapse: false
       }
     },
+    components: { menuItem },
     methods: {
       handleOpen (key, keyPath) {
         // console.log(key, keyPath)

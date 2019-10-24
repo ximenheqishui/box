@@ -9,12 +9,11 @@ const Excel = require('exceljs/modern.nodejs');
 module.exports = {
 
     /**
-     * @api {get} /admin/role 分页获取角色
-     * @apiName getRole
-     * @apiGroup role
+     * @api {get} /admin/dictionaries 获取全部的数据字典
+     * @apiName getDictionaries
+     * @apiHeader {String} Admin-Token Users unique access-key.
+     * @apiGroup common
      *
-     * @apiParam {Number} pn  第几页
-     * @apiParam {Number} pageSize 每页多少条
      */
     async getDictionaries(req, res, next) {
         try {
@@ -27,12 +26,12 @@ module.exports = {
     },
 
     /**
-     * @api {get} /admin/role 分页获取角色
-     * @apiName getRole
-     * @apiGroup role
+     * @api {post} /admin/login 登录
+     * @apiName login
+     * @apiGroup common
      *
-     * @apiParam {Number} pn  第几页
-     * @apiParam {Number} pageSize 每页多少条
+     * @apiParam {string} account  账户
+     * @apiParam {string} password 密码
      */
     async login(req, res, next) {
         try {
@@ -56,12 +55,10 @@ module.exports = {
     },
 
     /**
-     * @api {get} /admin/role 分页获取角色
-     * @apiName getRole
-     * @apiGroup role
+     * @api {get} /admin/logout 退出
+     * @apiName logout
+     * @apiGroup common
      *
-     * @apiParam {Number} pn  第几页
-     * @apiParam {Number} pageSize 每页多少条
      */
     async logout(req, res, next) {
         try {
@@ -73,12 +70,10 @@ module.exports = {
     },
 
     /**
-     * @api {get} /admin/role 分页获取角色
-     * @apiName getRole
-     * @apiGroup role
+     * @api {get} /admin/userInfo 获取用户信息
+     * @apiName userInfo
+     * @apiGroup common
      *
-     * @apiParam {Number} pn  第几页
-     * @apiParam {Number} pageSize 每页多少条
      */
     async userInfo(req, res, next) {
         try {
@@ -130,12 +125,10 @@ module.exports = {
     },
 
     /**
-     * @api {get} /admin/role 分页获取角色
-     * @apiName getRole
-     * @apiGroup role
+     * @api {get} /admin/excelExport 导出
+     * @apiName excelExport
+     * @apiGroup common
      *
-     * @apiParam {Number} pn  第几页
-     * @apiParam {Number} pageSize 每页多少条
      */
     async excelExport(req, res, next) {
         try {

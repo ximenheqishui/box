@@ -99,7 +99,7 @@ module.exports = {
         let _sqlUser = "select user.*,dictionary.name as sex_name,department.name as dept_name " +
             "FROM user " +
             "LEFT JOIN  dictionary on user.sex = dictionary.value and dictionary.type = 'sex' " +
-            "LEFT JOIN  department on user.dept_id = department.id where 1=1"
+            "LEFT JOIN  department on user.dept_id = department.id where 1=1 "
 
         let _sqlCount = "SELECT COUNT(*) AS total_count FROM user where 1=1 "
 
