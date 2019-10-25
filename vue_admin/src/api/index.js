@@ -157,6 +157,9 @@ export default {
       data: data
     })
   },
+  /**
+   * @description 用户相关
+   * */
   getUser: function (data) {
     return axios({
       url: '/user',
@@ -184,6 +187,37 @@ export default {
       url: `/user`,
       method: 'DELETE',
       data: { id: data.id + '' }
+    })
+  },
+  /**
+   * @description 文章分类相关
+   * */
+  getArticleType: function (data) {
+    return axios({
+      url: '/articleType',
+      method: 'get',
+      params: data
+    })
+  },
+  addArticleType: function (data) {
+    return axios({
+      url: '/articleType',
+      method: 'post',
+      data
+    })
+  },
+  updateArticleType: function (data) {
+    return axios({
+      url: '/articleType',
+      method: 'PUT',
+      data: data
+    })
+  },
+  delArticleType: function (data) {
+    return axios({
+      url: '/articleType',
+      method: 'DELETE',
+      data: data
     })
   }
 }

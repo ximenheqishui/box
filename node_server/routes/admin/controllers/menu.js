@@ -6,6 +6,7 @@ module.exports = {
      * @api {post} /admin/menu 添加菜单
      * @apiName addMenu
      * @apiGroup menu
+     * @apiUse APICommon
      *
      * @apiParam {String} icon  字体图标
      * @apiParam {Number} last_menu  是否为最后一级  0不是最后一层   1 是最后一层
@@ -52,6 +53,7 @@ module.exports = {
      * @api {delete} /admin/menu 删除菜单
      * @apiName DelMenu
      * @apiGroup menu
+     * @apiUse APICommon
      *
      * @apiParam {String} id  以逗号隔开的id字符串
      *
@@ -89,6 +91,7 @@ module.exports = {
      * @api {put} /admin/menu 修改菜单
      * @apiName updateMenu
      * @apiGroup menu
+     * @apiUse APICommon
      *
      * @apiParam {Number} id  id
      * @apiParam {String} icon  字体图标
@@ -134,6 +137,7 @@ module.exports = {
      * @api {get} /admin/menu 获取菜单
      * @apiName getMenu
      * @apiGroup menu
+     * @apiUse APICommon
      *
      * @apiParam {Number} status  是否启用 ：0 是启用、1 是不启用、空或者不存在为全部
      *

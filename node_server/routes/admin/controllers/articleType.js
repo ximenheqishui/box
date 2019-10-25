@@ -1,21 +1,22 @@
-const departmentModels = require('../models/department')
-const userModels = require('../models/user')
+const articleTypeModels = require('../models/articleType')
 
 module.exports = {
 
+
+
     /**
-     * @api {post} /admin/department 添加部门
-     * @apiName addDepartment
+     * @api {post} /admin/articleType 添加文章分类
+     * @apiName addArticleType
      * @apiUse APICommon
-     * @apiGroup department
+     * @apiGroup articleType
      *
-     * @apiParam {String} name  部门名称
+     * @apiParam {String} name  分类名称
      * @apiParam {Number} parent_id 父节点的ID
      * @apiParam {String} parent_name 父节点名称
      * @apiParam {Number} sort_order  排序
      * @apiParam {Number} status  是否启用  0 是启用  1 是不启用
      */
-    async addDepartment(req, res, next) {
+    async addArticleType(req, res, next) {
         try {
             let requestData = {
                 name: req.body.name,
@@ -24,7 +25,7 @@ module.exports = {
                 sort_order: req.body.sort_order,
                 status: req.body.status
             }
-            let result = await departmentModels.create(requestData)
+            let result = await articleTypeModels.create(requestData)
             req.returnData.data = {id: result.insertId}
             await res.json(req.returnData)
         } catch (e) {
@@ -32,14 +33,14 @@ module.exports = {
         }
     },
     /**
-     * @api {delete} /admin/department 删除部门
-     * @apiName DelDepartment
+     * @api {delete} /admin/articleType 删除文章分类
+     * @apiName DelArticleType
+     * @apiGroup articleType
      * @apiUse APICommon
-     * @apiGroup department
      *
      * @apiParam {String} id  以逗号隔开的id字符串
      */
-    async delDepartment(req, res, next) {
+    async delArticleType(req, res, next) {
         try {
             if (req.body.id) {
                 let ids = req.body.id.split(',')
@@ -47,7 +48,7 @@ module.exports = {
 
                 // 查询树的递归函数
                 async function getTree(id) {
-                    let result = await departmentModels.getByParentId(req.query, id)
+                    let result = await articleTypeModels.getByParentId(req.query, id)
                     if (result && result.length) {
                         for (let i = 0; i < result.length; i++) {
                             allIds.push(result[i].id)
@@ -63,7 +64,7 @@ module.exports = {
                 // 把当前的id也加入数组中
                 allIds = allIds.concat(ids)
                 // 删除所有的在allIds的部门
-                await departmentModels.delById(allIds)
+                await articleTypeModels.delById(allIds)
             }
             await res.json(req.returnData)
         } catch (e) {
@@ -71,21 +72,20 @@ module.exports = {
         }
     },
     /**
-     * @api {put} /admin/department 修改部门
-     * @apiName updateDepartment
+     * @api {put} /admin/articleType 修改文章分类
+     * @apiName updateArticleType
+     * @apiGroup articleType
      * @apiUse APICommon
-     * @apiGroup department
      *
-     * @apiParam {Number} id  部门id
-     * @apiParam {String} name  部门名称
+     * @apiParam {Number} id  文章id
+     * @apiParam {String} name  文章名称
      * @apiParam {Number} parent_id 父节点的ID
      * @apiParam {String} parent_name 父节点名称
      * @apiParam {Number} sort_order  排序
      * @apiParam {Number} status  是否启用  0 是启用  1 是不启用
-     * @apiParam {array} leader  用户领导者的数组
      *
      */
-    async upDateDepartment(req, res, next) {
+    async upDateArticleType(req, res, next) {
         try {
             let requestData = {
                 name: req.body.name,
@@ -94,25 +94,24 @@ module.exports = {
                 sort_order: req.body.sort_order,
                 status: req.body.status
             }
-            await departmentModels.update(requestData, req.body.id)
-            await departmentModels.updateDepartmentLeader(req.body.leader, req.body.id)
+            await articleTypeModels.update(requestData, req.body.id)
             await res.json(req.returnData)
         } catch (e) {
             next(e)
         }
     },
     /**
-     * @api {get} /admin/department 获取部门
-     * @apiName getDepartment
+     * @api {get} /admin/articleType 获取文章分类
+     * @apiName getArticleType
+     * @apiGroup articleType
      * @apiUse APICommon
-     * @apiGroup department
      *
      * @apiParam {Number} status  是否启用 ：0 是启用、1 是不启用、空或者不存在为全部
      */
-    async getDepartment(req, res, next) {
+    async getArticleType(req, res, next) {
         try {
             async function getTree(id) {
-                let result = await departmentModels.getByParentId(req.query, id)
+                let result = await articleTypeModels.getByParentId(req.query, id)
                 if (result && result.length) {
                     for (let i = 0; i < result.length; i++) {
                         let children = await getTree(result[i].id)
@@ -130,23 +129,6 @@ module.exports = {
         } catch (e) {
             next(e)
         }
-    },
+    }
 
-
-    /**
-     * @api {get} /admin/department/leader 获取部门领导者
-     * @apiName getDepartmentLeader
-     * @apiUse APICommon
-     * @apiGroup department
-     *
-     * @apiParam {Number} department_id  是否启用 ：0 是启用、1 是不启用、空或者不存在为全部
-     */
-    async getDepartmentLeader(req, res, next) {
-        try {
-            req.returnData.data = await departmentModels.getDepartmentLeader(req.query.dept_id)
-            await res.json(req.returnData)
-        } catch (e) {
-            next(e)
-        }
-    },
 }

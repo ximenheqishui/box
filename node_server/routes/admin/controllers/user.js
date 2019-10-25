@@ -8,6 +8,7 @@ module.exports = {
      * @api {post} /admin/user 添加用户
      * @apiName addUser
      * @apiGroup user
+     * @apiUse APICommon
      *
      * @apiParam {String} user_name  用户名称
      * @apiParam {String} email  邮箱
@@ -51,6 +52,7 @@ module.exports = {
      * @api {delete} /admin/user 删除用户
      * @apiName DelUser
      * @apiGroup user
+     * @apiUse APICommon
      *
      * @apiParam {String} id  id组成的字符串以逗号隔开
      */
@@ -70,6 +72,7 @@ module.exports = {
      * @api {put}  /admin/user 修改用户
      * @apiName updateUser
      * @apiGroup user
+     * @apiUse APICommon
      *
      * @apiParam {Number} id  用户id
      * @apiParam {String} user_name  用户名称
@@ -123,6 +126,7 @@ module.exports = {
      * @api {get} /admin/user 获取用户
      * @apiName getUser
      * @apiGroup user
+     * @apiUse APICommon
      *
      * @apiParam {Number} pn  第几页: 不存在获取所有符合筛选条件数据
      * @apiParam {Number} pageSize 每页多少条：不存在获取所有符合筛选条件数据

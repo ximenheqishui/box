@@ -7,6 +7,7 @@ const menuRouter = require('./menu')
 const roleRouter = require('./role')
 const departmentRouter = require('./department')
 const userRouter = require('./user')
+const articleTypeRouter = require('./articleType')
 
 /**
  * @description 模拟请求延迟
@@ -19,6 +20,16 @@ router.use(async function (req, res, next) {
     })
     next()
 })
+
+
+/**
+ * @apiDefine APICommon  全局方法  定义了一个全局apiDoc方法
+ * @apiHeader {String} Admin-Token Users unique access-key.
+ */
+
+
+
+
 
 /**
  * @description 接口过滤器
@@ -37,7 +48,7 @@ router.use(async function (req, res, next) {
         let user = await redis.getDate(req.get('Admin-Token'))
         req.user = user
         if (!user) {
-            res.json({code: 2, message: '登录超时请重新登录'})
+            res.json({code: 2, message: '未登录或登录超时请登录'})
         } else {
             next()
         }
@@ -49,6 +60,7 @@ router.use('/menu', menuRouter)
 router.use('/role', roleRouter)
 router.use('/department', departmentRouter)
 router.use('/user', userRouter)
+router.use('/articleType', articleTypeRouter)
 
 
 // error handler

@@ -6,12 +6,39 @@ const cryptoUtil = require("../../../util/crypto-util")
 const redis = require("../../../util/redis")
 const Excel = require('exceljs/modern.nodejs');
 
-module.exports = {
 
+
+/**
+ * @api {all} /null  返回的常规格式
+ * @apiName returnCommon
+ * @apiGroup common
+ * @apiErrorExample {json} 服务器代码错误:
+ *     HTTP/1.1 500  服务器错误
+ *     {
+ *       "error": "错误信息",
+ *       "message": "具体的所有的信息在开发模式下才会有信息"
+ *     }
+ * @apiSuccessExample {json} 成功:
+ *     HTTP/1.1 200 OK
+ *     {
+ *      "code": 0,
+ *      "message": "成功了"
+ *     }
+ *      HTTP/1.1 200 OK
+ *     {
+ *      "code": 2,
+ *      "message": "登录超时或未登录"
+ *     }
+ * */
+
+
+
+
+module.exports = {
     /**
      * @api {get} /admin/dictionaries 获取全部的数据字典
      * @apiName getDictionaries
-     * @apiHeader {String} Admin-Token Users unique access-key.
+     * @apiUse APICommon
      * @apiGroup common
      *
      */
@@ -57,6 +84,7 @@ module.exports = {
     /**
      * @api {get} /admin/logout 退出
      * @apiName logout
+     * @apiUse APICommon
      * @apiGroup common
      *
      */
@@ -72,6 +100,7 @@ module.exports = {
     /**
      * @api {get} /admin/userInfo 获取用户信息
      * @apiName userInfo
+     * @apiUse APICommon
      * @apiGroup common
      *
      */
@@ -127,6 +156,7 @@ module.exports = {
     /**
      * @api {get} /admin/excelExport 导出
      * @apiName excelExport
+     * @apiUse APICommon
      * @apiGroup common
      *
      */

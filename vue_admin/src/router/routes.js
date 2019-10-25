@@ -55,6 +55,39 @@ const routes = [
     ]
   },
   {
+    path: '/article',
+    component: Layout,
+    children: [
+      {
+        path: 'articleType',
+        component: () => import('@/views/article/articleType'),
+        name: 'articleType',
+        meta: {
+          title: '文章分类管理',
+          unique_id: 'article-type'
+        }
+      },
+      {
+        path: 'articleList',
+        component: () => import('@/views/article/articleList'),
+        name: 'articleList',
+        meta: {
+          title: '文章列表',
+          unique_id: 'article-list'
+        }
+      },
+      {
+        path: 'articleList',
+        component: () => import('@/views/article/articleEditor'),
+        name: 'articleEditor',
+        meta: {
+          title: '文章编辑',
+          unique_id: 'article-editor'
+        }
+      }
+    ]
+  },
+  {
     path: '/login',
     name: 'login',
     meta: {

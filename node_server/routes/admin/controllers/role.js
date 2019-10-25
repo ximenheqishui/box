@@ -6,6 +6,7 @@ module.exports = {
      * @api {post} /admin/role 添加角色
      * @apiName addRole
      * @apiGroup role
+     * @apiUse APICommon
      *
      * @apiParam {String} name  名称
      * @apiParam {String} description  描述
@@ -30,6 +31,7 @@ module.exports = {
      * @api {delete} /admin/role 删除角色
      * @apiName DelRole
      * @apiGroup role
+     * @apiUse APICommon
      *
      * @apiParam {String} id  id组成的字符串以逗号隔开
      */
@@ -48,6 +50,7 @@ module.exports = {
      * @api {put} /admin/role 修改角色
      * @apiName updateRole
      * @apiGroup role
+     * @apiUse APICommon
      *
      * @apiParam {Number} id  id
      * @apiParam {String} name 角色名称
@@ -71,6 +74,7 @@ module.exports = {
      * @api {get} /admin/role  获取角色
      * @apiName getRole
      * @apiGroup role
+     * @apiUse APICommon
      *
      * @apiParam {Number} pn  第几页: 不存在获取所有数据
      * @apiParam {Number} pageSize 每页多少条：不存在获取所有数据
@@ -94,6 +98,7 @@ module.exports = {
      * @api {get} /admin/role/menu 获取角色的菜单权限
      * @apiName getRoleMenu
      * @apiGroup role
+     * @apiUse APICommon
      *
      * @apiParam {Number} role_id  角色id
      */
@@ -110,6 +115,7 @@ module.exports = {
      * @api {post} /admin/role/menu 修改角色的菜单权限
      * @apiName addRoleMenu
      * @apiGroup role
+     * @apiUse APICommon
      *
      * @apiParam {array} permissionIds  菜单id的数组
      * @apiParam {Number} role_id 角色id
