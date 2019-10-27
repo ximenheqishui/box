@@ -13,7 +13,7 @@
         :on-success="handleSuccess"
         :before-upload="beforeUpload"
         class="editor-slide-upload"
-        action="https://httpbin.org/post"
+        :action="uploadUrl"
         list-type="picture-card"
       >
         <el-button size="small" type="primary">
@@ -31,8 +31,6 @@
 </template>
 
 <script>
-  // import { getToken } from 'api/qiniu'
-
   export default {
     name: 'EditorSlideUpload',
     props: {
@@ -43,6 +41,7 @@
     },
     data () {
       return {
+        uploadUrl: this.api.commonURL.uploadUrl,
         dialogVisible: false,
         listObj: {},
         fileList: []
@@ -68,7 +67,7 @@
         const objKeyArr = Object.keys(this.listObj)
         for (let i = 0, len = objKeyArr.length; i < len; i++) {
           if (this.listObj[objKeyArr[i]].uid === uid) {
-            this.listObj[objKeyArr[i]].url = response.files.file
+            this.listObj[objKeyArr[i]].url = response.path
             this.listObj[objKeyArr[i]].hasSuccess = true
             return
           }
@@ -106,7 +105,7 @@
   .editor-slide-upload {
     margin-bottom: 20px;
 
-    /deep/ .el-upload--picture-card {
+    >>> .el-upload--picture-card {
       width: 100%;
     }
   }

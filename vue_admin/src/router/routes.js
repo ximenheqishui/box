@@ -77,7 +77,7 @@ const routes = [
         }
       },
       {
-        path: 'articleList',
+        path: 'articleEditor',
         component: () => import('@/views/article/articleEditor'),
         name: 'articleEditor',
         meta: {

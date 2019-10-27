@@ -29,8 +29,6 @@ router.use(async function (req, res, next) {
 
 
 
-
-
 /**
  * @description 接口过滤器
  * */
@@ -47,6 +45,11 @@ router.use(async function (req, res, next) {
     } else {
         let user = await redis.getDate(req.get('Admin-Token'))
         req.user = user
+        // 这个地方要做每个接口的权限
+        // console.log(req.method)
+        // console.log(req.originalUrl)
+        // console.log(req.baseUrl)
+        // console.log(req.path)
         if (!user) {
             res.json({code: 2, message: '未登录或登录超时请登录'})
         } else {

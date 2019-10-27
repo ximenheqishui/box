@@ -24,7 +24,7 @@
         ref="tree"
         :expand-on-click-node="false">
       <span class="custom-tree-node" slot-scope="{ node, data }">
-        <el-tooltip class="item" effect="light" :content=" '唯一标识：' +  data.unique_id + (data.path ? '；路径：' + data.path: '') " placement="right">
+        <el-tooltip transition=""   class="item" effect="light" :content=" '唯一标识：' +  data.unique_id + (data.path ? '；路径：' + data.path: '') " placement="right">
               <span style="padding: 0 6px;display: inline-block">
                 <i :class="data.type !== 2 ?  ('icon iconfont ' + data.icon) : 'icon iconfont icon-anniu' "></i>
                 {{ node.label }}
