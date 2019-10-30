@@ -1,0 +1,199 @@
+/**index.wxss**/
+.container {
+}
+
+
+.head {
+    display: flex;
+    flex-flow: nowrap row;
+    justify-content: space-between;
+    padding: 0 16px;
+}
+
+.tubiao-left {
+    display: inline-block;
+    box-sizing: border-box;
+    width: 20px;
+    height: 12px;
+    margin: 0  4px;
+    background: url('https://bus.xee.link/static/images/xcx/2.png') center no-repeat;
+    background-size: contain;
+}
+
+.tubiao-turn {
+    display: inline-block;
+    box-sizing: border-box;
+    width: 20px;
+    height: 20px;
+    margin: 0 4px;
+    vertical-align: middle;
+    background: url('https://bus.xee.link/static/images/xcx/3.png') center no-repeat;
+    background-size: contain;
+}
+
+
+.head .left {
+    width: 0;
+    flex: auto;
+    text-align: left;
+}
+
+.head .left .name {
+    color: #000;
+    font-weight: 700;
+    line-height: 24px;
+}
+
+.head .left .time {
+    color: #999;
+    font-size: 12px;
+    line-height: 24px;
+}
+
+
+.head .right {
+    flex: none;
+    width: 40px;
+    line-height: 24px;
+    font-size: 14px;
+    text-align: right;
+}
+
+.remind{
+    margin: 20px 16px 0;
+    padding: 20px;
+    border-radius: 6px;
+    box-shadow: -8px 0px 8px #eee, 0px -8px 8px #eee , 8px 0px 8px #eee, 0px 8px 8px #eee;
+}
+.remind .box {
+    color: #0680d5;
+}
+.remind .box text{
+    margin: 0 6px;
+    font-size: 30px;
+}
+.remind .message {
+    margin-top: 4px;
+    font-size: 14px;
+    color: #999;
+}
+
+.line-warp {
+    margin: 10px 0;
+    box-sizing: border-box;
+    background: #FFF;
+    -webkit-overflow-scrolling: touch;
+    white-space: nowrap;
+    height: 300px;
+    position: relative;
+}
+
+::-webkit-scrollbar {
+    width: 0;
+    height: 0;
+    color: transparent;
+}
+
+.line-warp .car {
+    width: 32px;
+    height: 32px;
+    position: absolute;
+    top: 10px;
+    left: 20px;
+    background: url('https://bus.xee.link/static/images/xcx/bashi.png') center no-repeat;
+    background-size: cover;
+}
+
+
+
+/* 一个点位的宽度  60 + 6 + 2*2 */
+.line-warp  .point {
+    position: relative;
+    display: inline-block;
+    margin-top: 40px;
+}
+
+.line-warp .point:nth-child(2) {
+    margin-left: 20px;
+}
+
+.line-warp  .point .xingzhuang {
+    display: flex;
+    justify-content: left;
+    align-items: center;
+    position: relative;
+}
+
+.line-warp  .point .xingzhuang .active {
+    position: absolute;
+    top: -7px;
+    left: -7px;
+    width: 16px;
+    height: 16px;
+    border: 4px solid #fff;
+    border-radius: 50%;
+    background: url('https://bus.xee.link/static/images/xcx/1.png') center no-repeat #1373c7;
+    background-size: 12px 12px;
+}
+
+.line-warp  .point .xingzhuang .yuan {
+    width: 6px;
+    height: 6px;
+    border: 2px solid #0fa977;
+    border-radius: 50%;
+}
+
+.line-warp  .point:last-child .xingzhuang .yuan{
+   margin-right: 20px;
+}
+
+
+.line-warp  .point .xingzhuang .xian {
+    width: 60px;
+    height: 4px;
+    background-color: #0fa977;
+}
+
+.line-warp  .point .message {
+    position: absolute;
+    top: 20px;
+    left: -5px;
+    text-align: center;
+}
+
+.line-warp  .point .message2 {
+    left: -15px;
+}
+
+.line-warp  .point .message .active {
+    position: absolute;
+    left: 24px;
+    top: 22px;
+    border: 1px solid #036efa;
+    color: #036efa;
+    writing-mode: vertical-lr;
+    font-size: 12px;
+    padding: 4px 2px;
+    border-radius: 4px;
+}
+
+
+.line-warp  .point .message .num {
+    color: #999;
+    font-size: 14px;
+}
+
+.line-warp  .point .message2 .num {
+    color: #036efa;
+}
+
+.line-warp  .point .message .title {
+    width: 20px;
+    text-align: center;
+    white-space: normal;
+}
+
+.line-warp  .point .message2 .title {
+    color: #036efa;
+    font-weight: 700;
+}

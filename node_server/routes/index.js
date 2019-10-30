@@ -8,7 +8,7 @@ router.get('/', function (req, res, next) {
 
 router.use('/common', require('./common/routes'))
 router.use('/admin', require('./admin/routes'))
-// router.use('/weixin-xcx', require('./weixin-xcx/routes'))
+router.use('/weixin-xcx', require('./weixin-xcx/routes'))
 // router.use('/weixin-gzh', require('./weixin-gzh/routes'))
 
 

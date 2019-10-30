@@ -1,0 +1,47 @@
+<!--index.wxml-->
+<view class="container">
+  <view class="head">
+      <view class="left">
+        <view class="name"> {{startName}}<text class="tubiao-left"></text>{{endName}}</view>
+        <view class="time">首 {{startTime}} 末 {{endTime}}</view>
+      </view>
+<!--      <view class="right">-->
+<!--        <view class="tubiao-turn"></view>-->
+<!--        <view>换向</view>-->
+<!--      </view>-->
+  </view>
+
+  <view class="remind">
+    <view class="box">
+        <view wx:if="{{tag}}">还有<text>{{ jizhan }}</text>站、<text>{{jimi}}</text>、<text>{{jifenzhong}}</text></view>
+        <view wx:if="{{!tag}}">还未发车，大约30分钟/班</view>
+    </view>
+    <view class="message">当前时间为预估数据，仅供参考</view>
+  </view>
+
+  <scroll-view scroll-with-animation="true" scroll-x="true"  class="line-warp" scroll-left="{{left}}">
+    <view class="car" style="left:{{carLeft}}px"></view>
+    <view class="point" wx:for="{{points}}"  wx:for-index="index" wx:for-item="item"  wx:key="{{item.id}}" >
+      <view class="xingzhuang">
+        <view class="yuan"></view>
+        <view class="xian" wx:if="{{ index != (points.length-1) }}"></view>
+        <view class="active" wx:if="{{ index == zuijin }}"></view>
+      </view>
+      <view class="message message2" wx:if="{{ index == zuijin }}">
+        <view class="title">
+            <text class="num">{{index+1}}</text>
+            <text class="name">{{item.title}}</text>
+        </view>
+        <view class="active" >
+          离我最近
+        </view>
+      </view>
+      <view class="message" wx:if="{{ index != zuijin }}">
+        <view class="title">
+          <text class="num">{{index+1}}</text>
+          <text class="name">{{item.title}}</text>
+        </view>
+      </view>
+    </view>
+  </scroll-view>
+</view>
