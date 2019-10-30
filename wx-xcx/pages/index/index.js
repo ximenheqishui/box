@@ -9,6 +9,15 @@ Page({
   data: {
     lines: [],
     point: [],
+    background: [
+        'https://bus.xee.link/static/images/xcx/g1.png',
+        'https://bus.xee.link/static/images/xcx/g2.png',
+    ],
+    indicatorDots: true,
+    vertical: false,
+    autoplay: false,
+    interval: 2000,
+    duration: 500
   },
   onShow: function () {
     let _this = this
@@ -24,7 +33,7 @@ Page({
     let _this = this
     // 实例化API核心类
     qqmapsdk = new QQMapWX({
-      key: 'DGEBZ-U34WO-CTDWB-SVHJM-76CT6-G5FKJ'
+      key: 'A65BZ-DDJ6O-DCOWL-SPETB-VDH7H-3NBJT'
     })
     // 获取公交线路
     wx.request({

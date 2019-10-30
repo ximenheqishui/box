@@ -69,8 +69,8 @@
     color: #0680d5;
 }
 .remind .box text{
-    margin: 0 6px;
-    font-size: 30px;
+    /*margin: 0 6px;*/
+    /*font-size: 30px;*/
 }
 .remind .message {
     margin-top: 4px;

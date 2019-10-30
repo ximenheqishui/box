@@ -30,12 +30,9 @@ Page({
   },
   onLoad: function (options) {
     let _this = this
-    wx.setNavigationBarTitle({
-      title: '真情bus'
-    })
     // 实例化API核心类
     qqmapsdk = new QQMapWX({
-      key: 'DGEBZ-U34WO-CTDWB-SVHJM-76CT6-G5FKJ'
+      key: 'A65BZ-DDJ6O-DCOWL-SPETB-VDH7H-3NBJT'
     });
     // 获取公交线路
     wx.request({
@@ -47,6 +44,9 @@ Page({
       },
       success (res) {
         let data = res.data.data
+        wx.setNavigationBarTitle({
+          title: data.title
+        })
         _this.setData({
           points: data.station,
           startName: data.station[0].title,

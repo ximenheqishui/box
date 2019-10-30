@@ -1,5 +1,13 @@
 <!--index.wxml-->
 <view class="container">
+  <swiper indicator-dots="{{indicatorDots}}"
+          autoplay="{{autoplay}}" interval="{{interval}}" duration="{{duration}}">
+    <block wx:for="{{background}}" wx:key="*this">
+      <swiper-item>
+        <image style="width: 100%;" src="{{item}}"></image>
+      </swiper-item>
+    </block>
+  </swiper>
   <view class="head">免费购物班车路线</view>
   <view class="yl-lines">
     <view class="yl-line" wx:for="{{lines}}"  wx:for-index="index" wx:for-item="item"  wx:key="{{item.id}}"  mark:id="{{item.id}}"   bindtap="goPage" >
