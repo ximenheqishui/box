@@ -22,16 +22,7 @@ Page({
     jifenzhong: '0分钟',
   },
   onShow: function () {
-    let _this = this
-    if (_this.data.points && _this.data.points.length) {
-      _this.getCarInfo()
-      _this.setData({
-        interNum:setInterval(function(){
-          // 获取公交线路
-          _this.getCarInfo()
-        },10000)
-      })
-    }
+    this.getDistance(this.data.points)
   },
   onHide: function () {
     clearInterval(this.data.interNum)
@@ -74,6 +65,55 @@ Page({
         console.log(error)
       }
     })
+  },
+
+  // 获取最近点的站牌
+  getDistance(data){
+    var _this = this;
+    // 判断是否有数据  是否是第一次  第一次就不执行   等待接口请求到数据再执行
+    if (data && data.length) {
+      //调用距离计算接口
+      qqmapsdk.calculateDistance({
+        mode: 'walking',//可选值：'driving'（驾车）、'walking'（步行），不填默认：'walking',可不填
+        //from参数不填默认当前地址
+        //获取表单提交的经纬度并设置from和to参数（示例为string格式）
+        from: '',  // 若起点有数据则采用起点坐标，若为空默认当前地址
+        to: data,  // 终点坐标
+        success: function(res) {//成功后的回调
+          console.log(res);
+          var res = res.result;
+          var dis = [];
+          for (var i = 0; i < res.elements.length; i++) {
+            dis.push(res.elements[i].distance); //将返回数据存入dis数组，
+          }
+          function sortNumber(a,b) {
+            return a - b
+          }
+          let distance =  dis
+          let distance2 = JSON.parse(JSON.stringify(distance))
+          distance.sort(sortNumber)
+          let index = distance2.indexOf(distance[0])  // 从所有的点位中计算出  最近的点位并返回数组中的位置
+          let moveLeft = (index > 3 ?  index - 2 : 0) * _this.data.pointWidth  // 计算整体向右移动的距离
+          _this.setData({
+                zuijin: index,
+                left: moveLeft,
+          })
+          _this.getCarInfo()
+          _this.setData({
+            interNum: setInterval(function(){
+              // 获取公交线路
+              _this.getCarInfo()
+            },10000)
+          })
+        },
+        fail: function(error) {
+          console.error(error);
+        },
+        complete: function(res) {
+          // console.log(res);
+        }
+      });
+    }
   },
 
   // 获取车的位置并计算时候发车和距离现在最近点的时间距离，用时
@@ -123,54 +163,6 @@ Page({
         console.log(error)
       }
     })
-  },
-
-  // 获取最近点的站牌  先不刷新这个接口了
-  getDistance(data){
-    var _this = this;
-    if (data && data.length) {
-      //调用距离计算接口
-      qqmapsdk.calculateDistance({
-        mode: 'walking',//可选值：'driving'（驾车）、'walking'（步行），不填默认：'walking',可不填
-        //from参数不填默认当前地址
-        //获取表单提交的经纬度并设置from和to参数（示例为string格式）
-        from: '',  // 若起点有数据则采用起点坐标，若为空默认当前地址
-        to: data,  // 终点坐标
-        success: function(res) {//成功后的回调
-          console.log(res);
-          var res = res.result;
-          var dis = [];
-          for (var i = 0; i < res.elements.length; i++) {
-            dis.push(res.elements[i].distance); //将返回数据存入dis数组，
-          }
-          function sortNumber(a,b) {
-            return a - b
-          }
-          let distance =  dis
-          let distance2 = JSON.parse(JSON.stringify(distance))
-          distance.sort(sortNumber)
-          let index = distance2.indexOf(distance[0])  // 从所有的点位中计算出  最近的点位并返回数组中的位置
-          let moveLeft = (index > 3 ?  index - 2 : 0) * _this.data.pointWidth  // 计算整体向右移动的距离
-          _this.setData({
-                zuijin: index,
-                left: moveLeft,
-          })
-          _this.getCarInfo()
-          _this.setData({
-            interNum: setInterval(function(){
-              // 获取公交线路
-              _this.getCarInfo()
-            },10000)
-          })
-        },
-        fail: function(error) {
-          console.error(error);
-        },
-        complete: function(res) {
-          // console.log(res);
-        }
-      });
-    }
   },
 
   // 计算车到最近点的位置
