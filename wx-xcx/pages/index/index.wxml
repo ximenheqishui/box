@@ -1,29 +1,36 @@
 <!--index.wxml-->
 <view class="container">
-  <swiper indicator-dots="{{indicatorDots}}"
-          autoplay="{{autoplay}}" interval="{{interval}}" duration="{{duration}}">
-    <block wx:for="{{background}}" wx:key="*this">
-      <swiper-item>
-        <image style="width: 100%;" src="{{item}}"></image>
-      </swiper-item>
-    </block>
-  </swiper>
-  <view class="head">免费购物班车路线</view>
-  <view class="yl-lines">
-    <view class="yl-line" wx:for="{{lines}}"  wx:for-index="index" wx:for-item="item"  wx:key="{{item.id}}"  mark:id="{{item.id}}"   bindtap="goPage" >
-      <view class="title">{{item.title}}</view>
-      <view class="message">首 {{item.start_time}} 末 {{item.end_time}}</view>
+    <swiper indicator-dots="{{indicatorDots}}"
+            autoplay="{{autoplay}}" interval="{{interval}}" duration="{{duration}}">
+        <block wx:for="{{background}}" wx:key="*this">
+            <swiper-item>
+                <image style="width: 100%;" src="{{item}}"></image>
+            </swiper-item>
+        </block>
+    </swiper>
+    <view class="head">免费购物班车路线</view>
+    <view class="yl-lines">
+        <view class="yl-line" wx:for="{{lines}}" wx:for-index="index" wx:for-item="item" wx:key="{{item.id}}"
+              mark:id="{{item.id}}" bindtap="goPage">
+            <view class="title">{{item.title}}</view>
+            <view class="message">首 {{item.start_time}} 末 {{item.end_time}}</view>
+        </view>
     </view>
-  </view>
-  <view class="head">附近站点</view>
-  <view class="yl-points">
-    <view class="yl-point" wx:for="{{point}}"  wx:for-index="index" wx:for-item="item"  wx:key="{{item.point.id}}"  mark:id="{{item.id}}"   bindtap="goPage" >
-      <view class="title">
-        <text class="paizi"></text>
-        <text>{{item.point.title}}</text>
-        <text class="distance">{{item.point.distance}}</text>
-      </view>
-      <view class="message"> {{item.title}} </view>
+    <view class="head">附近站点</view>
+
+    <view class="yl-points" wx:if="{{ point.length == 0 }}">
+        <view class="noPoint">您附近5km之内没有站点</view>
     </view>
-  </view>
+
+    <view class="yl-points" wx:if=" {{  point.length > 0  }} ">
+        <view class="yl-point" wx:for="{{point}}" wx:for-index="index" wx:for-item="item" wx:key="{{item.point.id}}"
+              mark:id="{{item.id}}" bindtap="goPage">
+            <view class="title">
+                <text class="paizi"></text>
+                <text>{{item.point.title}}</text>
+                <text class="distance">{{item.point.distance}}</text>
+            </view>
+            <view class="message"> {{item.title}}</view>
+        </view>
+    </view>
 </view>

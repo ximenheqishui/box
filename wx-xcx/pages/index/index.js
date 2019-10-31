@@ -1,5 +1,4 @@
 //index.js
-// 引入SDK核心类
 var QQMapWX = require('../../lib/qqmap/qqmap-wx-jssdk.js');
 var qqmapsdk;
 //获取应用实例
@@ -21,7 +20,7 @@ Page({
   },
   onShow: function () {
     let _this = this
-    _this.getDistance(_this.lines)
+    _this.getDistance(_this.data.lines)
   },
     //事件处理函数
   goPage: function(e) {
@@ -36,6 +35,9 @@ Page({
       key: 'A65BZ-DDJ6O-DCOWL-SPETB-VDH7H-3NBJT'
     })
     // 获取公交线路
+    wx.showLoading({
+      title: '加载中',
+    })
     wx.request({
       method: 'get',
       url: app.globalData.baseUrl + '/bus/getLineList',
@@ -47,21 +49,21 @@ Page({
           lines: data
         })
         _this.getDistance(data)
+        wx.hideLoading()
       },
       fail (error) {
+        wx.hideLoading()
         console.log(error)
       }
     })
   },
   getDistance(data){
     var _this = this;
-
     let arr = []
     if (data && data.length) {
       data.forEach(function(item){
         arr = arr.concat(item.station)
       })
-
       //调用距离计算接口
       qqmapsdk.calculateDistance({
         mode: 'walking',//可选值：'driving'（驾车）、'walking'（步行），不填默认：'walking',可不填
@@ -87,7 +89,7 @@ Page({
             let index = distance2.indexOf(distance[0])
             item.station[index].distance = distance[0]
             // 小于10千米的才显示出来
-            if (distance[0] < 35000) {
+            if (distance[0] < 5000) {
               item.station[index].distance = item.station[index].distance > 1000 ?   (item.station[index].distance/1000).toFixed(2) + 'km' : item.station[index].distance + 'm',
               point.push({
                 title: item.title,
@@ -105,11 +107,10 @@ Page({
           console.error(error);
         },
         complete: function(res) {
-          console.log(res);
+          // 请求完成
+          // console.log(res);
         }
       });
     }
-
-
   }
 })

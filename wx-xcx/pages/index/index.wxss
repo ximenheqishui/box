@@ -56,6 +56,12 @@
   border-radius: 2px;
   margin-right: 6px;
 }
+.noPoint{
+  text-align: center;
+  margin-top: 40px;
+  font-size: 14px;
+  color: #aaa;
+}
 
 .yl-point .message{
   color: #999;

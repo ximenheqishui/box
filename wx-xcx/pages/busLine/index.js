@@ -6,9 +6,10 @@ const app = getApp()
 
 Page({
   data: {
+    interNum: 0, //  定时器
     pointWidth: 70, // 每一个点位的宽度 这个是css设置的
     tag: true, // 是否发车
-    zuijin: 0, // 最近点位的数组坐标
+    zuijin: -1, // 最近点位的数组坐标
     left: 0, // 整个滚动区域左边滚动的距离
     carLeft: 0, // 校车定位
     points: [],  // 这条线上所有的点位
@@ -21,12 +22,22 @@ Page({
     jifenzhong: '0分钟',
   },
   onShow: function () {
+    let _this = this
+    if (_this.data.points && _this.data.points.length) {
+      _this.getCarInfo()
+      _this.setData({
+        interNum:setInterval(function(){
+          // 获取公交线路
+          _this.getCarInfo()
+        },10000)
+      })
+    }
   },
-    //事件处理函数
-  goPage: function() {
-    wx.navigateTo({
-      url: '../busLine/busLine'
-    })
+  onHide: function () {
+    clearInterval(this.data.interNum)
+  },
+  onUnload: function () {
+    clearInterval(this.data.interNum)
   },
   onLoad: function (options) {
     let _this = this
@@ -64,6 +75,7 @@ Page({
       }
     })
   },
+
   // 获取车的位置并计算时候发车和距离现在最近点的时间距离，用时
   getCarInfo () {
     let _this = this
@@ -112,6 +124,8 @@ Page({
       }
     })
   },
+
+  // 获取最近点的站牌  先不刷新这个接口了
   getDistance(data){
     var _this = this;
     if (data && data.length) {
@@ -142,21 +156,21 @@ Page({
                 left: moveLeft,
           })
           _this.getCarInfo()
-          setInterval(function(){
-            // 获取公交线路
-            _this.getCarInfo()
-          },10000)
+          _this.setData({
+            interNum: setInterval(function(){
+              // 获取公交线路
+              _this.getCarInfo()
+            },10000)
+          })
         },
         fail: function(error) {
           console.error(error);
         },
         complete: function(res) {
-          console.log(res);
+          // console.log(res);
         }
       });
     }
-
-
   },
 
   // 计算车到最近点的位置
@@ -188,7 +202,7 @@ Page({
         console.error(error);
       },
       complete: function (res) {
-        console.log(res);
+        // console.log(res);
       }
     });
   }
