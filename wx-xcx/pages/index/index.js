@@ -18,6 +18,12 @@ Page({
     interval: 2000,
     duration: 500
   },
+  onShareAppMessage: function (res) {
+    return {
+      title: '永旺梦乐城',
+      path: `/pages/index/index`
+    }
+  },
   onShow: function () {
     let _this = this
     _this.getDistance(_this.data.lines)

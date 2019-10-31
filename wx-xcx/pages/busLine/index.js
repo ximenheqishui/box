@@ -6,6 +6,8 @@ const app = getApp()
 
 Page({
   data: {
+    // 分享时的参数
+    id: '',
     interNum: 0, //  定时器
     pointWidth: 70, // 每一个点位的宽度 这个是css设置的
     tag: true, // 是否发车
@@ -21,6 +23,13 @@ Page({
     jimi: '0m',
     jifenzhong: '0分钟',
   },
+
+  onShareAppMessage: function (res) {
+    return {
+      title: '永旺梦乐城',
+      path: `/pages/busLine/index?id=${this.data.id}`
+    }
+  },
   onShow: function () {
     this.getDistance(this.data.points)
   },
@@ -32,6 +41,9 @@ Page({
   },
   onLoad: function (options) {
     let _this = this
+    _this.setData({
+      id: options.id
+    })
     // 实例化API核心类
     qqmapsdk = new QQMapWX({
       key: 'A65BZ-DDJ6O-DCOWL-SPETB-VDH7H-3NBJT'
