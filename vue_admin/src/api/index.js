@@ -219,5 +219,37 @@ export default {
       method: 'DELETE',
       data: data
     })
+  },
+
+  /**
+   * @description 文章
+   * */
+  getArticle: function (data) {
+    return axios({
+      url: '/article',
+      method: 'get',
+      params: data
+    })
+  },
+  addArticle: function (data) {
+    return axios({
+      url: '/article',
+      method: 'post',
+      data
+    })
+  },
+  updateArticle: function (data) {
+    return axios({
+      url: '/article',
+      method: 'PUT',
+      data: data
+    })
+  },
+  delArticle: function (data) {
+    return axios({
+      url: '/article',
+      method: 'DELETE',
+      data: { id: data.id + '' }
+    })
   }
 }

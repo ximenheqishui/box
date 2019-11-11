@@ -164,7 +164,7 @@
         window.tinymce.get(this.tinymceId).setContent(value)
       },
       getContent () {
-        window.tinymce.get(this.tinymceId).getContent()
+        return window.tinymce.get(this.tinymceId).getContent()
       },
       imageSuccessCBK (arr) {
         const _this = this

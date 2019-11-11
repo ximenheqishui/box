@@ -85,36 +85,38 @@
           label="序号">
         </el-table-column>
         <el-table-column
-          prop="user_name"
+          prop="title"
           width="120"
-          :sortable="true"
-          label="用户名">
+          label="文章标题">
         </el-table-column>
         <el-table-column
-          prop="sex_name"
-          width="80"
-          label="性别">
-        </el-table-column>
-        <el-table-column
-          width="80"
-          label="头像">
+          width="200"
+          label="封面">
           <template slot-scope="scope">
-            <el-avatar size="large" :src="scope.row.avatar"></el-avatar>
+            <el-image :src="scope.row.cover">
+              <div slot="placeholder" class="image-slot">
+                加载中<span class="dot">...</span>
+              </div>
+            </el-image>
           </template>
         </el-table-column>
         <el-table-column
-          prop="dept_name"
-          label="所属部门">
+          width="80"
+          prop="type_name"
+          label="文章类别">
         </el-table-column>
         <el-table-column
-          prop="mobile"
-          :sortable="true"
-          label="手机">
+          prop="keyword"
+          label="关键词">
         </el-table-column>
         <el-table-column
-          prop="email"
-          :sortable="true"
-          label="邮箱">
+          prop="description"
+          label="简介">
+        </el-table-column>
+        <el-table-column
+          width="80"
+          prop="read_num"
+          label="阅读量">
         </el-table-column>
         <el-table-column
           :sortable="true"
@@ -128,7 +130,7 @@
           fixed="right"
           label="操作">
           <template slot-scope="scope">
-            <el-button @click.native.prevent="showDialog(scope)" type="text" size="small">
+            <el-button @click.native.prevent="changeData(scope)" type="text" size="small">
               修改
             </el-button>
             <el-button @click.native.prevent="deleteRow(scope, resultData.list)" type="text" size="small">
@@ -152,16 +154,6 @@
 </template>
 
 <script>
-  let defaultForm = {
-    id: '',
-    title: '',
-    keyword: '',
-    type_id: '',
-    type_path: [],
-    role_ids: [],
-    status: 0,
-    avatar: ''
-  }
   export default {
     name: 'articleList',
     components: {
@@ -274,7 +266,7 @@
           postdata.page_size = this.searchData.page_size
           this.pageLoading = true
         }
-        this.api.getUser(postdata).then(res => {
+        this.api.getArticle(postdata).then(res => {
           _this.pageLoading = false
           _this.searchLoading = false
           if (res.code === 0) {
@@ -352,7 +344,7 @@
       // 删除一条
       deleteRow (scope, rows) {
         let _this = this
-        _this.api.delUser({ id: scope.row.id }).then(res => {
+        _this.api.delArticle({ id: scope.row.id }).then(res => {
           if (res.code === 0) {
             let index = rows.indexOf(scope.row)
             rows.splice(index, 1)
@@ -374,7 +366,7 @@
         this.multipleSelection.forEach(function (item) {
           arr.push(item.id)
         })
-        this.api.delUser({ id: arr.join(',') }).then(res => {
+        this.api.delArticle({ id: arr.join(',') }).then(res => {
           if (res.code === 0) {
             this.getData(0)
             this.$message({
@@ -384,6 +376,13 @@
           }
         }).catch(error => { // 状态码非2xx时
           console.log(error)
+        })
+      },
+      // 修改
+      changeData (scope) {
+        this.$router.push({
+          path: '/article/articleEditor',
+          query: { id: scope.row.id }
         })
       }
     },
@@ -397,30 +396,4 @@
 </script>
 
 <style lang="scss" type="text/scss">
-  .user{
-    .avatar-uploader .el-upload {
-      border: 1px dashed #d9d9d9;
-      border-radius: 6px;
-      cursor: pointer;
-      position: relative;
-      overflow: hidden;
-    }
-    .avatar-uploader .el-upload:hover {
-      border-color: #409EFF;
-    }
-    .avatar-uploader-icon {
-      font-size: 28px;
-      color: #8c939d;
-      width: 150px;
-      height: 150px;
-      line-height: 150px;
-      text-align: center;
-    }
-    .avatar {
-      width: 140px;
-      height: 140px;
-      display: block;
-      object-fit: contain;
-    }
-  }
 </style>

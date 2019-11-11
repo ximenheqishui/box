@@ -8,6 +8,7 @@ const roleRouter = require('./role')
 const departmentRouter = require('./department')
 const userRouter = require('./user')
 const articleTypeRouter = require('./articleType')
+const articleRouter = require('./article')
 
 /**
  * @description 模拟请求延迟
@@ -64,6 +65,7 @@ router.use('/role', roleRouter)
 router.use('/department', departmentRouter)
 router.use('/user', userRouter)
 router.use('/articleType', articleTypeRouter)
+router.use('/article', articleRouter)
 
 
 // error handler

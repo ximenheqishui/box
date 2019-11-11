@@ -1,5 +1,5 @@
 <template>
-  <div class="user">
+  <div class="article">
     <el-form size="small" :model="form"  :rules="rules" ref="ruleForm" label-width="70px">
       <el-form-item label="标题" prop="title"  style="max-width: 600px">
         <el-input placeholder="请输入标题"  v-model="form.title"></el-input>
@@ -20,14 +20,14 @@
       <el-form-item label="描述" prop="description" style="max-width: 600px">
         <el-input placeholder="请输入描述" :rows="4" type="textarea" v-model="form.description"></el-input>
       </el-form-item>
-      <el-form-item label="封面" prop="avatar">
+      <el-form-item label="封面" prop="cover">
         <el-upload
           class="avatar-uploader"
           :action="uploadUrl"
           :show-file-list="false"
           :on-success="handleAvatarSuccess"
           :before-upload="beforeAvatarUpload">
-          <img v-if="form.avatar" :src="form.avatar" class="avatar">
+          <img v-if="form.cover" :src="form.cover" class="avatar">
           <i v-else class="el-icon-plus avatar-uploader-icon"></i>
         </el-upload>
       </el-form-item>
@@ -61,7 +61,7 @@
     description: '',
     content: '',
     status: 0,
-    avatar: ''
+    cover: ''
   }
   export default {
     name: 'articleEditor',
@@ -101,7 +101,7 @@
       handleAvatarSuccess (res, file) {
         // 这里加一个后台返回连接的
         // this.dialog.form.avatar = URL.createObjectURL(file.raw)
-        this.form.avatar = res.path
+        this.form.cover = res.path
       },
       // 图片上传之前的校验
       beforeAvatarUpload (file) {
@@ -198,7 +198,6 @@
       // 提交表单
       submitForm (e) {
         let _this = this
-        console.log(this.$refs.tinymce.getContent())
         this.$refs.ruleForm.validate((valid) => {
           if (valid) {
             if (!_this.disableSubmit) {
@@ -206,15 +205,18 @@
             } else {
               return false
             }
+            _this.form.content = _this.$refs.tinymce.getContent()
             let form = JSON.parse(JSON.stringify(_this.form))
             form.type_id = form.type_path.length ? form.type_path[ form.type_path.length - 1 ] : ''
             form.type_path = JSON.stringify(form.type_path)
             if (_this.isAdd) {
-              _this.api.addUser(form).then(res => {
+              _this.api.addArticle(form).then(res => {
                 _this.disableSubmit = false
                 if (res.code === 0) {
-                  _this.tag = false
-                  _this.getData(1)
+                  _this.$router.replace({
+                    path: '/article/articleList'
+                  })
+                  // _this.getData(1)
                 } else {
                   _this.$message({
                     message: res.message,
@@ -229,11 +231,10 @@
                 })
               })
             } else {
-              _this.api.updateUser(form).then(res => {
+              _this.api.updateArticle(form).then(res => {
                 _this.disableSubmit = false
                 if (res.code === 0) {
-                  _this.tag = false
-                  _this.getData(0)
+                  // _this.getData(0)
                 } else {
                   _this.$message({
                     message: res.message,
@@ -269,7 +270,7 @@
 </script>
 
 <style lang="scss" type="text/scss">
-  .user{
+  .article{
     .avatar-uploader .el-upload {
       border: 1px dashed #d9d9d9;
       border-radius: 6px;

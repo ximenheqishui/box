@@ -10,7 +10,7 @@
         </div>
         <el-menu
                 :router="true"
-                :default-active="$route.fullPath"
+                :default-active="$route.path"
                 :collapse="$store.getters.isCollapse"
                 :collapse-transition="false"
                 @open="handleOpen"
