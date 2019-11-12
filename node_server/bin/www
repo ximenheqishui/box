@@ -6,7 +6,7 @@
 
 const config = require('../config')
 const app = require('../app');
-const socketApp = require('../socket');
+const socketApp = require('../socketApp');
 
 const socketServer = require('socket.io');
 const debug = require('debug')('node-server:server');
