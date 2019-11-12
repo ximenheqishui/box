@@ -6,10 +6,14 @@
 
 const config = require('../config')
 const app = require('../app');
+const socketApp = require('../socket');
 
+const socketServer = require('socket.io');
 const debug = require('debug')('node-server:server');
 const http = require('http');
 // let opn = require('opn')
+
+
 
 /**
  * Get port from environment and store in Express.
@@ -38,6 +42,14 @@ app.set('port', port);
  */
 
 const server = http.createServer(app);
+
+
+
+const io = socketServer(server)
+
+socketApp(io)
+
+
 
 /**
  * Listen on provided port, on all network interfaces.

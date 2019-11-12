@@ -5,6 +5,9 @@ var router = express.Router();
 router.get('/', function (req, res, next) {
     res.render('index', {title: 'admin'})
 });
+router.get('/chat', function (req, res, next) {
+    res.render('chat', {nsp: req.query.nsp,room: req.query.room})
+});
 
 router.use('/common', require('./common/routes'))
 router.use('/admin', require('./admin/routes'))
