@@ -135,7 +135,9 @@ Page({
       method: 'get',
       url: app.globalData.baseUrl + '/bus/getList',
       dataType: 'json',
-      data: {},
+      data: {
+        id: _this.data.id
+      },
       success (res) {
         let data = res.data.data[0]
 
