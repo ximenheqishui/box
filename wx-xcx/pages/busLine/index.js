@@ -136,42 +136,46 @@ Page({
       url: app.globalData.baseUrl + '/bus/getList',
       dataType: 'json',
       data: {
-        id: _this.data.id
+        line_id: _this.data.id
       },
       success (res) {
-        let data = res.data.data[0]
+        if (res.data.data && res.data.data.length) {
+          let data = res.data.data[0]
+          // 设置车的位置
+          let carLeft = 20 + (data.location - 1) * _this.data.pointWidth - 16 + 5  // 小车定位
+          _this.setData({
+            carLeft: carLeft
+          })
 
-        // 设置车的位置
-        let carLeft = 20 + (data.location - 1) * _this.data.pointWidth - 16 + 5  // 小车定位
-        _this.setData({
-          carLeft: carLeft
-        })
-
-        // 判断是否发车
-        if (data.location == 1 || data.location > (_this.data.zuijin + 1)) {
+          // 判断是否发车
+          if (data.location == 1 || data.location > (_this.data.zuijin + 1)) {
+            _this.setData({
+              tag: false
+            })
+          } else {
+            _this.setData({
+              tag: true,
+              jizhan: Math.ceil(_this.data.zuijin + 1 - data.location)
+            })
+            let carData = {
+              from: {
+                latitude: data.latitude,
+                longitude: data.longitude
+              }, // 车当前的经纬度
+              to:{
+                latitude: _this.data.points[_this.data.zuijin].latitude,
+                longitude: _this.data.points[_this.data.zuijin].longitude
+              }, // 最近点的经纬度
+              // waypoints: '39.951004,116.571980;'  // 经过哪些点
+              waypoints: ''
+            }
+            _this.getCarDistance(carData)
+          }
+        } else {
           _this.setData({
             tag: false
           })
-        } else {
-          _this.setData({
-            tag: true,
-            jizhan: Math.ceil(_this.data.zuijin + 1 - data.location)
-          })
-          let carData = {
-            from: {
-              latitude: data.latitude,
-              longitude: data.longitude
-            }, // 车当前的经纬度
-            to:{
-              latitude: _this.data.points[_this.data.zuijin].latitude,
-              longitude: _this.data.points[_this.data.zuijin].longitude
-            }, // 最近点的经纬度
-            // waypoints: '39.951004,116.571980;'  // 经过哪些点
-            waypoints: ''
-          }
-          _this.getCarDistance(carData)
         }
-
       },
       fail (error) {
         console.log(error)

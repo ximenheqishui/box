@@ -191,6 +191,7 @@
     width: 20px;
     text-align: center;
     white-space: normal;
+    word-break:break-all;
 }
 
 .line-warp  .point .message2 .title {
