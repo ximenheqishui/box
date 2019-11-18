@@ -1,7 +1,9 @@
 {
   "pages": [
+    "pages/stationLine/index",
     "pages/index/index",
-    "pages/busLine/index"
+    "pages/busLine/index",
+    "pages/station/index"
   ],
   "window": {
     "backgroundTextStyle": "light",

@@ -34,6 +34,11 @@ Page({
       url: `../busLine/index?id=${e.mark.id}`
     })
   },
+  goPage2: function(e) {
+    wx.navigateTo({
+      url: `../station/index`
+    })
+  },
   onLoad: function () {
     let _this = this
     // 实例化API核心类

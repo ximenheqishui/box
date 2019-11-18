@@ -183,9 +183,6 @@
     font-size: 14px;
 }
 
-.line-warp  .point .message2 .num {
-    color: #036efa;
-}
 
 .line-warp  .point .message .title {
     width: 20px;
@@ -194,7 +191,11 @@
     word-break:break-all;
 }
 
-.line-warp  .point .message2 .title {
+
+.line-warp  .point  .title.active2{
     color: #036efa;
     font-weight: 700;
+}
+.line-warp  .point  .title.active2 .num {
+    color: #036efa;
 }

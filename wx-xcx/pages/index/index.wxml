@@ -8,7 +8,15 @@
             </swiper-item>
         </block>
     </swiper>
-    <view class="head">免费购物班车路线</view>
+    <view class="head">
+        免费购物班车路线
+        <view class="point" bindtap="goPage2">
+            <view>
+                <image style="width: 20px; height: 20px;" src="/image/point2.png"></image>
+            </view>
+            <text>地图站点</text>
+        </view>
+    </view>
     <view class="yl-lines">
         <view class="yl-line" wx:for="{{lines}}" wx:for-index="index" wx:for-item="item" wx:key="{{item.id}}"
               mark:id="{{item.id}}" bindtap="goPage">
