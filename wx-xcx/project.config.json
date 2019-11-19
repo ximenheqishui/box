@@ -6,7 +6,8 @@
 	"setting": {
 		"urlCheck": true,
 		"es6": true,
-		"postcss": false,
+		"enhance": false,
+		"postcss": true,
 		"minified": false,
 		"newFeature": true,
 		"coverView": true,
@@ -22,7 +23,7 @@
 		}
 	},
 	"compileType": "miniprogram",
-	"libVersion": "2.9.0",
+	"libVersion": "2.9.3",
 	"appid": "wx69e0f64f7e31bbb1",
 	"projectname": "wx-xcx",
 	"debugOptions": {

@@ -31,12 +31,12 @@ Page({
     //事件处理函数
   goPage: function(e) {
     wx.navigateTo({
-      url: `../busLine/index?id=${e.mark.id}`
+      url: `/pages/busLine/index?id=${e.mark.id}`
     })
   },
   goPage2: function(e) {
     wx.navigateTo({
-      url: `../station/index`
+      url: `/pages/station/index`
     })
   },
   onLoad: function () {

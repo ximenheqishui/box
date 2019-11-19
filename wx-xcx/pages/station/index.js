@@ -67,7 +67,7 @@ Page({
     markertap(e) {
         var data = this.data.markers[e.markerId - 1]
         wx.navigateTo({
-            url: `../busLine/index?id=${data.parentId}&current=${data.id}`
+            url: `/pages/busLine/index?id=${data.parentId}&current=${data.id}`
         })
     }
 })

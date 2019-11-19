@@ -242,7 +242,7 @@ Page({
             pointIndex =  this.data.current
         }
         wx.navigateTo({
-            url: `../stationLine/index?id=${this.data.id}&index=${pointIndex}`
+            url: `/pages/stationLine/index?id=${this.data.id}&index=${pointIndex}`
         })
     }
 })
