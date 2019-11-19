@@ -60,6 +60,7 @@
 }
 
 .remind{
+    position: relative;
     margin: 20px 16px 0;
     padding: 20px;
     border-radius: 6px;
@@ -76,6 +77,14 @@
     margin-top: 4px;
     font-size: 14px;
     color: #999;
+}
+
+.remind .right {
+    position: absolute;
+    right:10px;
+    top:30px;
+    color: #036efa;
+    font-size: 12px;
 }
 
 .line-warp {

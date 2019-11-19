@@ -15,6 +15,7 @@ Page({
         latitude: 0,
         longitude: 0,
         height: 0,
+        points: [],
         markers: [],
         polyline: [
             {
@@ -24,6 +25,21 @@ Page({
             }
         ]
     },
+
+    onShow: function () {
+        let _this = this
+        timer = setInterval(function () {
+            _this.getCarInfo()
+        }, 10000)
+    },
+    onHide: function () {
+        clearInterval(timer)
+    },
+    onUnload: function () {
+        clearInterval(timer)
+    },
+
+
     onLoad: function (options) {
         let _this = this
         // 实例化API核心类
@@ -43,7 +59,7 @@ Page({
             url: app.globalData.baseUrl + '/bus/getLineInfo',
             dataType: 'json',
             data: {
-                id: 2
+                id: _this.data.id
             },
             success(res) {
                 let data = res.data.data
@@ -71,7 +87,6 @@ Page({
                 }
 
                 lineP.forEach(function (item) {
-
                     let data = {
                         from: {
                             latitude: item[0].latitude,
@@ -101,7 +116,7 @@ Page({
                     }
                 }, 500)
                 data.station.forEach(function (item2, index2) {
-                    var left = item2.title.length * 8
+                    var left = item2.title.length * 7
                     item2.iconPath = '/image/point.png'
                     if (index2 === data.station.length - 1) {
                         item2.iconPath = '/image/zhong.png'
@@ -121,7 +136,8 @@ Page({
                     markers.push(item2)
                 })
                 _this.setData({
-                    markers: markers
+                    markers: markers,
+                    points: data.station,
                 })
             },
             fail(error) {
@@ -182,7 +198,7 @@ Page({
             url: app.globalData.baseUrl + '/bus/getList',
             dataType: 'json',
             data: {
-                line_id: 2
+                line_id: _this.data.id
             },
             success(res) {
                 if (res.data.data && res.data.data.length) {
@@ -196,10 +212,10 @@ Page({
                     let zuijin = dis[0].split(',')[1]
                     console.log(zuijin)
                     if (zuijin == 0) {
-                        zuijin = 2
+                        zuijin = 1
                     }
-                    // zuijin = 160
-                    console.log(_this.data.polyline[0].points)
+                    // zuijin = 126
+                    // console.log(_this.data.polyline[0].points.length)
                     let point = {
                         latitude: _this.data.polyline[0].points[zuijin].latitude,
                         longitude: _this.data.polyline[0].points[zuijin].longitude,
@@ -214,16 +230,77 @@ Page({
                     }
 
 
-                    if (getCarNum === 1) {
-                        marker.push(point)
+
+
+
+                    let pointIndex = _this.data.current
+
+                    // 判断是否发车
+                    if (data.location == 1 || data.location > (pointIndex + 1)) {
+                        if (getCarNum === 1) {
+                            marker.push(point)
+                        } else {
+                            marker[marker.length - 1] = point
+                        }
+                        _this.setData({
+                            markers: marker,
+                            latitude: _this.data.polyline[0].points[zuijin].latitude,
+                            longitude: _this.data.polyline[0].points[zuijin].longitude,
+                        })
                     } else {
-                        marker[marker.length - 1] = point
+                        let carData = {
+                            from: {
+                                latitude: data.latitude,
+                                longitude: data.longitude
+                            }, // 车当前的经纬度
+                            to: {
+                                latitude: _this.data.points[pointIndex].latitude,
+                                longitude: _this.data.points[pointIndex].longitude
+                            }, // 最近点的经纬度
+                            // waypoints: '39.951004,116.571980;'  // 经过哪些点
+                            waypoints: ''
+                        }
+                        //调用距离计算接口
+                        qqmapsdk.direction({
+                            mode: 'driving',//可选值：'driving'（驾车）、'walking'（步行）、'bicycling'（骑行），不填默认：'driving',可不填
+                            //from参数不填默认当前地址
+                            from: carData.from,
+                            to: carData.to,
+                            waypoints: carData.waypoints,
+                            success: function (res) {
+                                console.log(res);
+                                var ret = res.result.routes;
+                                let jifenzhong = 0
+                                ret.forEach(function (item) {
+                                    jifenzhong += item.duration
+                                })
+                                point.label = {
+                                    content: '距离候车站剩余：' + jifenzhong + '分钟',
+                                    bgColor: '#ffffff',
+                                    padding: 4,
+                                    anchorX: 20
+                                }
+
+                                if (getCarNum === 1) {
+                                    marker.push(point)
+                                } else {
+                                    marker[marker.length - 1] = point
+                                }
+                                _this.setData({
+                                    markers: marker,
+                                    latitude: _this.data.polyline[0].points[zuijin].latitude,
+                                    longitude: _this.data.polyline[0].points[zuijin].longitude,
+                                })
+
+                            },
+                            fail: function (error) {
+                                console.error(error);
+                            },
+                            complete: function (res) {
+                                // console.log(res);
+                            }
+                        });
                     }
-                    _this.setData({
-                        markers: marker,
-                        latitude: _this.data.polyline[0].points[zuijin].latitude,
-                        longitude: _this.data.polyline[0].points[zuijin].longitude,
-                    })
                 }
             },
             fail(error) {
@@ -235,24 +312,50 @@ Page({
         var data = this.data.markers[e.markerId - 1]
     },
     getAngle(pntFirst, pntNext) {
-        console.log(pntFirst)
-        console.log(pntFirst.longitude)
-        pntFirst.x = parseFloat(pntFirst.longitude)
-        pntFirst.y = parseFloat(pntFirst.latitude)
-        pntNext.x = parseFloat(pntNext.longitude)
-        pntNext.y = parseFloat(pntNext.latitude)
-        var dRotateAngle = Math.atan2(pntFirst.y - pntNext.y, pntFirst.x - pntNext.x);
+        var dRotateAngle = Math.atan2(pntFirst.latitude - pntNext.latitude, pntFirst.longitude - pntNext.longitude);
+        // 弧度转度数
         dRotateAngle = dRotateAngle * 180 / Math.PI;
-        console.log(dRotateAngle)
+        // 正负180度转为顺时针360度
         if (dRotateAngle < 0 ) {
             dRotateAngle  = -dRotateAngle
         } else {
-            dRotateAngle = 360 -  dRotateAngle
+            dRotateAngle = 360 - dRotateAngle
         }
+        console.log('度', dRotateAngle)
         if (isNaN(dRotateAngle)) {
             return 0;
         }
-        console.log('度', dRotateAngle)
         return dRotateAngle;
+    },
+
+
+    // 计算车到最近点的位置
+    getCarDistance(data) {
+        var _this = this;
+        //调用距离计算接口
+        qqmapsdk.direction({
+            mode: 'driving',//可选值：'driving'（驾车）、'walking'（步行）、'bicycling'（骑行），不填默认：'driving',可不填
+            //from参数不填默认当前地址
+            from: data.from,
+            to: data.to,
+            waypoints: data.waypoints,
+            success: function (res) {
+                console.log(res);
+                var ret = res.result.routes;
+                let jifenzhong = 0
+                ret.forEach(function (item) {
+                    jifenzhong += item.duration
+                })
+                _this.setData({
+                    jifenzhong: jifenzhong + '分钟'
+                })
+            },
+            fail: function (error) {
+                console.error(error);
+            },
+            complete: function (res) {
+                // console.log(res);
+            }
+        });
     }
 })

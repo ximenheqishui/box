@@ -234,5 +234,15 @@ Page({
                 // console.log(res);
             }
         });
+    },
+
+    goMap () {
+        let pointIndex = this.data.zuijin
+        if (this.data.current !== '') {
+            pointIndex =  this.data.current
+        }
+        wx.navigateTo({
+            url: `../stationLine/index?id=${this.data.id}&index=${pointIndex}`
+        })
     }
 })
