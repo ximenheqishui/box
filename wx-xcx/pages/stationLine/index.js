@@ -28,9 +28,11 @@ Page({
 
     onShow: function () {
         let _this = this
-        timer = setInterval(function () {
-            _this.getCarInfo()
-        }, 10000)
+        if (_this.data.points.length) {
+            timer = setInterval(function () {
+                _this.getCarInfo()
+            }, 10000)
+        }
     },
     onHide: function () {
         clearInterval(timer)
