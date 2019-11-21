@@ -1,5 +1,13 @@
 <!--index.wxml-->
 <view class="container">
+
+<!--    <view class="log" >-->
+<!--            <view wx:for="{{log}}" wx:for-index="index" wx:for-item="item" wx:key="{{item.id}}">-->
+<!--             {{index + 1}}、{{item}}-->
+<!--            </view>-->
+<!--    </view>-->
+
+
     <swiper indicator-dots="{{indicatorDots}}"
             autoplay="{{autoplay}}" interval="{{interval}}" duration="{{duration}}">
         <block wx:for="{{background}}" wx:key="*this">
@@ -18,11 +26,16 @@
         </view>
     </view>
     <view class="yl-lines">
-        <view class="yl-line" wx:for="{{lines}}" wx:for-index="index" wx:for-item="item" wx:key="{{item.id}}"
-              mark:id="{{item.id}}" bindtap="goPage">
+        <navigator  class="yl-line"  hover-class="none" wx:for="{{lines}}" wx:for-index="index" wx:for-item="item" wx:key="{{item.id}}"
+                    mark:id="{{item.id}}"  url="/pages/busLine/index?id={{item.id}}">
             <view class="title">{{item.title}}</view>
             <view class="message">首 {{item.start_time}} 末 {{item.end_time}}</view>
-        </view>
+        </navigator>
+<!--        <view class="yl-line" wx:for="{{lines}}" wx:for-index="index" wx:for-item="item" wx:key="{{item.id}}"-->
+<!--              mark:id="{{item.id}}" bindtap="goPage">-->
+<!--            <view class="title">{{item.title}}</view>-->
+<!--            <view class="message">首 {{item.start_time}} 末 {{item.end_time}}</view>-->
+<!--        </view>-->
     </view>
     <view class="head">附近站点</view>
 
