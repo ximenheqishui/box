@@ -17,6 +17,7 @@ Page({
         height: 0,
         points: [],
         markers: [],
+        pointLIN: [],
         polyline: [
             {
                 points: [],
@@ -25,13 +26,12 @@ Page({
             }
         ]
     },
-
     onShow: function () {
         let _this = this
         if (_this.data.points.length) {
             timer = setInterval(function () {
                 _this.getCarInfo()
-            }, 10000)
+            }, 5000)
         }
     },
     onHide: function () {
@@ -40,8 +40,6 @@ Page({
     onUnload: function () {
         clearInterval(timer)
     },
-
-
     onLoad: function (options) {
         let _this = this
         // 实例化API核心类
@@ -54,7 +52,6 @@ Page({
             current: current,
             height: wx.getSystemInfoSync().windowHeight
         })
-
         // 获取公交线路
         wx.request({
             method: 'get',
@@ -69,54 +66,7 @@ Page({
                     latitude: data.station[current].latitude,//纬度
                     longitude: data.station[current].longitude,//经度
                 })
-
                 let markers = []
-
-                let lineP = []
-                for (let i = 0; i < data.station.length; i++) {
-                    let a = parseInt(i / 10)
-                    if (lineP[a]) {
-                        lineP[a].push(data.station[i])
-                    } else {
-                        lineP[a] = []
-                        if (a === 0) {
-                            lineP[a][0] = data.station[i]
-                        } else {
-                            lineP[a][0] = lineP[a - 1][9]
-                            lineP[a][1] = data.station[i]
-                        }
-                    }
-                }
-
-                lineP.forEach(function (item) {
-                    let data = {
-                        from: {
-                            latitude: item[0].latitude,
-                            longitude: item[0].longitude
-                        },
-                        to: {
-                            latitude: item[item.length - 1].latitude,
-                            longitude: item[item.length - 1].longitude
-                        },
-                        waypoints: ''
-                    }
-                    let strArr = item.map(function (item2) {
-                        return item2.latitude + ',' + item2.longitude
-                    })
-                    data.waypoints = strArr.join(';')
-                    _this.getDirection(data)
-                })
-                timer = setInterval(function () {
-                    console.log(1)
-                    if (lineP.length === _this.data.completeNum) {
-                        console.log(2)
-                        clearInterval(timer)
-                        _this.getCarInfo()
-                        timer = setInterval(function () {
-                            _this.getCarInfo()
-                        }, 10000)
-                    }
-                }, 500)
                 data.station.forEach(function (item2, index2) {
                     var left = item2.title.length * 7
                     item2.iconPath = '/image/point.png'
@@ -137,60 +87,26 @@ Page({
                     delete item2.title
                     markers.push(item2)
                 })
+                let polyline = [{
+                    points: data.polyline || [],
+                    color: '#07c160',
+                    width: 3
+                }]
                 _this.setData({
                     markers: markers,
                     points: data.station,
+                    polyline: polyline
                 })
+                _this.getCarInfo()
+                timer = setInterval(function () {
+                    _this.getCarInfo()
+                }, 5000)
             },
             fail(error) {
                 console.log(error)
             }
         })
-
     },
-    // 计算车到最近点的位置
-    getDirection(data) {
-        var _this = this;
-        qqmapsdk.direction({
-            mode: 'driving',//可选值：'driving'（驾车）、'walking'（步行）、'bicycling'（骑行），不填默认：'driving',可不填
-            //from参数不填默认当前地址
-            from: data.from,
-            to: data.to,
-            waypoints: data.waypoints,
-            success: function (res) {
-                console.log(res);
-                var ret = res;
-                var coors = ret.result.routes[0].polyline, pl = [];
-                //坐标解压（返回的点串坐标，通过前向差分进行压缩）
-                var kr = 1000000;
-                for (var i = 2; i < coors.length; i++) {
-                    coors[i] = Number(coors[i - 2]) + Number(coors[i]) / kr;
-                }
-                //将解压后的坐标放入点串数组pl中
-                for (var i = 0; i < coors.length; i += 2) {
-                    pl.push({latitude: coors[i], longitude: coors[i + 1]})
-                }
-
-                let polyline = [{
-                    points: _this.data.polyline[0].points.concat(pl),
-                    color: '#07c160',
-                    width: 3
-                }]
-                _this.setData({
-                    polyline: polyline
-                })
-            },
-            fail: function (error) {
-                console.error(error);
-            },
-            complete: function (res) {
-                _this.setData({
-                    completeNum: _this.data.completeNum + 1
-                })
-            }
-        });
-    },
-
     // 获取车的位置并计算时候发车和距离现在最近点的时间距离，用时
     getCarInfo() {
         getCarNum++
@@ -205,22 +121,9 @@ Page({
             success(res) {
                 if (res.data.data && res.data.data.length) {
                     let data = res.data.data[0]
-                    console.log(data)
-                    let marker = _this.data.markers
-                    let dis = _this.data.polyline[0].points.map(function (item, index) {
-                        return Math.sqrt(Math.pow((item.latitude - data.latitude), 2) + Math.pow((item.longitude - data.longitude), 2)) + ',' + index
-                    })
-                    dis.sort()
-                    let zuijin = dis[0].split(',')[1]
-                    console.log(zuijin)
-                    if (zuijin == 0) {
-                        zuijin = 1
-                    }
-                    // zuijin = 126
-                    // console.log(_this.data.polyline[0].points.length)
                     let point = {
-                        latitude: _this.data.polyline[0].points[zuijin].latitude,
-                        longitude: _this.data.polyline[0].points[zuijin].longitude,
+                        latitude: data.latitude,
+                        longitude:data.longitude,
                         iconPath: '/image/car.png',
                         width: 44,
                         height: 20,
@@ -228,26 +131,21 @@ Page({
                             x: 0.5,
                             y: 0.5
                         },
-                        rotate: _this.getAngle(_this.data.polyline[0].points[zuijin - 1], _this.data.polyline[0].points[zuijin])
+                        rotate: data.angle
                     }
 
-
-
-
-
-                    let pointIndex = _this.data.current
+                    let marker = _this.data.markers
+                    let pointIndex = parseInt(_this.data.current)
 
                     // 判断是否发车
-                    if (data.location == 1 || data.location > (pointIndex + 1)) {
+                    if (data.location == 1 || data.location >= (pointIndex + 1)) {
                         if (getCarNum === 1) {
                             marker.push(point)
                         } else {
                             marker[marker.length - 1] = point
                         }
                         _this.setData({
-                            markers: marker,
-                            latitude: _this.data.polyline[0].points[zuijin].latitude,
-                            longitude: _this.data.polyline[0].points[zuijin].longitude,
+                            markers: marker
                         })
                     } else {
                         let carData = {
@@ -282,7 +180,6 @@ Page({
                                     padding: 4,
                                     anchorX: 20
                                 }
-
                                 if (getCarNum === 1) {
                                     marker.push(point)
                                 } else {
@@ -290,10 +187,9 @@ Page({
                                 }
                                 _this.setData({
                                     markers: marker,
-                                    latitude: _this.data.polyline[0].points[zuijin].latitude,
-                                    longitude: _this.data.polyline[0].points[zuijin].longitude,
+                                    latitude: data.latitude,
+                                    longitude: data.longitude,
                                 })
-
                             },
                             fail: function (error) {
                                 console.error(error);
@@ -310,27 +206,6 @@ Page({
             }
         })
     },
-    markertap(e) {
-        var data = this.data.markers[e.markerId - 1]
-    },
-    getAngle(pntFirst, pntNext) {
-        var dRotateAngle = Math.atan2(pntFirst.latitude - pntNext.latitude, pntFirst.longitude - pntNext.longitude);
-        // 弧度转度数
-        dRotateAngle = dRotateAngle * 180 / Math.PI;
-        // 正负180度转为顺时针360度
-        if (dRotateAngle < 0 ) {
-            dRotateAngle  = -dRotateAngle
-        } else {
-            dRotateAngle = 360 - dRotateAngle
-        }
-        console.log('度', dRotateAngle)
-        if (isNaN(dRotateAngle)) {
-            return 0;
-        }
-        return dRotateAngle;
-    },
-
-
     // 计算车到最近点的位置
     getCarDistance(data) {
         var _this = this;
@@ -359,5 +234,12 @@ Page({
                 // console.log(res);
             }
         });
+    },
+
+    onShareAppMessage: function (res) {
+        return {
+            title: '永旺梦乐城',
+            path: `/pages/stationLine/index?index=${this.data.current}&id=${this.data.id}}`
+        }
     }
 })

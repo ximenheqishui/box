@@ -130,7 +130,7 @@ Page({
                         interNum: setInterval(function () {
                             // 获取公交线路
                             _this.getCarInfo()
-                        }, 10000)
+                        }, 5000)
                     })
                 },
                 fail: function (error) {

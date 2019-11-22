@@ -39,7 +39,7 @@ Page({
                         item.station.forEach(function (item2) {
                             var left = item2.title.length * 7
                             item2.parentId = item.id
-                            item2.iconPath = '/image/point.png'
+                            item2.iconPath = '/image/point3.png'
                             item2.label = {
                                 content: item2.title,
                                 color: '#183eff',
@@ -69,5 +69,11 @@ Page({
         wx.navigateTo({
             url: `/pages/busLine/index?id=${data.parentId}&current=${data.id}`
         })
+    },
+    onShareAppMessage: function (res) {
+        return {
+            title: '永旺梦乐城',
+            path: `/pages/station/index`
+        }
     }
 })
