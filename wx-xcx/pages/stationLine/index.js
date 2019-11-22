@@ -21,7 +21,7 @@ Page({
             {
                 points: [],
                 color: '#1349ff',
-                width: 2
+                width: 3
             }
         ]
     },
@@ -173,8 +173,8 @@ Page({
 
                 let polyline = [{
                     points: _this.data.polyline[0].points.concat(pl),
-                    color: '#00ae74',
-                    width: 2
+                    color: '#07c160',
+                    width: 3
                 }]
                 _this.setData({
                     polyline: polyline
