@@ -18,12 +18,12 @@
     </swiper>
     <view class="head">
         免费购物班车路线
-        <view class="point" bindtap="goPage2">
+        <navigator class="point"  hover-class="none" url="/pages/station/index">
             <view>
                 <image style="width: 20px; height: 20px;" src="/image/point2.png"></image>
             </view>
             <text>地图站点</text>
-        </view>
+        </navigator>
     </view>
     <view class="yl-lines">
         <navigator  class="yl-line"  hover-class="none" wx:for="{{lines}}" wx:for-index="index" wx:for-item="item" wx:key="{{item.id}}"
