@@ -47,9 +47,7 @@
     </div>
     <div class="tool-box">
       <div class="left">
-        <router-link to="/article/articleEditor">
-          <el-button @click="articleEditor(false)"  size="mini" type="primary">添加文章</el-button>
-        </router-link>
+        <el-button @click="goPage(false)"  size="mini" type="primary">添加文章</el-button>
         <el-button @click="deleteMore()"  size="mini" type="primary">批量删除</el-button>
       </div>
       <div class="right">
@@ -130,7 +128,7 @@
           fixed="right"
           label="操作">
           <template slot-scope="scope">
-            <el-button @click.native.prevent="changeData(scope)" type="text" size="small">
+            <el-button @click.native.prevent="goPage(scope)" type="text" size="small">
               修改
             </el-button>
             <el-button @click.native.prevent="deleteRow(scope, resultData.list)" type="text" size="small">
@@ -378,12 +376,20 @@
           console.log(error)
         })
       },
-      // 修改
-      changeData (scope) {
-        this.$router.push({
-          path: '/article/articleEditor',
-          query: { id: scope.row.id }
-        })
+      // 去文章编辑页面
+      goPage (scope) {
+        // 通知新页面需要刷新
+        this.$store.dispatch('common/changeRefresh', true)
+        if (scope) {
+          this.$router.push({
+            path: '/article/articleEditor',
+            query: { id: scope.row.id }
+          })
+        } else {
+          this.$router.push({
+            path: '/article/articleEditor'
+          })
+        }
       }
     },
     mounted: function () {

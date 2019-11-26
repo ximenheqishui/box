@@ -118,26 +118,11 @@ module.exports = {
      * @param  {string} user_name 用户名
      * @param  {string} mobile 手机号
      */
-    async getUserOne(id,user_name,mobile) {
-        let _sql = "select user.*,dictionary.name as sex_name,department.name as dept_name " +
-            "FROM user " +
-            "LEFT JOIN  dictionary on user.sex = dictionary.value and dictionary.type = 'sex' " +
-            "LEFT JOIN  department on user.dept_id = department.id where 1=1"
-
+    async getArticleOne(id) {
+        let _sql = "select * FROM article where 1 = 1 "
         let arr = []
-        if (user_name) {
-            _sql += ` and user.user_name = ?`
-            arr.push(user_name)
-        }
-        if (id) {
-            _sql += ` and user.id = ?`
-            arr.push(id)
-        }
-        if (mobile) {
-            _sql += ` and user.mobile = ?`
-            arr.push(mobile)
-        }
-
+        _sql += ` and id = ?`
+        arr.push(id)
         let result = await dbUtils.query(_sql, arr)
         return result
     },

@@ -1,4 +1,5 @@
 const articleModels = require('../models/article')
+const articleTypeModels = require('../models/articleType')
 
 module.exports = {
 
@@ -94,6 +95,29 @@ module.exports = {
     async getArticle(req, res, next) {
         try {
             req.returnData.data =  await articleModels.getArticle(req.query)
+            await res.json(req.returnData)
+        } catch (e) {
+            next(e)
+        }
+    },
+
+
+
+    /**
+     * @api {get} /admin/articleType 获取文章分类
+     * @apiName getArticleType
+     * @apiGroup articleType
+     * @apiUse APICommon
+     *
+     * @apiParam {Number} status  是否启用 ：0 是启用、1 是不启用、空或者不存在为全部
+     */
+    async getArticleOne(req, res, next) {
+        try {
+            req.returnData.data = {}
+            let result=  await articleModels.getArticleOne(req.query.id)
+            if (result && result.length) {
+                req.returnData.data =  result[0]
+            }
             await res.json(req.returnData)
         } catch (e) {
             next(e)

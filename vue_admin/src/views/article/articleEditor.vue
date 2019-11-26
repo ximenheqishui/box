@@ -1,8 +1,8 @@
 <template>
   <div class="article">
-    <el-form size="small" :model="form"  :rules="rules" ref="ruleForm" label-width="70px">
-      <el-form-item label="标题" prop="title"  style="max-width: 600px">
-        <el-input placeholder="请输入标题"  v-model="form.title"></el-input>
+    <el-form size="small" :model="form" ref="ruleForm" label-width="70px">
+      <el-form-item label="标题" prop="title" style="max-width: 600px">
+        <el-input placeholder="请输入标题" v-model="form.title"></el-input>
       </el-form-item>
       <el-form-item label="分类" prop="type_id" style="max-width: 600px">
         <el-cascader
@@ -15,7 +15,7 @@
         </el-cascader>
       </el-form-item>
       <el-form-item label="关键词" prop="keyword" style="max-width: 600px">
-        <el-input placeholder='请输入关键词,用 "," 隔开'  v-model="form.keyword"></el-input>
+        <el-input placeholder='请输入关键词,用 "," 隔开' v-model="form.keyword"></el-input>
       </el-form-item>
       <el-form-item label="描述" prop="description" style="max-width: 600px">
         <el-input placeholder="请输入描述" :rows="4" type="textarea" v-model="form.description"></el-input>
@@ -42,7 +42,9 @@
         </el-switch>
       </el-form-item>
       <el-form-item>
-        <el-button style="margin:20px 20px 20px 0;letter-spacing: 10px" size="small" type="primary" :loading="disableSubmit" :disabled="disableSubmit" @click="submitForm">提交</el-button>
+        <el-button style="margin:20px 20px 20px 0;letter-spacing: 10px" size="small" type="primary"
+                   :loading="disableSubmit" :disabled="disableSubmit" @click="submitForm">提交
+        </el-button>
         <el-button size="mini" @click="resetForm">重置</el-button>
       </el-form-item>
     </el-form>
@@ -52,17 +54,7 @@
 
 <script>
   import Tinymce from '@/components/Tinymce/index.vue'
-  let defaultForm = {
-    id: '',
-    title: '',
-    type_id: '',
-    type_path: [],
-    keyword: '',
-    description: '',
-    content: '',
-    status: 0,
-    cover: ''
-  }
+
   export default {
     name: 'articleEditor',
     components: {
@@ -70,17 +62,12 @@
     },
     data () {
       return {
+        id: '',
         uploadUrl: this.api.commonURL.uploadUrl,
-        isAdd: true,
-        form: JSON.parse(JSON.stringify(defaultForm)),
-        rules: {
-          user_name: [
-            { required: true, message: '请输入名称', trigger: ['blur', 'change'] }
-          ]
-        },
+        defaultForm: {},
+        form: {},
         disableSubmit: false,
         type: [],
-        status: [],
         defaultProps: {
           value: 'id',
           children: 'children',
@@ -89,18 +76,13 @@
         }
       }
     },
-    computed: {
-    },
-    watch: {
-    },
-    filters: {
-    },
+    computed: {},
+    watch: {},
+    filters: {},
     methods: {
-
       // 图片上传成功后的操作
       handleAvatarSuccess (res, file) {
         // 这里加一个后台返回连接的
-        // this.dialog.form.avatar = URL.createObjectURL(file.raw)
         this.form.cover = res.path
       },
       // 图片上传之前的校验
@@ -111,48 +93,17 @@
         }
         return isLt2M
       },
-      /**
-       *  @param type 是1的时候是搜索请求   0的时候是分页请求
-       * */
-      getData (type) {
+      getData () {
         let _this = this
-        let postdata = {}
-        if (type) {
-          this.searchLoading = true
-          postdata = JSON.parse(JSON.stringify(this.searchData))
-          postdata.dept_id = postdata.dept_path.length ? postdata.dept_path[postdata.dept_path.length - 1] : ''
-          if (postdata.date) {
-            postdata.start_date = postdata.date[0] ? this.dateFmt('yyyy-MM-dd hh:mm:ss', new Date(postdata.date[0])) : ''
-            postdata.end_date = postdata.date[1] ? this.dateFmt('yyyy-MM-dd hh:mm:ss', new Date(postdata.date[1])) : ''
-          } else {
-            postdata.end_date = ''
-            postdata.start_date = ''
-          }
-          delete postdata.pageSizes
-          delete postdata.dept_path
-          delete postdata.date
-          if (!_this.sswitch) {
-            postdata.mobile = ''
-            postdata.email = ''
-            postdata.sex = ''
-            postdata.date = ''
-            postdata.status = ''
-            postdata.end_date = ''
-            postdata.start_date = ''
-          }
-          this.lastPostData = postdata
-        } else {
-          $('.main').animate({ scrollTop: 0 }, 500)
-          postdata = this.lastPostData
-          postdata.pn = this.searchData.pn
-          postdata.page_size = this.searchData.page_size
-          this.pageLoading = true
+        if (!this.id) {
+          return false
         }
-        this.api.getUser(postdata).then(res => {
-          _this.pageLoading = false
-          _this.searchLoading = false
+        this.api.getArticleOne({ id: this.id }).then(res => {
           if (res.code === 0) {
-            _this.resultData = res.data
+            res.data.type_path = JSON.parse(res.data.type_path)
+            _this.defaultForm = JSON.parse(JSON.stringify(res.data))
+            _this.form = JSON.parse(JSON.stringify(res.data))
+            _this.$refs.tinymce.setContent(_this.defaultForm.content)
           } else {
             _this.$message({
               type: 'error',
@@ -161,8 +112,6 @@
             })
           }
         }).catch(error => { // 状态码非2xx时
-          _this.pageLoading = false
-          _this.searchLoading = false
           _this.$message({
             type: 'error',
             showClose: true,
@@ -170,107 +119,105 @@
           })
         })
       },
-      // 获取所有的部门
+      // 获取所有文章分类
       getArticleType () {
-        this.api.getArticleType({}).then(res => {
-          if (res.code === 0) {
-            this.type = res.data
-          }
-        }).catch(error => { // 状态码非2xx时
-          console.log(error)
-        })
-      },
-      // 获取数据字典
-      getOption () {
-        this.api.getOption({}).then(res => {
-          if (res.code === 0) {
-            this.sex = res.data.sex
-            this.status = res.data.status
-          }
-        }).catch(error => { // 状态码非2xx时
-          this.$message({
-            type: 'error',
-            showClose: true,
-            message: error.data.message
+        let _this = this
+
+        async function getType () {
+          await _this.api.getArticleType({}).then(res => {
+            if (res.code === 0) {
+              _this.type = res.data
+            }
+          }).catch(error => { // 状态码非2xx时
+            console.log(error)
           })
-        })
+          _this.getData()
+        }
+
+        getType()
       },
       // 提交表单
-      submitForm (e) {
+      submitForm () {
         let _this = this
-        this.$refs.ruleForm.validate((valid) => {
-          if (valid) {
-            if (!_this.disableSubmit) {
-              _this.disableSubmit = true
-            } else {
-              return false
-            }
-            _this.form.content = _this.$refs.tinymce.getContent()
-            let form = JSON.parse(JSON.stringify(_this.form))
-            form.type_id = form.type_path.length ? form.type_path[ form.type_path.length - 1 ] : ''
-            form.type_path = JSON.stringify(form.type_path)
-            if (_this.isAdd) {
-              _this.api.addArticle(form).then(res => {
-                _this.disableSubmit = false
-                if (res.code === 0) {
-                  _this.$router.replace({
-                    path: '/article/articleList'
-                  })
-                  // _this.getData(1)
-                } else {
-                  _this.$message({
-                    message: res.message,
-                    type: 'error'
-                  })
-                }
-              }).catch(error => {
-                _this.disableSubmit = false
-                _this.$message({
-                  message: error.message || '服务器忙...',
-                  type: 'error'
-                })
+        if (!_this.disableSubmit) {
+          _this.disableSubmit = true
+        } else {
+          return false
+        }
+        _this.form.content = _this.$refs.tinymce.getContent()
+        let form = JSON.parse(JSON.stringify(_this.form))
+        form.type_id = form.type_path.length ? form.type_path[form.type_path.length - 1] : ''
+        form.type_path = JSON.stringify(form.type_path)
+        if (!_this.id) {
+          _this.api.addArticle(form).then(res => {
+            _this.disableSubmit = false
+            if (res.code === 0) {
+              _this.$router.replace({
+                path: '/article/articleList'
               })
             } else {
-              _this.api.updateArticle(form).then(res => {
-                _this.disableSubmit = false
-                if (res.code === 0) {
-                  // _this.getData(0)
-                } else {
-                  _this.$message({
-                    message: res.message,
-                    type: 'error'
-                  })
-                }
-              }).catch(error => {
-                _this.disableSubmit = false
-                _this.$message({
-                  message: error.message || '服务器忙...',
-                  type: 'error'
-                })
+              _this.$message({
+                message: res.message,
+                type: 'error'
               })
             }
-          } else {
-            console.log('error submit!!')
-            return false
-          }
-        })
+          }).catch(error => {
+            _this.disableSubmit = false
+            _this.$message({
+              message: error.message || '服务器忙...',
+              type: 'error'
+            })
+          })
+        } else {
+          _this.api.updateArticle(form).then(res => {
+            _this.disableSubmit = false
+            if (res.code === 0) {
+              // _this.getData(0)
+            } else {
+              _this.$message({
+                message: res.message,
+                type: 'error'
+              })
+            }
+          }).catch(error => {
+            _this.disableSubmit = false
+            _this.$message({
+              message: error.message || '服务器忙...',
+              type: 'error'
+            })
+          })
+        }
       },
       // 重置表单
       resetForm () {
-        this.$refs.ruleForm.resetFields()
+        this.$refs.tinymce.setContent(this.defaultForm.content)
+        this.form = JSON.parse(JSON.stringify(this.defaultForm))
       }
     },
+    beforeCreate: function () {
+      let defaultForm = {
+        id: '',
+        title: '',
+        type_id: '',
+        type_path: [],
+        keyword: '',
+        description: '',
+        content: '',
+        status: 0,
+        cover: ''
+      }
+      this.form = JSON.parse(JSON.stringify(defaultForm))
+      this.defaultForm = JSON.parse(JSON.stringify(defaultForm))
+    },
     mounted: function () {
-      // 所有的方式加载数据
-      this.getOption()
+      this.id = this.$route.query.id || ''
       this.getArticleType()
-      // this.getData(1)
     }
   }
 </script>
 
 <style lang="scss" type="text/scss">
-  .article{
+  .article {
     .avatar-uploader .el-upload {
       border: 1px dashed #d9d9d9;
       border-radius: 6px;
@@ -278,9 +225,11 @@
       position: relative;
       overflow: hidden;
     }
+
     .avatar-uploader .el-upload:hover {
       border-color: #409EFF;
     }
+
     .avatar-uploader-icon {
       font-size: 28px;
       color: #8c939d;
@@ -289,6 +238,7 @@
       line-height: 150px;
       text-align: center;
     }
+
     .avatar {
       width: 240px;
       height: 140px;

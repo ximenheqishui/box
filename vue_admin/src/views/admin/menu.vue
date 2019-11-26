@@ -111,7 +111,8 @@
         <el-form-item label="名称" prop="name">
           <el-input  placeholder="请输入名称" v-model="form.name"></el-input>
         </el-form-item>
-        <el-tooltip effect="dark" content="必须唯一、由字母和数字组成" placement="right">
+        <el-tooltip effect="dark"  placement="right">
+          <div slot="content">必须唯一，由请求方法-请求路径组成，<br/> 如："post-/admin/menu"</div>
           <el-form-item label="唯一标识" prop="unique_id">
             <el-input  placeholder="请输入唯一标识" v-model="form.unique_id"></el-input>
           </el-form-item>

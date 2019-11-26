@@ -1,4 +1,5 @@
 const getters = {
+  common: state => state.common,
   userInfo: state => state.user.userInfo,
   token: state => state.user.token,
   test: state => state.test,

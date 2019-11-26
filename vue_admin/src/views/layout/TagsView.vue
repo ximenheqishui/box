@@ -101,9 +101,13 @@
       },
       addTags () {
         const { name } = this.$route
-        // console.log(this.$route)
         if (name) {
-          this.$store.dispatch('tagsView/addView', this.$route)
+          if (this.$store.getters.common.refresh) {
+            this.$store.dispatch('common/changeRefresh', false)
+            this.refreshSelectedTag(this.$route)
+          } else {
+            this.$store.dispatch('tagsView/addView', this.$route)
+          }
         }
         return false
       },
