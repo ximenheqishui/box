@@ -52,7 +52,7 @@ router.use(async function (req, res, next) {
         // console.log(req.baseUrl)
         // console.log(req.path)
         if (!user) {
-            res.json({code: 2, message: '未登录或登录超时请登录'})
+            res.json({code: 2, message: '未登录'})
         } else {
             next()
         }

@@ -3,10 +3,9 @@ const articleTypeModels = require('./articleType.js')
 
 module.exports = {
 
-
     /**
-     * 创建用户
-     * @param  {Object} model  用户对象
+     * 创建文章
+     * @param  {Object} model  文章对象
      */
     async create(model) {
         let result = await dbUtils.insertData('article', model)
@@ -14,7 +13,7 @@ module.exports = {
     },
 
     /**
-     * 根据id删除用户
+     * 根据id删除文章
      * @param  {array} ids 菜单id
      * @return {object|null}     删除结果
      */
@@ -25,17 +24,17 @@ module.exports = {
 
 
     /**
-     * 根据id更新用户
+     * 根据id更新文章
      */
     async update(model, id) {
-        let result = await dbUtils.updateData('user', model, id)
+        let result = await dbUtils.updateData('article', model, id)
         return result
     },
 
 
 
     /**
-     * 分页查询数据
+     * 分页和不分页查询数据
      * @param  {object} query  查询参数
      */
     async getArticle(query) {
@@ -66,6 +65,7 @@ module.exports = {
             _sql += ` and article.title like ?`
             arr.push(`%${title}%`)
         }
+
         if (type_id !== '' && type_id !== undefined ) {
             let type_ids = []
             async function getTree(id) {
@@ -80,7 +80,6 @@ module.exports = {
             await getTree(type_id)
             _sql += ` and article.type_id in (${type_ids})`
         }
-
 
         if (keyword !== '' && keyword !== undefined ) {
             _sql += ` and article.keyword like ?`
@@ -113,10 +112,8 @@ module.exports = {
 
 
     /**
-     * 根据id查询用户
-     * @param  {int} id  用户id
-     * @param  {string} user_name 用户名
-     * @param  {string} mobile 手机号
+     * 根据id查询文章
+     * @param  {int} id  文章id
      */
     async getArticleOne(id) {
         let _sql = "select * FROM article where 1 = 1 "
@@ -124,17 +121,6 @@ module.exports = {
         _sql += ` and id = ?`
         arr.push(id)
         let result = await dbUtils.query(_sql, arr)
-        return result
-    },
-
-    /**
-     *  根据部门id更新用户是否是领导者信息
-     * @param  {int} dept_id 部门的id
-     * @param  {object} model  用户的模型
-     */
-    async updateDept(model, dept_id) {
-        let _sql = "UPDATE ?? SET ? WHERE dept_id = ?"
-        let result = await dbUtils.query(_sql, ['user', model, dept_id])
         return result
     }
 }

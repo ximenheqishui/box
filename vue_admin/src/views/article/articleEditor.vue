@@ -1,6 +1,13 @@
 <template>
   <div class="article">
-    <el-form size="small" :model="form" ref="ruleForm" label-width="70px">
+    <el-form
+      element-loading-text="数据加载中"
+      v-loading="pageLoading"
+      element-loading-background="rgba(255, 255, 255, 0.6)"
+      size="small"
+      :model="form"
+      ref="ruleForm"
+      label-width="70px">
       <el-form-item label="标题" prop="title" style="max-width: 600px">
         <el-input placeholder="请输入标题" v-model="form.title"></el-input>
       </el-form-item>
@@ -48,13 +55,22 @@
         <el-button size="mini" @click="resetForm">重置</el-button>
       </el-form-item>
     </el-form>
-
   </div>
 </template>
 
 <script>
   import Tinymce from '@/components/Tinymce/index.vue'
-
+  let defaultForm = {
+    id: '',
+    title: '',
+    type_id: '',
+    type_path: [],
+    keyword: '',
+    description: '',
+    content: '',
+    status: 0,
+    cover: ''
+  }
   export default {
     name: 'articleEditor',
     components: {
@@ -62,10 +78,11 @@
     },
     data () {
       return {
+        pageLoading: true,
         id: '',
         uploadUrl: this.api.commonURL.uploadUrl,
-        defaultForm: {},
-        form: {},
+        defaultForm: JSON.parse(JSON.stringify(defaultForm)),
+        form: JSON.parse(JSON.stringify(defaultForm)),
         disableSubmit: false,
         type: [],
         defaultProps: {
@@ -93,12 +110,15 @@
         }
         return isLt2M
       },
+      // 获取文章信息
       getData () {
         let _this = this
         if (!this.id) {
+          _this.pageLoading = false
           return false
         }
         this.api.getArticleOne({ id: this.id }).then(res => {
+          _this.pageLoading = false
           if (res.code === 0) {
             res.data.type_path = JSON.parse(res.data.type_path)
             _this.defaultForm = JSON.parse(JSON.stringify(res.data))
@@ -112,6 +132,7 @@
             })
           }
         }).catch(error => { // 状态码非2xx时
+          _this.pageLoading = false
           _this.$message({
             type: 'error',
             showClose: true,
@@ -146,12 +167,17 @@
         }
         _this.form.content = _this.$refs.tinymce.getContent()
         let form = JSON.parse(JSON.stringify(_this.form))
-        form.type_id = form.type_path.length ? form.type_path[form.type_path.length - 1] : ''
+        if (form.type_path && form.type_path.length) {
+          form.type_id = form.type_path[form.type_path.length - 1]
+        } else {
+          form.type_id = ''
+        }
         form.type_path = JSON.stringify(form.type_path)
         if (!_this.id) {
           _this.api.addArticle(form).then(res => {
             _this.disableSubmit = false
             if (res.code === 0) {
+              _this.$store.dispatch('common/changeRefresh', true)
               _this.$router.replace({
                 path: '/article/articleList'
               })
@@ -172,7 +198,10 @@
           _this.api.updateArticle(form).then(res => {
             _this.disableSubmit = false
             if (res.code === 0) {
-              // _this.getData(0)
+              _this.$store.dispatch('common/changeRefresh', true)
+              _this.$router.replace({
+                path: '/article/articleList'
+              })
             } else {
               _this.$message({
                 message: res.message,
@@ -193,21 +222,6 @@
         this.$refs.tinymce.setContent(this.defaultForm.content)
         this.form = JSON.parse(JSON.stringify(this.defaultForm))
       }
-    },
-    beforeCreate: function () {
-      let defaultForm = {
-        id: '',
-        title: '',
-        type_id: '',
-        type_path: [],
-        keyword: '',
-        description: '',
-        content: '',
-        status: 0,
-        cover: ''
-      }
-      this.form = JSON.parse(JSON.stringify(defaultForm))
-      this.defaultForm = JSON.parse(JSON.stringify(defaultForm))
     },
     mounted: function () {
       this.id = this.$route.query.id || ''
