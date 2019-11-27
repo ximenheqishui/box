@@ -29,27 +29,6 @@ Page({
         let _this = this
         _this.getDistance(_this.data.lines)
     },
-    //事件处理函数
-    goPage: function (e) {
-        let _this = this
-        _this.log('点击了')
-        wx.navigateTo({
-            url: '/pages/busLine/index?id=' + e.mark.id,
-            fail: function (e) {
-                console.log(e)
-                _this.log('失败了')
-            },
-            success: function (e) {
-                console.log(e)
-                _this.log('成功了')
-            }
-        })
-    },
-    goPage2: function (e) {
-        wx.navigateTo({
-            url: `/pages/station/index`
-        })
-    },
     onLoad: function () {
         let _this = this
         // 实例化API核心类
