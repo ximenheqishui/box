@@ -6,6 +6,7 @@ Page({
         latitude: 0,
         longitude: 0,
         height: 0,
+        circles: [],
         markers: []
     },
     onLoad: function (options) {
@@ -18,9 +19,37 @@ Page({
             success: function (res) {
                 var latitude = res.latitude
                 var longitude = res.longitude
-                _this.setData({
+                let circle = {
                     latitude: latitude,//纬度
                     longitude: longitude,//经度
+                    radius:500,
+                    fillColor: '#00000012',
+                    color: '#036efa',
+                    strokeWidth: 2
+                }
+                _this.setData({
+                    circle: [circle],
+                    latitude: latitude,//纬度
+                    longitude: longitude,//经度
+                })
+                let markers = _this.data.markers
+                markers.push({
+                    id: 10086,
+                    latitude:latitude + 0.0046,
+                    longitude: longitude,
+                    iconPath: '/image/kong.png',
+                    label: {
+                        content: '距我500米',
+                        color: '#183eff',
+                        borderRadius: 4,
+                        padding: 4,
+                        bgColor: '#fff',
+                        textAlign: 'center',
+                        anchorX: -34
+                    }
+                })
+                _this.setData({
+                    markers: markers
                 })
             }
         })
@@ -33,7 +62,7 @@ Page({
             data: {},
             success(res) {
                 let data = res.data.data
-                let markers = []
+                let markers = _this.data.markers
                 data.forEach(function (item) {
                     if (item.station && item.station.length) {
                         item.station.forEach(function (item2) {
@@ -65,7 +94,15 @@ Page({
         })
     },
     markertap(e) {
-        var data = this.data.markers[e.markerId - 1]
+        var data = {}
+        if (e.markerId == 10086) {
+            return false
+        }
+        this.data.markers.forEach(function(item){
+            if (item.id == e.markerId) {
+                data =  item
+            }
+        })
         wx.navigateTo({
             url: `/pages/busLine/index?id=${data.parentId}&current=${data.id}`
         })

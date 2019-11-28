@@ -19,7 +19,5 @@
   "sitemapLocation": "sitemap.json",
 
   "usingComponents": {
-    "van-button": "vant-weapp/button",
-    "van-icon": "vant-weapp/icon"
   }
 }

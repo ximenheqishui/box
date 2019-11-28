@@ -1,7 +1,7 @@
 <!--index.wxml-->
 <view class="container">
     <map id="map" longitude="{{longitude}}" latitude="{{latitude}}" scale="15"
-          markers="{{markers}}"  bindmarkertap="markertap"
+          markers="{{markers}}"  bindmarkertap="markertap" show-scale="true" circles="{{circle}}"
           show-location="true" style="width: 100%; height: {{ height }}px;">
     </map>
 </view>

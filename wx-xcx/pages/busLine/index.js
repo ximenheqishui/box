@@ -122,7 +122,12 @@ Page({
                     let distance2 = JSON.parse(JSON.stringify(distance))
                     distance.sort(sortNumber)
                     let index = distance2.indexOf(distance[0])  // 从所有的点位中计算出  最近的点位并返回数组中的位置
-                    let moveLeft = (index > 3 ? index - 2 : 0) * _this.data.pointWidth  // 计算整体向右移动的距离
+                    let  leftIndex = index
+                    // 判断移动到最近的点还是移动选中的点
+                    if (_this.data.current !== '') {
+                        leftIndex = _this.data.current
+                    }
+                    let moveLeft = (leftIndex > 3 ? leftIndex - 2 : 0) * _this.data.pointWidth  // 计算整体向右移动的距离
                     _this.setData({
                         disable: '',
                         zuijin: index,
