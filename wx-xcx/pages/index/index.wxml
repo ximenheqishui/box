@@ -44,14 +44,15 @@
     </view>
 
     <view class="yl-points" wx:if=" {{  point.length > 0  }} ">
-        <view class="yl-point" wx:for="{{point}}" wx:for-index="index" wx:for-item="item" wx:key="{{item.point.id}}"
-              mark:id="{{item.id}}" bindtap="goPage">
+        <navigator class="yl-point"  hover-class="none" wx:for="{{point}}" wx:for-index="index" wx:for-item="item" wx:key="{{item.point.id}}"
+              mark:id="{{item.id}}"  url="/pages/busLine/index?id={{item.id}}">
             <view class="title">
                 <text class="paizi"></text>
                 <text>{{item.point.title}}</text>
                 <text class="distance">{{item.point.distance}}</text>
             </view>
             <view class="message"> {{item.title}}</view>
-        </view>
+        </navigator>
     </view>
+
 </view>

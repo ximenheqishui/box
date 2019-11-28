@@ -27,9 +27,7 @@
         <view class="message">
             当前为预估数据，仅供参考
         </view>
-        <view class="right"  bindtap="goMap">
-                车辆位置 >
-        </view>
+        <view class="right {{disable}}"  bindtap="goMap">车辆位置 ></view>
     </view>
 
     <scroll-view scroll-with-animation="true" scroll-x="true" class="line-warp" scroll-left="{{left}}">

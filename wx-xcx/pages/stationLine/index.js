@@ -47,7 +47,7 @@ Page({
         qqmapsdk = new QQMapWX({
             key: 'A65BZ-DDJ6O-DCOWL-SPETB-VDH7H-3NBJT'
         });
-        let current = options.index || 2
+        let current = options.index
         _this.setData({
             id: options.id || 2,
             current: current,
@@ -63,45 +63,55 @@ Page({
             },
             success(res) {
                 let data = res.data.data
-                _this.setData({
-                    latitude: data.station[current].latitude,//纬度
-                    longitude: data.station[current].longitude,//经度
-                })
                 let markers = []
-                data.station.forEach(function (item2, index2) {
-                    var left = item2.title.length * 7
-                    item2.iconPath = '/image/point.png'
-                    if (index2 === data.station.length - 1) {
-                        item2.iconPath = '/image/zhong.png'
-                    }
-                    if (current == index2) {
-                        item2.iconPath = '/image/pai.png'
-                    }
-                    item2.label = {
-                        content: item2.title,
-                        color: '#000',
-                        fontSize: 12,
-                        textAlign: 'center',
-                        anchorX: -left,
-                        anchorY: 0
-                    }
-                    delete item2.title
-                    markers.push(item2)
-                })
+
                 // 增加车的位置
                 let point = {
-                    id: 1,
-                    latitude: data.station[0].latitude,
-                    longitude:data.station[0].longitude,
+                    id: 10086,
                     iconPath: '/image/car.png',
                     width: 44,
                     height: 20,
+                    zIndex: 10000,
                     anchor:{
                         x: 0.5,
                         y: 0.5
                     },
                     rotate: 0
                 }
+                console.log(data.station)
+                console.log(current)
+                if (data.station && data.station.length) {
+                    _this.setData({
+                        latitude: data.station[current].latitude,//纬度
+                        longitude: data.station[current].longitude,//经度
+                    })
+                    data.station.forEach(function (item2, index2) {
+                        var left = item2.title.length * 7
+                        item2.iconPath = '/image/point.png'
+                        item2.zIndex = 1
+                        if (index2 === data.station.length - 1) {
+                            item2.iconPath = '/image/zhong.png'
+                        }
+                        if (current == index2) {
+                            item2.iconPath = '/image/pai.png'
+                        }
+                        item2.label = {
+                            content: item2.title,
+                            color: '#000',
+                            fontSize: 12,
+                            textAlign: 'center',
+                            anchorX: -left,
+                            anchorY: 0
+                        }
+                        delete item2.title
+                        markers.push(item2)
+                    })
+
+                    // 设置车辆位置
+                    point.latitude = data.station[0].latitude
+                    point.longitude = data.station[0].longitude
+                }
+
                 markers.push(point)
 
                 let polyline = [{
@@ -138,14 +148,23 @@ Page({
                 if (res.data.data && res.data.data.length) {
                     let data = res.data.data[0]
                     _this.data.mapContext.translateMarker({
-                        markerId:1,
+                        markerId:10086,
                         destination:{
-                            latitude: data.latitude,
-                            longitude:data.longitude,
+                            latitude: parseFloat(data.latitude),
+                            longitude:parseFloat(data.longitude),
                         },
                         autoRotate: false,
-                        rotate: data.angle,
-                        duration: 100
+                        rotate: data.angle || 0,
+                        duration: 200,
+                        success: function(){
+                            console.log('ok')
+                        },
+                        fail: function(){
+                            console.log('fail')
+                        },
+                        complete: function () {
+                            console.log('sss')
+                        }
                     })
                 }
             },
@@ -154,6 +173,7 @@ Page({
             }
         })
     },
+
     onShareAppMessage: function (res) {
         return {
             title: '永旺梦乐城',

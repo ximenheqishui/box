@@ -1,12 +1,14 @@
 // 引入SDK核心类
 var QQMapWX = require('../../lib/qqmap/qqmap-wx-jssdk.js');
 var qqmapsdk;
+var interNum = 0
 //获取应用实例
 const app = getApp()
 
 Page({
     data: {
         // 分享时的参数
+        disable: 'disable',
         current: '',
         id: '',
         interNum: 0, //  定时器
@@ -35,10 +37,10 @@ Page({
         this.getDistance(this.data.points)
     },
     onHide: function () {
-        clearInterval(this.data.interNum)
+        clearInterval(interNum)
     },
     onUnload: function () {
-        clearInterval(this.data.interNum)
+        clearInterval(interNum)
     },
     onLoad: function (options) {
         let _this = this
@@ -122,16 +124,15 @@ Page({
                     let index = distance2.indexOf(distance[0])  // 从所有的点位中计算出  最近的点位并返回数组中的位置
                     let moveLeft = (index > 3 ? index - 2 : 0) * _this.data.pointWidth  // 计算整体向右移动的距离
                     _this.setData({
+                        disable: '',
                         zuijin: index,
                         left: moveLeft,
                     })
                     _this.getCarInfo()
-                    _this.setData({
-                        interNum: setInterval(function () {
-                            // 获取公交线路
-                            _this.getCarInfo()
-                        }, 5000)
-                    })
+                    interNum = setInterval(function () {
+                        // 获取公交线路
+                        _this.getCarInfo()
+                    }, 5000)
                 },
                 fail: function (error) {
                     console.error(error);
@@ -164,7 +165,7 @@ Page({
 
                     let pointIndex = _this.data.zuijin
                     if (_this.data.current !== '') {
-                        pointIndex =  _this.data.current
+                        pointIndex = _this.data.current
                     }
                     // 判断是否发车
                     if (data.location == 1 || data.location > (pointIndex + 1)) {
@@ -236,10 +237,13 @@ Page({
         });
     },
 
-    goMap () {
+    goMap() {
+        if (this.data.disable) {
+            return
+        }
         let pointIndex = this.data.zuijin
         if (this.data.current !== '') {
-            pointIndex =  this.data.current
+            pointIndex = this.data.current
         }
         wx.navigateTo({
             url: `/pages/stationLine/index?id=${this.data.id}&index=${pointIndex}`

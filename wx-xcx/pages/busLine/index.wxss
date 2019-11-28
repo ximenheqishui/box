@@ -62,20 +62,19 @@
 .remind{
     position: relative;
     margin: 20px 16px 0;
-    padding: 20px;
+    padding:40rpx 20rpx;
     border-radius: 6px;
     box-shadow: -8px 0px 8px #eee, 0px -8px 8px #eee , 8px 0px 8px #eee, 0px 8px 8px #eee;
 }
 .remind .box {
     color: #0680d5;
 }
-.remind .box text{
-    /*margin: 0 6px;*/
-    /*font-size: 30px;*/
+.remind .box{
+    font-size: 36rpx;
 }
 .remind .message {
     margin-top: 4px;
-    font-size: 14px;
+    font-size: 28rpx;
     color: #999;
 }
 
@@ -84,7 +83,10 @@
     right:10px;
     top:30px;
     color: #036efa;
-    font-size: 12px;
+    font-size: 28rpx;
+}
+.remind .disable {
+    color: #333;
 }
 
 .line-warp {
