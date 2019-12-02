@@ -1,4 +1,5 @@
 import api from '@/api/index.js'
+import qs from 'qs'
 export default {
   install: function (Vue, router, store) {
     // 添加全局资源
@@ -49,5 +50,6 @@ export default {
       return fmt
     }
     Vue.prototype.api = api
+    Vue.prototype.qs = qs
   }
 }

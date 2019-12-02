@@ -5,12 +5,12 @@ module.exports = {
   outputDir: 'dist', // 成的生产环境构建文件的目录
   assetsDir: 'static', // 放置生成的静态资源 (js、css、img、fonts) 的 (相对于 outputDir 的) 目录。
   indexPath: 'index.html', // 指定生成的 index.html 的输出路径 (相对于 outputDir)。也可以是一个绝对路径。
-  lintOnSave: process.env.NODE_ENV === 'development',
+  lintOnSave: 'error',
   devServer: {
     port: 7000,
     open: true,
     overlay: {
-      warnings: false,
+      warnings: true,
       errors: true
     },
     proxy: {
@@ -45,5 +45,5 @@ module.exports = {
       }) // 全局引用一下其他的库，并重命名。 要在校验.eslintrc.js文件中定义一下全局变量
     ]
   },
-  productionSourceMap: true
+  productionSourceMap: false
 }

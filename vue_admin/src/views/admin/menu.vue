@@ -36,7 +36,7 @@
             type="text"
             size="mini"
             @click="() => append(data)">
-            添加{{ data.last_menu === 1 ?  '按钮': '菜单' }}
+            添加{{ data.last_menu === 1 ?  '接口': '菜单' }}
           </el-button>
           <el-button
              type="text"
@@ -102,7 +102,7 @@
         <el-button size="small" type="primary" :disabled="disableSubmit" @click="submitForm('ruleForm')">保 存</el-button>
       </div>
     </el-dialog>
-    <el-dialog :title="isAdd ?  '添加按钮': '修改按钮'" :visible.sync="dialog2" width="600px">
+    <el-dialog :title="isAdd ?  '添加接口': '修改接口'" :visible.sync="dialog2" width="600px">
       <div  class="header">
         <label>上级节点：</label>
         {{ form.parent_name }}
@@ -140,7 +140,7 @@
 <script>
   let defaultForm = {
     id: '',
-    type: 1, // 1 菜单类型  2 按钮类型
+    type: 1, // 1 菜单类型  2 接口类型
     name: '', // 当前的名称
     path: '', // 路由
     parent_id: '', // 父节点id

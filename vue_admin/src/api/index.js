@@ -2,7 +2,8 @@ import axios from './request'
 export default {
 
   commonURL: {
-      uploadUrl: baseUrl + '/common/upload/single'
+      uploadUrl: baseUrl + '/common/upload/single',
+      exportUrl: baseUrl + '/admin/excelExport'
   },
   /**
    * @description 获取各个页面的配置项

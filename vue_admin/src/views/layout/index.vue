@@ -53,6 +53,7 @@
   @import "../../assets/styles/mixin";
   .layout {
     height: 100%;
+    min-width: 800px;
     .el-main{
       height: 0;
       @include scrollBar();

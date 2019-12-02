@@ -177,6 +177,7 @@
           _this.api.addArticle(form).then(res => {
             _this.disableSubmit = false
             if (res.code === 0) {
+              _this.$store.dispatch('tagsView/delView', _this.$route)
               _this.$store.dispatch('common/changeRefresh', true)
               _this.$router.replace({
                 path: '/article/articleList'
@@ -198,6 +199,7 @@
           _this.api.updateArticle(form).then(res => {
             _this.disableSubmit = false
             if (res.code === 0) {
+              _this.$store.dispatch('tagsView/delView', _this.$route)
               _this.$store.dispatch('common/changeRefresh', true)
               _this.$router.replace({
                 path: '/article/articleList'
@@ -232,6 +234,9 @@
 
 <style lang="scss" type="text/scss">
   .article {
+    .el-icon-loading{
+      width: 14px;
+    }
     .avatar-uploader .el-upload {
       border: 1px dashed #d9d9d9;
       border-radius: 6px;

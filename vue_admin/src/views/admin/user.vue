@@ -346,8 +346,7 @@
     },
     computed: {
       downloadUrl: function () {
-        return ''
-        // return this.api.exportUrl.company + '/?' + qs.stringify(this.lastPostData, { arrayFormat: 'repeat' })
+        return this.api.commonURL.exportUrl + '/user/?' + this.qs.stringify(this.lastPostData)
       }
     },
     watch: {

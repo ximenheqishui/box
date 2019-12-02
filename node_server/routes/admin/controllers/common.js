@@ -7,7 +7,6 @@ const redis = require("../../../util/redis")
 const Excel = require('exceljs/modern.nodejs');
 
 
-
 /**
  * @api {all} /null  返回的常规格式
  * @apiName returnCommon
@@ -62,7 +61,7 @@ module.exports = {
      */
     async login(req, res, next) {
         try {
-            let result = await userModels.getUserOne(null,req.body.account,null)
+            let result = await userModels.getUserOne(null, req.body.account, null)
             if (result && result.length) {
                 if (cryptoUtil.createPass(req.body.password) === result[0].password) {
                     let token = await redis.setLoginToken(result[0])
@@ -164,26 +163,32 @@ module.exports = {
         try {
             var workbook = new Excel.Workbook()
             workbook.creator = 'Me';
-            workbook.lastModifiedBy = 'Her';
-            workbook.created = new Date(1985, 8, 30);
-            workbook.modified = new Date();
-            workbook.lastPrinted = new Date(2016, 9, 27);
-
+            workbook.created = new Date();
             // 创建一个红色标签颜色的工作表
-            var worksheet = workbook.addWorksheet('My Sheet', {properties: {tabColor: {argb: 'FFC0000'}}});
-
-            worksheet.columns = [
-                {header: 'Id', key: 'id', width: 10},
-                {header: 'Name', key: 'name', width: 32},
-                {header: 'D.O.B.', key: 'DOB', width: 10, outlineLevel: 1}
-            ];
-
-            worksheet.addRow({id: 1, name: 'John Doe', DOB: new Date(1970, 1, 1)});
-            worksheet.addRow({id: 2, name: 'Jane Doe', DOB: new Date(1965, 1, 7)});
-
+            var worksheet = workbook.addWorksheet('Sheet1', {properties: {tabColor: {argb: 'FFC0000'}}});
+            delete req.query.pn
+            delete req.query.page_size
+            let page = req.params.page
+            switch (page) {
+                case 'user':
+                    let data = await userModels.getUser(req.query)
+                    worksheet.columns = [
+                        {header: 'Id', key: 'id', width: 10},
+                        {header: '用户名', key: 'user_name', width: 32},
+                        {header: '头像', key: 'avatar', width: 32},
+                        {header: '性别', key: 'sex_name', width: 32},
+                        {header: '邮箱', key: 'email', width: 32},
+                        {header: '手机号', key: 'mobile', width: 32},
+                        {header: '所属部门', key: 'dept_name', width: 32},
+                        {header: '创建时间', key: 'create_time', width: 32}
+                    ];
+                    worksheet.addRows(data);
+                    break;
+                default:
+                    break
+            }
             let buffer = await workbook.xlsx.writeBuffer()
-            // res.setHeader('Content-Type', 'application/octet-stream');
-            res.attachment('ress.xlsx');
+            res.attachment(`${page}.xlsx`);
             await res.end(buffer, 'binary');
         } catch (e) {
             next(e)

@@ -41,7 +41,7 @@ router.use(async function (req, res, next) {
     }
 
     // 不需要登录的接口
-    if (req.path === '/login' || req.path === '/excelExport') {
+    if (req.path === '/login' || req.path.startsWith('/excelExport') ){
         next()
     } else {
         let user = await redis.getDate(req.get('Admin-Token'))
