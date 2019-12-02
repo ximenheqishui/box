@@ -1,5 +1,5 @@
 <template>
-  <div class="main department">
+  <div class="department">
     <div class="tool-box">
       <div class="left">
         <el-button size="mini" type="primary"  @click="append(0)">添加顶级部门</el-button>

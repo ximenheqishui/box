@@ -1,5 +1,5 @@
 <template>
-  <div class="user">
+  <div class="">
     <div class="search-box">
       <el-form @keyup.enter.native="search" ref="form" :inline="true" :model="searchData" label-width="80px" size="small">
          <el-form-item label="标题" prop="title">
@@ -91,7 +91,7 @@
           width="200"
           label="封面">
           <template slot-scope="scope">
-            <el-image :src="scope.row.cover">
+            <el-image :src="scope.row.cover" fit="contain">
               <div slot="placeholder" class="image-slot">
                 加载中<span class="dot">...</span>
               </div>
@@ -258,7 +258,6 @@
           }
           this.lastPostData = postdata
         } else {
-          $('.main').animate({ scrollTop: 0 }, 500)
           postdata = this.lastPostData
           postdata.pn = this.searchData.pn
           postdata.page_size = this.searchData.page_size
@@ -269,6 +268,7 @@
           _this.searchLoading = false
           if (res.code === 0) {
             _this.resultData = res.data
+            $('.main').animate({ scrollTop: 0 }, 500)
           } else {
             _this.$message({
               type: 'error',

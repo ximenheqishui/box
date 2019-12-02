@@ -1,5 +1,5 @@
 <template>
-    <div class="main role">
+    <div class="role">
         <div class="tool-box">
           <div class="left">
             <el-button size="mini" type="primary" @click="showRoleDialog(false)">添加角色</el-button>
@@ -249,6 +249,7 @@
           _this.loading = false
           if (res.code === 0) {
             _this.resultData = res.data
+            $('.main').animate({ scrollTop: 0 }, 500)
           }
         }).catch(error => {
           _this.loading = false

@@ -1,5 +1,5 @@
 <template>
-  <div class="main article-type">
+  <div class="article-type">
     <div class="tool-box">
       <div class="left">
         <el-button size="mini" type="primary"  @click="append(0)">添加顶级分类</el-button>

@@ -427,7 +427,6 @@
           }
           this.lastPostData = postdata
         } else {
-          $('.main').animate({ scrollTop: 0 }, 500)
           postdata = this.lastPostData
           postdata.pn = this.searchData.pn
           postdata.page_size = this.searchData.page_size
@@ -438,6 +437,7 @@
           _this.searchLoading = false
           if (res.code === 0) {
             _this.resultData = res.data
+            $('.main').animate({ scrollTop: 0 }, 500)
           } else {
             _this.$message({
               type: 'error',

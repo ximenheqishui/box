@@ -1,5 +1,5 @@
 <template>
-  <div class="main menus">
+  <div class="menus">
     <div class="tool-box">
       <div class="left">
         <el-button size="mini" type="primary"  @click="append(0)">添加顶级菜单</el-button>
