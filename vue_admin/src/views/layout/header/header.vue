@@ -7,9 +7,11 @@
       </div>
     </div>
     <div class="right">
-      <span>{{$store.getters.userInfo.user_name}}</span>
-      <el-dropdown>
-        <i class="el-icon-setting" style="margin-left: 15px"></i>
+      <el-dropdown trigger="click">
+        <div>
+          <el-avatar size="medium" :src="$store.getters.userInfo.avatar"></el-avatar>
+          <i class="el-icon-arrow-down el-icon--right"></i>
+        </div>
         <el-dropdown-menu slot="dropdown">
           <el-dropdown-item @click.native="changePass">
              <span>修改密码</span>
@@ -167,6 +169,16 @@
       flex: none;
       width: 200px;
       color: #000;
+      .el-dropdown-selfdefine {
+       height: 50px;
+        .el-avatar{
+          vertical-align: middle;
+        }
+        i{
+          font-weight: bold;
+          color: #999;
+        }
+     }
     }
   }
 </style>

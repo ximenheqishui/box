@@ -49,9 +49,10 @@
         </el-switch>
       </el-form-item>
       <el-form-item>
-        <el-button style="margin:20px 20px 20px 0;letter-spacing: 10px" size="small" type="primary"
+        <el-button style="margin:20px 20px 20px 0;letter-spacing: 10px" size="mini" type="primary"
                    :loading="disableSubmit" :disabled="disableSubmit" @click="submitForm">提交
         </el-button>
+        <el-button  @click="backList()" :disabled="disableSubmit"  style="margin:20px 20px 20px 0px;letter-spacing: 10px" size="mini" type="primary">返回</el-button>
         <el-button size="mini" @click="resetForm">重置</el-button>
       </el-form-item>
     </el-form>
@@ -218,6 +219,9 @@
             })
           })
         }
+      },
+      backList () {
+        this.$router.back()
       },
       // 重置表单
       resetForm () {

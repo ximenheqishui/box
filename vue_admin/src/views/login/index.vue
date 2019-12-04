@@ -18,7 +18,7 @@
             <template slot="prepend" ><span class="password"></span></template>
           </el-input>
           </el-form-item>
-         <el-button  class="btn" @click="submitForm" type="primary">登录</el-button>
+         <el-button  class="btn" @click="submitForm" :disabled="disabled"  type="primary">登录</el-button>
       </el-form>
   </div>
 </template>
@@ -28,6 +28,7 @@
     data () {
       return {
         systemName: baseConfig.systemName,
+        disabled: false,
         form: {
           account: '',
           password: ''
@@ -50,7 +51,11 @@
           if (valid) {
             this.form.account = this.form.account.trim()
             this.form.password = this.form.password.trim()
-            this.$store.dispatch('user/login', this.form)
+            this.disabled = true
+            this.$store.dispatch('user/login', this.form).catch(error => {
+              this.disabled = false
+              console.log(error)
+            })
           } else {
             return false
           }

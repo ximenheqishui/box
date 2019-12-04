@@ -19,22 +19,26 @@ const user = {
   actions: {
     // 用户名登录
     login ({ dispatch, commit }, userInfo) {
-      api.login(userInfo).then(res => {
-        if (res.code === 0) {
-          commit('setToken', res.token)
-          setToken(res.token)
-          router.push('/')
-        } else {
+      return new Promise((resolve, reject) => {
+        api.login(userInfo).then(res => {
+          if (res.code === 0) {
+            commit('setToken', res.token)
+            setToken(res.token)
+            router.push('/')
+          } else {
+            reject(res)
+            Message({
+              message: res.message,
+              type: 'warning'
+            })
+          }
+        }).catch(error => { // 状态码非2xx时
+          reject(error)
           Message({
-            message: res.message,
-            type: 'warning'
+            message: error.message || '登录失败',
+            type: 'error',
+            duration: 5 * 1000
           })
-        }
-      }).catch(error => { // 状态码非2xx时
-        Message({
-          message: error.message || '登录失败',
-          type: 'error',
-          duration: 5 * 1000
         })
       })
     },
