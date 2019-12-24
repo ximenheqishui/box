@@ -1,0 +1,39 @@
+<view class="container-box">
+  <view class="camera-box">
+    <webrtc-room id="webrtcroom" template="grid" autoplay="{{autoplay}}" enableCamera="{{enableCamera}}" roomID="{{roomID}}" roomName="{{roomName}}" userID="{{userID}}" roomCreator="{{roomCreator}}" userSig="{{userSig}}" sdkAppID="{{sdkAppID}}" accountType="{{accountType}}" privateMapKey="{{privateMapKey}}" beauty="{{beauty}}" muted="{{muted}}" debug="{{debug}}" bindRoomEvent="onRoomEvent" bindIMEvent="onIMEvent" enableIM="{{false}}" smallViewLeft="{{smallViewLeft}}" smallViewTop="{{smallViewTop}}" smallViewWidth="{{smallViewWidth}}" smallViewHeight="{{smallViewHeight}}">
+      <view  slot="grid" style='height:100%;width:100%;position:absolute;'>
+
+        <view class="link">
+          <view class="item">
+            <navigator url="/pages/socket-room/index" hover-class="navigator-hover">
+              <button  hover-class="none" type="primary">聊天窗口 <text class="text"  wx:if="{{unreadMessage}}">{{ unreadMessage > 99 ? '99+': unreadMessage }}</text> </button>
+            </navigator>
+          </view>
+          <view class="item">
+            <navigator url="/pages/protocol/protocol" hover-class="navigator-hover">
+              <button hover-class="none" type="primary">查看协商记录</button>
+            </navigator>
+          </view>
+        </view>
+
+        <view class="operate">
+          <view class='img-box'>
+            <image class='img-view' src='/pages/Resources/camera{{frontCamera?"":"-gray"}}.png' bindtap="changeCamera"></image>
+          </view>
+<!--          <view class='img-box'>-->
+<!--            <image class='img-view' src='/pages/Resources/{{beauty > 0? "beauty" : "beauty-dis"}}.png' bindtap="setBeauty"></image>-->
+<!--          </view>-->
+          <view class='img-box'>
+            <image class='img-view' src='/pages/Resources/{{muted ? "mic-dis" : "mic"}}.png' bindtap="changeMute"></image>
+          </view>
+<!--          <view class='img-box'>-->
+<!--            <image class='img-view' src='/pages/Resources/{{debug? "log" : "log2"}}.png' bindtap="showLog"></image>-->
+<!--          </view>-->
+          <view class='img-box'>
+            <image class='img-view' src='/pages/Resources/endcall.png' bindtap="goBack"></image>
+          </view>
+        </view>
+      </view>
+    </webrtc-room>
+  </view>
+</view>

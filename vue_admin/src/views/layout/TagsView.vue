@@ -130,7 +130,6 @@
         this.$store.dispatch('tagsView/delCachedView', view).then(() => {
           const { fullPath } = view
           this.$nextTick(() => {
-            console.log('/redirect' + fullPath)
             this.$router.replace({
               path: '/redirect' + fullPath
             })

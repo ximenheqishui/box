@@ -39,6 +39,7 @@ module.exports = {
      */
     async getArticle(query) {
         let {
+            id,
             pn,
             page_size,
             title,
@@ -56,10 +57,15 @@ module.exports = {
 
         let _sqlCount = "SELECT COUNT(*) AS total_count FROM article where 1=1 "
 
-
-
         let _sql = ''
         let arr = []
+
+        // 查询条件有id的之间返回一条数据的结果
+        if (id !== '' && id !== undefined) {
+            _sql += ` and article.id=?`
+            arr.push(id)
+            return  await dbUtils.query(_sqlUser + _sql, arr)
+        }
 
         if (title !== '' && title !== undefined ) {
             _sql += ` and article.title like ?`
@@ -98,6 +104,7 @@ module.exports = {
         }
 
         _sql += ' ORDER BY create_time DESC'
+
         // 分页和不分页的结果
         if (pn && page_size) {
             let resultTotal= await dbUtils.query(_sqlCount + _sql, arr)
@@ -107,20 +114,7 @@ module.exports = {
         } else {
             result = await dbUtils.query(_sqlUser + _sql, arr)
         }
-        return result
-    },
-
-
-    /**
-     * 根据id查询文章
-     * @param  {int} id  文章id
-     */
-    async getArticleOne(id) {
-        let _sql = "select * FROM article where 1 = 1 "
-        let arr = []
-        _sql += ` and id = ?`
-        arr.push(id)
-        let result = await dbUtils.query(_sql, arr)
+        console.log(result)
         return result
     }
 }

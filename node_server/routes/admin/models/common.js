@@ -14,8 +14,7 @@ module.exports = {
             if (obj[item.type]) {
                 obj[item.type].push(item)
             } else {
-                obj[item.type] = []
-                obj[item.type].push(item)
+                obj[item.type] = [item]
             }
         })
         return obj

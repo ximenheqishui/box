@@ -118,13 +118,16 @@
           _this.pageLoading = false
           return false
         }
-        this.api.getArticleOne({ id: this.id }).then(res => {
+        this.api.getArticle({ id: this.id }).then(res => {
           _this.pageLoading = false
           if (res.code === 0) {
-            res.data.type_path = JSON.parse(res.data.type_path)
-            _this.defaultForm = JSON.parse(JSON.stringify(res.data))
-            _this.form = JSON.parse(JSON.stringify(res.data))
-            _this.$refs.tinymce.setContent(_this.defaultForm.content)
+            if (res.data && res.data.length) {
+              let articleData = res.data[0]
+              articleData.type_path = JSON.parse(articleData.type_path)
+              _this.defaultForm = JSON.parse(JSON.stringify(articleData))
+              _this.form = JSON.parse(JSON.stringify(articleData))
+              _this.$refs.tinymce.setContent(_this.defaultForm.content)
+            }
           } else {
             _this.$message({
               type: 'error',

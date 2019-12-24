@@ -1,0 +1,105 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+		<title>观看</title>
+		<style type="text/css">html,
+body,
+canvas,
+div,
+ul,
+li,
+h5,
+p,
+img {
+	margin: 0;
+	padding: 0;
+	-moz-user-select: none;
+	-webkit-user-select: none;
+}
+ 
+.wrap {
+	width: 100%;
+	height: 100%;
+	margin: 0;
+	padding: 20px;
+	box-sizing: border-box;
+}
+ 
+#canvas {
+	border: 1px #ccc solid;
+	display: inline;
+}
+
+#img{
+	border: 1px #ccc solid;
+	margin: 0 auto;
+	display: block;
+}
+ 
+ 
+ 
+ 
+		
+</style>
+</head>
+
+<body>
+<div class="wrap">
+	<!--<canvas id="canvas"></canvas>-->
+	<img id="img" />
+</div>
+<script type="text/javascript" src="js/jquery-1.11.3.min.js" ></script>
+<script type="text/javascript">
+ 
+var ws; // 就是一个通信管道
+var target = "ws://192.168.40.91:8888/board";//服务端的url，注意以ws开头
+
+//var canvas,context;
+var img;
+ $(document).ready(function() {
+ 	
+//	canvas = document.getElementById('canvas');
+//	context = canvas.getContext('2d');
+// 	canvas.width = ($(document).width() - 42);
+//	canvas.height = ($(document).height() - 42);
+	
+	img = document.getElementById("img");
+	//img.style.width = ($(document).width() - 42);
+	//img.style.height = ($(document).height() - 42);
+	
+ 	//三个判断用于获取ws通信管道（浏览器兼容）
+ 	if('WebSocket' in window){
+ 		ws = new WebSocket(target);
+  	}else if('MozWebSocket' in window){
+      	ws = new MozMozWebSocket(target);
+  	}else{
+      	$('body').html("<center><h1>Error</h1><p>您的浏览器不支持HTML5 Web Sockets.</p></center>");
+      	return;
+  	}
+  	
+  	//链接开启会执行方法
+  	ws.onopen = function(evt){
+  		console.log("您已连接");
+  	}  
+  	
+  	//断开连接会执行方法
+  	ws.onclose = function(evt){
+  		alert("连接已关闭");
+  	}
+   
+  	//服务器有信息返回就执行方法
+  	ws.onmessage=function(event){
+  		 
+		img.src = event.data;
+  		
+//		context.clearRect(0,0,context.canvas.width,context.canvas.height);
+//		context.putImageData(event.data,0,0);
+  	};
+  	
+  	
+});
+</script>
+</body>
+</html>

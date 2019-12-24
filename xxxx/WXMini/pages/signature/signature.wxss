@@ -1,0 +1,47 @@
+/* pages/webrtc-room/signature/signature.wxss */
+
+.container-box{
+  padding: 20px 20px;
+  font-size: 16px;
+  box-sizing: border-box;
+  background-color: #242424;
+  height: 100%;
+  color: #fff;
+}
+
+.btn button{
+  background-color: #006eff;
+  color: #fff;
+}
+
+
+
+
+.qianzi{
+  margin: 40px 0px;
+}
+.text{
+  padding: 0;
+  margin: 0;
+  line-height: 2em;
+}
+
+
+
+.canvas {
+  margin: 0 auto;
+  width: 88%;
+  min-height: 400rpx;
+  border: 1rpx solid #000;
+  box-sizing: border-box;
+  background-color: #fff;
+}
+
+
+
+.btn{
+  flex-direction: row;
+  justify-content: center;
+  display: flex;
+  margin: 40rpx 0;
+}

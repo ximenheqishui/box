@@ -1,0 +1,8 @@
+<!--pages/webrtc-room/signature/signature.wxml-->
+<view class="container-box">
+  <canvas class="canvas" id="canvas" canvas-id="canvas" disable-scroll="true" bindtouchstart="canvasStart" bindtouchmove="canvasMove" bindtouchend="canvasEnd" touchcancel="canvasEnd" binderror="canvasIdErrorCallback"></canvas>
+  <view class="btn">
+    <button size="mini" bindtap="cleardraw">清除画布</button>
+    <button size="mini" bindtap='getimg' >确定</button>
+  </view>
+</view>

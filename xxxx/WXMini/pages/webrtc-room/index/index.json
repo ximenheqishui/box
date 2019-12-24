@@ -1,0 +1,6 @@
+{
+  "navigationBarTitleText": "纠纷调解",
+  "usingComponents":{
+    "i-icon":"/iview/icon/index"
+  }
+}

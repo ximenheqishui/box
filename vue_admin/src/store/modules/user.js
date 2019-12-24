@@ -1,4 +1,4 @@
-import { setToken, removeToken } from '@/utils/auth'
+import { setToken, removeToken, getToken } from '@/utils/auth'
 import { Message } from 'element-ui'
 import router from '@/router/index.js'
 import api from '@/api/index.js'
@@ -22,9 +22,13 @@ const user = {
       return new Promise((resolve, reject) => {
         api.login(userInfo).then(res => {
           if (res.code === 0) {
-            commit('setToken', res.token)
-            setToken(res.token)
-            router.push('/')
+            try {
+              commit('setToken', res.token)
+              setToken(res.token)
+              router.push('/')
+            } catch (e) {
+              console.log(e)
+            }
           } else {
             reject(res)
             Message({
@@ -48,6 +52,7 @@ const user = {
         api.getUserInfo().then(res => {
           if (res.code === 0) {
             commit('setUserInfo', res.userInfo)
+            commit('setToken', getToken())
             resolve(res)
           } else {
             reject(res)

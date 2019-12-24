@@ -1,0 +1,97 @@
+<view class='container-box'>
+
+    <scroll-view bindtap="hideTool" class="info-box" scroll-y="true" scroll-top="{{ top }}">
+        <view class="content-box" wx:for="{{ allData }}" wx:for-index="index" wx:for-item="item" wx:key="{{item.id}}">
+            <view class="center"> {{ item.create_time }}</view>
+            <view class="right" wx:if="{{ item.user_id == id }}">
+                <view class="item text" wx:if="{{ item.code == 1 }}">
+                    <text selectable="{{ true }}">{{ item.text }}</text>
+                </view>
+                <view bindtap="showBigImage" data-url="{{ item.text }}" class="item image" wx:elif="{{ item.code == 2 }}">
+                    <image mode="widthFix" src="{{ item.text }}"></image>
+                </view>
+                <view bindtap="openFile"  data-url="{{ item.text }}" class="item file" wx:else>
+                    <view class="file-info">
+                        <view class="name" selectable="{{ true }}">
+                            <text>{{item.file_name}}</text>
+                        </view>
+                        <view class="size">
+                            <text>{{item.file_size}}</text>
+                        </view>
+                    </view>
+                    <image src="/assets/images/{{item.code}}file.png"></image>
+                </view>
+                <view class="avatar">
+                    <image style="width: 38px;height: 38px;border-radius: 4px" src="{{ item.avatar }}"></image>
+                </view>
+            </view>
+            <view class="left" wx:else>
+                <view class="avatar">
+                    <image style="width: 38px;height: 38px;border-radius: 4px" src="{{ item.avatar }}"></image>
+                </view>
+                <view class="item text" wx:if="{{ item.code == 1 }}">
+                    <text selectable="{{ true }}">{{ item.text }}</text>
+                </view>
+                <view class="item image" wx:elif="{{ item.code == 2 }}">
+                    <image mode="widthFix" src="{{ item.text }}"></image>
+                </view>
+                <view class="item file" wx:else>
+                    <view class="file-info">
+                        <view class="name" selectable="{{ true }}">
+                            <text>{{item.name}}</text>
+                        </view>
+                        <view class="size">
+                            <text>{{item.size}}</text>
+                        </view>
+                    </view>
+                    <image src="/assets/images/{{item.code}}file.png"></image>
+                </view>
+            </view>
+        </view>
+    </scroll-view>
+    <view class="input-box">
+        <textarea  cursor-spacing ="20"  maxlength="{{ -1 }}" show-confirm-bar="{{ false }}" value="{{ inputValue }}"  auto-height    bindinput="bindReplaceInput" />
+        <view bindtap="showTool" wx:if="{{ !inputValue }}">
+            <i-icon type="add" size="34"></i-icon>
+        </view>
+        <view wx:else class="send-message" bindtap="sendMessage">发送</view>
+    </view>
+    <view class="tools-box {{ tool ? 'active' : '' }}">
+        <view bindtap="chooseImage" class="item">
+            <view class="icon">
+                <i-icon type="picture_fill" size="34"></i-icon>
+            </view>
+            <view class="text">相册</view>
+        </view>
+<!--        <view bindtap="showCamera" class="item">-->
+<!--            <view class="icon">-->
+<!--                <i-icon type="camera_fill" size="34"></i-icon>-->
+<!--            </view>-->
+<!--            <view class="text">相机</view>-->
+<!--        </view>-->
+        <view class="item" bindtap="pickFile">
+            <view class="icon">
+                <i-icon type="tasklist_fill" size="34"></i-icon>
+            </view>
+            <view class="text">文件</view>
+        </view>
+    </view>
+
+    <view class="camera" wx:if="{{showCamera}}">
+        <camera device-position="{{devicePosition}}" flash="off" binderror="error"
+                style="width: 100%;height: 100%;z-index: 1000"></camera>
+        <cover-view bindtap="changeCamera" class="change" style="z-index:1001">
+            <cover-image src="/assets/images/xiangji.png" style="width: 30px;height: 30px"></cover-image>
+        </cover-view>
+        <cover-view bindtap="hideCamera" class="back" style="z-index:1001">
+            <cover-image src="/assets/images/icon_left.png" style="width: 30px;height: 30px"></cover-image>
+        </cover-view>
+        <cover-view style="z-index:1001" bindtap="takePhoto" class="button"></cover-view>
+    </view>
+
+    <movable-area bindtap="hideBigImage" style=" background: #000 ;width: 100%; height: 100%;z-index: 10000000;position: fixed;display: flex;justify-content: center;align-items: center;"   wx:if="{{showBigImageTag}}">
+        <movable-view style="width: 100%; height: 100%;" out-of-bounds="{{ true }}"  direction="all"  scale="{{ true }}">
+            <image  style="width: 100%; height: 100%;"  src="{{bigImageUrl}}" mode="aspectFit" ></image>
+        </movable-view>
+    </movable-area>
+</view>

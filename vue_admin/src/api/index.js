@@ -232,13 +232,6 @@ export default {
       params: data
     })
   },
-  getArticleOne: function (data) {
-    return axios({
-      url: '/article/one',
-      method: 'get',
-      params: data
-    })
-  },
   addArticle: function (data) {
     return axios({
       url: '/article',

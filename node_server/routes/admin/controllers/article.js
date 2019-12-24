@@ -99,6 +99,7 @@ module.exports = {
      * @apiGroup article
      * @apiUse APICommon
      *
+     * @apiParam {Number} id  文章id
      * @apiParam {Number} pn  第几页: 不存在获取所有符合筛选条件数据
      * @apiParam {Number} pageSize 每页多少条：不存在获取所有符合筛选条件数据
      * @apiParam {String} title  文章名称
@@ -111,33 +112,10 @@ module.exports = {
     async getArticle(req, res, next) {
         try {
             req.returnData.data =  await articleModels.getArticle(req.query)
-            await res.json(req.returnData)
-        } catch (e) {
-            next(e)
-        }
-    },
-
-
-
-    /**
-     * @api {get} /admin/article/one 获取一个文章
-     * @apiName getArticleOne
-     * @apiGroup article
-     * @apiUse APICommon
-     *
-     * @apiParam {Number} id  文章id
-     */
-    async getArticleOne(req, res, next) {
-        try {
-            req.returnData.data = {}
-            let result=  await articleModels.getArticleOne(req.query.id)
-            if (result && result.length) {
-                req.returnData.data =  result[0]
-            }
+            console.log(req.returnData)
             await res.json(req.returnData)
         } catch (e) {
             next(e)
         }
     }
-
 }

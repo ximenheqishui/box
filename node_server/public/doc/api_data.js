@@ -23,7 +23,7 @@ define({ "api": [
     "groupTitle": "article",
     "sampleRequest": [
       {
-        "url": "http://localhost:3000/admin/article"
+        "url": "http://192.168.199.147:3000/admin/article"
       }
     ],
     "header": {
@@ -64,7 +64,7 @@ define({ "api": [
     "groupTitle": "articleType",
     "sampleRequest": [
       {
-        "url": "http://localhost:3000/admin/articleType"
+        "url": "http://192.168.199.147:3000/admin/articleType"
       }
     ],
     "header": {
@@ -133,7 +133,7 @@ define({ "api": [
     "groupTitle": "articleType",
     "sampleRequest": [
       {
-        "url": "http://localhost:3000/admin/articleType"
+        "url": "http://192.168.199.147:3000/admin/articleType"
       }
     ],
     "header": {
@@ -174,7 +174,7 @@ define({ "api": [
     "groupTitle": "articleType",
     "sampleRequest": [
       {
-        "url": "http://localhost:3000/admin/articleType"
+        "url": "http://192.168.199.147:3000/admin/articleType"
       }
     ],
     "header": {
@@ -250,7 +250,7 @@ define({ "api": [
     "groupTitle": "articleType",
     "sampleRequest": [
       {
-        "url": "http://localhost:3000/admin/articleType"
+        "url": "http://192.168.199.147:3000/admin/articleType"
       }
     ],
     "header": {
@@ -340,7 +340,7 @@ define({ "api": [
     "groupTitle": "article",
     "sampleRequest": [
       {
-        "url": "http://localhost:3000/admin/article"
+        "url": "http://192.168.199.147:3000/admin/article"
       }
     ],
     "header": {
@@ -366,6 +366,13 @@ define({ "api": [
     "parameter": {
       "fields": {
         "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "id",
+            "description": "<p>文章id</p>"
+          },
           {
             "group": "Parameter",
             "type": "Number",
@@ -430,48 +437,7 @@ define({ "api": [
     "groupTitle": "article",
     "sampleRequest": [
       {
-        "url": "http://localhost:3000/admin/article"
-      }
-    ],
-    "header": {
-      "fields": {
-        "Header": [
-          {
-            "group": "Header",
-            "type": "String",
-            "optional": false,
-            "field": "Admin-Token",
-            "description": "<p>Users unique access-key.</p>"
-          }
-        ]
-      }
-    }
-  },
-  {
-    "type": "get",
-    "url": "/admin/article/one",
-    "title": "获取一个文章",
-    "name": "getArticleOne",
-    "group": "article",
-    "parameter": {
-      "fields": {
-        "Parameter": [
-          {
-            "group": "Parameter",
-            "type": "Number",
-            "optional": false,
-            "field": "id",
-            "description": "<p>文章id</p>"
-          }
-        ]
-      }
-    },
-    "version": "0.0.0",
-    "filename": "routes/admin/controllers/article.js",
-    "groupTitle": "article",
-    "sampleRequest": [
-      {
-        "url": "http://localhost:3000/admin/article/one"
+        "url": "http://192.168.199.147:3000/admin/article"
       }
     ],
     "header": {
@@ -568,7 +534,7 @@ define({ "api": [
     "groupTitle": "article",
     "sampleRequest": [
       {
-        "url": "http://localhost:3000/admin/article"
+        "url": "http://192.168.199.147:3000/admin/article"
       }
     ],
     "header": {
@@ -596,7 +562,7 @@ define({ "api": [
     "groupTitle": "common",
     "sampleRequest": [
       {
-        "url": "http://localhost:3000/admin/excelExport"
+        "url": "http://192.168.199.147:3000/admin/excelExport"
       }
     ],
     "header": {
@@ -624,7 +590,7 @@ define({ "api": [
     "groupTitle": "common",
     "sampleRequest": [
       {
-        "url": "http://localhost:3000/admin/dictionaries"
+        "url": "http://192.168.199.147:3000/admin/dictionaries"
       }
     ],
     "header": {
@@ -672,7 +638,7 @@ define({ "api": [
     "groupTitle": "common",
     "sampleRequest": [
       {
-        "url": "http://localhost:3000/admin/login"
+        "url": "http://192.168.199.147:3000/admin/login"
       }
     ]
   },
@@ -687,7 +653,7 @@ define({ "api": [
     "groupTitle": "common",
     "sampleRequest": [
       {
-        "url": "http://localhost:3000/admin/logout"
+        "url": "http://192.168.199.147:3000/admin/logout"
       }
     ],
     "header": {
@@ -733,7 +699,7 @@ define({ "api": [
     "groupTitle": "common",
     "sampleRequest": [
       {
-        "url": "http://localhost:3000/null"
+        "url": "http://192.168.199.147:3000/null"
       }
     ]
   },
@@ -748,7 +714,7 @@ define({ "api": [
     "groupTitle": "common",
     "sampleRequest": [
       {
-        "url": "http://localhost:3000/admin/userInfo"
+        "url": "http://192.168.199.147:3000/admin/userInfo"
       }
     ],
     "header": {
@@ -789,7 +755,7 @@ define({ "api": [
     "groupTitle": "department",
     "sampleRequest": [
       {
-        "url": "http://localhost:3000/admin/department"
+        "url": "http://192.168.199.147:3000/admin/department"
       }
     ],
     "header": {
@@ -858,7 +824,7 @@ define({ "api": [
     "groupTitle": "department",
     "sampleRequest": [
       {
-        "url": "http://localhost:3000/admin/department"
+        "url": "http://192.168.199.147:3000/admin/department"
       }
     ],
     "header": {
@@ -899,7 +865,7 @@ define({ "api": [
     "groupTitle": "department",
     "sampleRequest": [
       {
-        "url": "http://localhost:3000/admin/department"
+        "url": "http://192.168.199.147:3000/admin/department"
       }
     ],
     "header": {
@@ -940,7 +906,7 @@ define({ "api": [
     "groupTitle": "department",
     "sampleRequest": [
       {
-        "url": "http://localhost:3000/admin/department/leader"
+        "url": "http://192.168.199.147:3000/admin/department/leader"
       }
     ],
     "header": {
@@ -1023,7 +989,7 @@ define({ "api": [
     "groupTitle": "department",
     "sampleRequest": [
       {
-        "url": "http://localhost:3000/admin/department"
+        "url": "http://192.168.199.147:3000/admin/department"
       }
     ],
     "header": {
@@ -1064,7 +1030,7 @@ define({ "api": [
     "groupTitle": "menu",
     "sampleRequest": [
       {
-        "url": "http://localhost:3000/admin/menu"
+        "url": "http://192.168.199.147:3000/admin/menu"
       }
     ],
     "header": {
@@ -1168,7 +1134,7 @@ define({ "api": [
     "groupTitle": "menu",
     "sampleRequest": [
       {
-        "url": "http://localhost:3000/admin/menu"
+        "url": "http://192.168.199.147:3000/admin/menu"
       }
     ],
     "header": {
@@ -1209,7 +1175,7 @@ define({ "api": [
     "groupTitle": "menu",
     "sampleRequest": [
       {
-        "url": "http://localhost:3000/admin/menu"
+        "url": "http://192.168.199.147:3000/admin/menu"
       }
     ],
     "header": {
@@ -1320,7 +1286,7 @@ define({ "api": [
     "groupTitle": "menu",
     "sampleRequest": [
       {
-        "url": "http://localhost:3000/admin/menu"
+        "url": "http://192.168.199.147:3000/admin/menu"
       }
     ],
     "header": {
@@ -1361,7 +1327,7 @@ define({ "api": [
     "groupTitle": "role",
     "sampleRequest": [
       {
-        "url": "http://localhost:3000/admin/role"
+        "url": "http://192.168.199.147:3000/admin/role"
       }
     ],
     "header": {
@@ -1409,7 +1375,7 @@ define({ "api": [
     "groupTitle": "role",
     "sampleRequest": [
       {
-        "url": "http://localhost:3000/admin/role"
+        "url": "http://192.168.199.147:3000/admin/role"
       }
     ],
     "header": {
@@ -1457,7 +1423,7 @@ define({ "api": [
     "groupTitle": "role",
     "sampleRequest": [
       {
-        "url": "http://localhost:3000/admin/role/menu"
+        "url": "http://192.168.199.147:3000/admin/role/menu"
       }
     ],
     "header": {
@@ -1505,7 +1471,7 @@ define({ "api": [
     "groupTitle": "role",
     "sampleRequest": [
       {
-        "url": "http://localhost:3000/admin/role"
+        "url": "http://192.168.199.147:3000/admin/role"
       }
     ],
     "header": {
@@ -1546,7 +1512,7 @@ define({ "api": [
     "groupTitle": "role",
     "sampleRequest": [
       {
-        "url": "http://localhost:3000/admin/role/menu"
+        "url": "http://192.168.199.147:3000/admin/role/menu"
       }
     ],
     "header": {
@@ -1601,7 +1567,7 @@ define({ "api": [
     "groupTitle": "role",
     "sampleRequest": [
       {
-        "url": "http://localhost:3000/admin/role"
+        "url": "http://192.168.199.147:3000/admin/role"
       }
     ],
     "header": {
@@ -1642,7 +1608,7 @@ define({ "api": [
     "groupTitle": "user",
     "sampleRequest": [
       {
-        "url": "http://localhost:3000/admin/user"
+        "url": "http://192.168.199.147:3000/admin/user"
       }
     ],
     "header": {
@@ -1739,7 +1705,7 @@ define({ "api": [
     "groupTitle": "user",
     "sampleRequest": [
       {
-        "url": "http://localhost:3000/admin/user"
+        "url": "http://192.168.199.147:3000/admin/user"
       }
     ],
     "header": {
@@ -1843,7 +1809,7 @@ define({ "api": [
     "groupTitle": "user",
     "sampleRequest": [
       {
-        "url": "http://localhost:3000/admin/user"
+        "url": "http://192.168.199.147:3000/admin/user"
       }
     ],
     "header": {
@@ -1947,7 +1913,7 @@ define({ "api": [
     "groupTitle": "user",
     "sampleRequest": [
       {
-        "url": "http://localhost:3000/admin/user"
+        "url": "http://192.168.199.147:3000/admin/user"
       }
     ],
     "header": {

@@ -41,10 +41,15 @@ router.use(async function (req, res, next) {
     }
 
     // 不需要登录的接口
-    if (req.path === '/login' || req.path.startsWith('/excelExport') ){
+    if (req.path === '/login' ){
         next()
     } else {
-        let user = await redis.getDate(req.get('Admin-Token'))
+        let user = {}
+        if (req.path.startsWith('/excelExport') ) {
+            user =  await redis.getDate(req.query.token)
+        } else {
+            user =  await redis.getDate(req.get('Admin-Token'))
+        }
         req.user = user
         // 这个地方要做每个接口的权限
         // console.log(req.method)
@@ -52,7 +57,7 @@ router.use(async function (req, res, next) {
         // console.log(req.baseUrl)
         // console.log(req.path)
         if (!user) {
-            res.json({code: 2, message: '未登录'})
+            res.json({code: 2, message: '未登录或登录超时'})
         } else {
             next()
         }

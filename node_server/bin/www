@@ -7,10 +7,15 @@
 const config = require('../config')
 const app = require('../app');
 const socketApp = require('../socketApp');
+const wsApp = require('../wsApp');
 
 const socketServer = require('socket.io');
+const wsServer = require('ws');
 const debug = require('debug')('node-server:server');
 const http = require('http');
+const https = require('https');
+const fs = require('fs');
+const path = require('path');
 // let opn = require('opn')
 
 
@@ -41,13 +46,20 @@ app.set('port', port);
  * Create HTTP server.
  */
 
+// const server = https.createServer({
+//   key: fs.readFileSync( path.join(__dirname,'fake-keys/privatekey.pem')),
+//   cert: fs.readFileSync( path.join(__dirname,'fake-keys/certificate.pem'))
+// },app);
+
 const server = http.createServer(app);
 
+// const io = socketServer(server)
+
+const wss = new wsServer.Server({ server });
 
 
-const io = socketServer(server)
-
-socketApp(io)
+wsApp(wss,wsServer)
+// socketApp(io)
 
 
 
@@ -118,6 +130,6 @@ function onListening() {
       ? 'pipe ' + addr
       : 'port ' + addr.port;
   debug('Listening on ' + bind);
-  console.log(`---\n     服务器启动成功 >>>  http://127.0.0.1:${addr.port}\n     时间：${new Date().toLocaleString()}\n---`);
+  console.log(`---\n     服务器启动成功 >>>  https://127.0.0.1:${addr.port}\n     时间：${new Date().toLocaleString()}\n---`);
   // opn(`http://127.0.0.1:${addr.port}`)
 }

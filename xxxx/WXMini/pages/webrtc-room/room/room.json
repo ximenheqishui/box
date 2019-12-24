@@ -1,0 +1,7 @@
+{
+  "navigationBarTitleText": "纠纷调解",
+  "usingComponents": {
+    "webrtc-room": "/pages/components/webrtc-room/webrtc-room"
+  },
+  "navigationStyle": "custom"
+}

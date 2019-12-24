@@ -25,7 +25,7 @@
     var person = prompt("请输入您的昵称", "马云");
 
 
-    var socketBase = io('http://127.0.0.1:3000');
+    var socketBase = io('wss://127.0.0.1:3000');
 
     var socket = io('/<%= nsp %>?room=<%= room %>');
 

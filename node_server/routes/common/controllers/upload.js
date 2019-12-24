@@ -9,10 +9,10 @@ module.exports = {
                 name: ''
             }
             if (req.file) {
+                console.log(req.file)
                 info = {
                     file: req.file,
-                    path:  'http://localhost:3000/upload/images/' +  req.file.filename,
-                    name: 'admin'
+                    path:  'http://192.168.199.147:3000/upload/images/' +  req.file.filename
                 }
             }
             await res.json(info)
