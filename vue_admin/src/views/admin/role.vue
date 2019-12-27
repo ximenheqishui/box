@@ -75,7 +75,7 @@
                     @current-change="handleCurrentChange"
                     :current-page="searchData.pn"
                     :page-sizes="searchData.pageSizes"
-                    :page-size="searchData.pageSize"
+                    :page-size="searchData.page_size"
                     layout="total, sizes, prev, pager, next, jumper"
                     :total="resultData.total">
             </el-pagination>
@@ -156,7 +156,7 @@
         searchData: {
           pageSizes: [10, 20, 50, 100],
           pn: 1,
-          pageSize: 10
+          page_size: 10
         },
         resultData: {
           list: [],
@@ -179,7 +179,7 @@
       },
       handleSizeChange (val) {
         this.searchData.pn = 1
-        this.searchData.pageSize = val
+        this.searchData.page_size = val
         this.$nextTick(() => {
           this.getData()
         })
@@ -237,14 +237,14 @@
         })
       },
       indexMethod (index) {
-        return (this.searchData.pn - 1) * this.searchData.pageSize + (index + 1)
+        return (this.searchData.pn - 1) * this.searchData.page_size + (index + 1)
       },
       getData () {
         let _this = this
         this.loading = true
         _this.api.getRole({
           pn: _this.searchData.pn,
-          pageSize: _this.searchData.pageSize
+          page_size: _this.searchData.page_size
         }).then(res => {
           _this.loading = false
           if (res.code === 0) {
@@ -367,7 +367,7 @@
           return false
         }
         let ids = this.$refs.tree.getCheckedKeys()
-        _this.api.updateRoleMenu({ role_id: _this.roleId, permissionIds: ids }).then(res => {
+        _this.api.updateRoleMenu({ role_id: _this.roleId, permission_ids: ids }).then(res => {
           _this.dialog.disableSubmit = false
           if (res.code === 0) {
             _this.menuDialog = false

@@ -35,12 +35,12 @@ module.exports = {
     /**
      * 分页查询数据
      * @param  {int} pn  第几页
-     * @param {int} pageSize   每页多少条
+     * @param {int} page_size   每页多少条
      */
-    async getByPage(pn,pageSize) {
+    async getByPage(pn,page_size) {
         let result = {}
         let resultTotal = await this.count()
-        let list = await dbUtils.findDataByPage("role",(pn-1)*pageSize, pn*pageSize)
+        let list = await dbUtils.findDataByPage("role",(pn-1)*page_size, pn*page_size)
         result.total = resultTotal[0].total_count
         result.list = list
         return result

@@ -101,7 +101,7 @@ module.exports = {
      *
      * @apiParam {Number} id  文章id
      * @apiParam {Number} pn  第几页: 不存在获取所有符合筛选条件数据
-     * @apiParam {Number} pageSize 每页多少条：不存在获取所有符合筛选条件数据
+     * @apiParam {Number} page_size 每页多少条：不存在获取所有符合筛选条件数据
      * @apiParam {String} title  文章名称
      * @apiParam {String} type_id  文章类别
      * @apiParam {String} keyword  关键词

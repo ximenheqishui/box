@@ -65,7 +65,9 @@ module.exports = {
             if (result && result.length) {
                 if (cryptoUtil.createPass(req.body.password) === result[0].password) {
                     let token = await redis.setLoginToken(result[0])
-                    req.returnData.token = token
+                    req.returnData.data = {
+                        token: token
+                    }
                 } else {
                     req.returnData.code = 1
                     req.returnData.message = '密码不正确'
@@ -145,7 +147,7 @@ module.exports = {
             })
             user.menu = adminMenu
             user.permission = permission
-            req.returnData.userInfo = user
+            req.returnData.data = user
             await res.json(req.returnData)
         } catch (e) {
             next(e)

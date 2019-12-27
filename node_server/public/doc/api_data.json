@@ -384,7 +384,7 @@
             "group": "Parameter",
             "type": "Number",
             "optional": false,
-            "field": "pageSize",
+            "field": "page_size",
             "description": "<p>每页多少条：不存在获取所有符合筛选条件数据</p>"
           },
           {
@@ -1460,7 +1460,7 @@
             "group": "Parameter",
             "type": "Number",
             "optional": false,
-            "field": "pageSize",
+            "field": "page_size",
             "description": "<p>每页多少条：不存在获取所有数据</p>"
           }
         ]
@@ -1742,7 +1742,7 @@
             "group": "Parameter",
             "type": "Number",
             "optional": false,
-            "field": "pageSize",
+            "field": "page_size",
             "description": "<p>每页多少条：不存在获取所有符合筛选条件数据</p>"
           },
           {

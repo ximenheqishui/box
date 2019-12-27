@@ -365,7 +365,7 @@
       handleAvatarSuccess (res, file) {
         // 这里加一个后台返回连接的
         // this.dialog.form.avatar = URL.createObjectURL(file.raw)
-        this.dialog.form.avatar = res.path
+        this.dialog.form.avatar = res.data.path
       },
       // 图片上传之前的校验
       beforeAvatarUpload (file) {

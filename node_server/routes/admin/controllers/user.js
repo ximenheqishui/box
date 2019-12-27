@@ -129,7 +129,7 @@ module.exports = {
      * @apiUse APICommon
      *
      * @apiParam {Number} pn  第几页: 不存在获取所有符合筛选条件数据
-     * @apiParam {Number} pageSize 每页多少条：不存在获取所有符合筛选条件数据
+     * @apiParam {Number} page_size 每页多少条：不存在获取所有符合筛选条件数据
      * @apiParam {String} user_name  用户名称
      * @apiParam {String} email  邮箱
      * @apiParam {number} mobile  手机号

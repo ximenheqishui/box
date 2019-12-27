@@ -2,7 +2,7 @@ import axios from './request'
 export default {
 
   commonURL: {
-      uploadUrl: baseUrl + '/common/upload/single',
+      uploadUrl: baseConfig.apiHost + '/upload',
       exportUrl: baseUrl + '/admin/excelExport'
   },
   /**
@@ -116,7 +116,7 @@ export default {
   updateRoleMenu: function (data) {
     return axios({
       url: '/role/menu',
-      method: 'post',
+      method: 'put',
       data: data
     })
   },
@@ -251,6 +251,31 @@ export default {
       url: '/article',
       method: 'DELETE',
       data: { id: data.id + '' }
+    })
+  },
+
+  // 测试用的数据
+  sendMessage: function (data) {
+    return axios({
+      url: baseUrl + '/port/events/onMessage',
+      method: 'get',
+      params: data
+    })
+  },
+  // 测试用的数据
+  bindId: function (data) {
+    return axios({
+      url: baseUrl + '/port/events/bind',
+      method: 'get',
+      params: data
+    })
+  },
+  // 测试用的数据
+  loadAll: function (data) {
+    return axios({
+      url: baseUrl + '/port/events/load',
+      method: 'get',
+      params: data
     })
   }
 }

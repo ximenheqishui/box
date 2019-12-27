@@ -7,7 +7,7 @@ router.delete('/', menu.delRole)
 router.get('/', menu.getRole)
 router.put('/', menu.upDateRole)
 
-router.post('/menu', menu.updateRoleMenu)
+router.put('/menu', menu.updateRoleMenu)
 router.get('/menu', menu.getRoleMenu)
 
 module.exports = router;

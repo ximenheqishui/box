@@ -23,8 +23,8 @@ const user = {
         api.login(userInfo).then(res => {
           if (res.code === 0) {
             try {
-              commit('setToken', res.token)
-              setToken(res.token)
+              commit('setToken', res.data.token)
+              setToken(res.data.token)
               router.push('/')
             } catch (e) {
               console.log(e)
@@ -51,7 +51,7 @@ const user = {
       return new Promise((resolve, reject) => {
         api.getUserInfo().then(res => {
           if (res.code === 0) {
-            commit('setUserInfo', res.userInfo)
+            commit('setUserInfo', res.data)
             commit('setToken', getToken())
             resolve(res)
           } else {

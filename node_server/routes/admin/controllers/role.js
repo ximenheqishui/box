@@ -77,13 +77,13 @@ module.exports = {
      * @apiUse APICommon
      *
      * @apiParam {Number} pn  第几页: 不存在获取所有数据
-     * @apiParam {Number} pageSize 每页多少条：不存在获取所有数据
+     * @apiParam {Number} page_size 每页多少条：不存在获取所有数据
      */
     async getRole(req, res, next) {
         try {
-            let {pn, pageSize} = req.query
-            if (pn && pageSize) {
-                req.returnData.data = await roleModels.getByPage(pn, pageSize)
+            let {pn, page_size} = req.query
+            if (pn && page_size) {
+                req.returnData.data = await roleModels.getByPage(pn, page_size)
             } else {
                 req.returnData.data =  await roleModels.getAll()
             }
@@ -123,7 +123,7 @@ module.exports = {
      */
     async updateRoleMenu(req, res, next) {
         try {
-            await roleModels.updateRoleMenu(req.body.permissionIds, req.body.role_id)
+            await roleModels.updateRoleMenu(req.body.permission_ids, req.body.role_id)
             await res.json(req.returnData)
         } catch (e) {
             next(e)

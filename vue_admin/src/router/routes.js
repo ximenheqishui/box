@@ -13,6 +13,15 @@ const routes = [
     ]
   },
   {
+    path: '/room',
+    component: () => import('@/views/room/index'),
+    name: 'room',
+    meta: {
+      title: '调解房间',
+      unique_id: 'admin-room'
+    }
+  },
+  {
     path: '/admin',
     component: Layout,
     children: [

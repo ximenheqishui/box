@@ -9,6 +9,7 @@ const departmentRouter = require('./department')
 const userRouter = require('./user')
 const articleTypeRouter = require('./articleType')
 const articleRouter = require('./article')
+const uploadRouter = require('./upload')
 
 /**
  * @description 模拟请求延迟
@@ -41,7 +42,7 @@ router.use(async function (req, res, next) {
     }
 
     // 不需要登录的接口
-    if (req.path === '/login' ){
+    if (req.path === '/login' || req.path === '/upload' ){
         next()
     } else {
         let user = {}
@@ -71,6 +72,10 @@ router.use('/department', departmentRouter)
 router.use('/user', userRouter)
 router.use('/articleType', articleTypeRouter)
 router.use('/article', articleRouter)
+
+router.use('/upload', uploadRouter)
+
+
 
 
 // error handler

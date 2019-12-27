@@ -101,7 +101,7 @@
       // 图片上传成功后的操作
       handleAvatarSuccess (res, file) {
         // 这里加一个后台返回连接的
-        this.form.cover = res.path
+        this.form.cover = res.data.path
       },
       // 图片上传之前的校验
       beforeAvatarUpload (file) {
