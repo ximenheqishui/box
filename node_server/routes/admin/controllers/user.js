@@ -142,7 +142,7 @@ module.exports = {
     async getUser(req, res, next) {
         try {
             req.returnData.data =  await userModels.getUser(req.query)
-            // req.returnData.data.token = '123'    java 返回一个token
+            // req.returnData.data.token = '123'   /*java 返回一个token */
             await res.json(req.returnData)
         } catch (e) {
             next(e)

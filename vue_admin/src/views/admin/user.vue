@@ -335,8 +335,8 @@
           label: 'name',
           checkStrictly: true
         },
-        lastPostData: {}, // 最后搜索的条件
-        token: '', // 搜索返回的key
+        lastPostData: {}, // 最后搜索的条件 php nodejs 用
+        token: '', // 搜索返回的key  java用
         resultData: {
           total: 0,
           list: []
