@@ -2,8 +2,7 @@ import axios from './request'
 export default {
 
   commonURL: {
-      uploadUrl: baseConfig.apiHost + '/upload',
-      exportUrl: baseUrl + '/admin/excelExport'
+      uploadUrl: baseConfig.apiHost + '/upload'
   },
   /**
    * @description 获取各个页面的配置项

@@ -14,6 +14,11 @@
         type: String,
         required: true
       },
+      token: {
+        type: String,
+        required: true,
+        default: ''
+      },
       disable: {
         type: Boolean,
         default: true
@@ -31,7 +36,10 @@
     },
     computed: {
       downloadUrl: function () {
-        return this.api.commonURL.exportUrl + `/${this.page}/?token=${this.$store.getters.token}&` + this.qs.stringify(this.queryData)
+        if (this.token) {
+          return baseConfig.apiHost + `/export/?token=${this.token}`
+        }
+        return baseConfig.apiHost + `/export/${this.page}/?token=${this.$store.getters.token}&` + this.qs.stringify(this.queryData)
       }
     },
     methods: {

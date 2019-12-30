@@ -10,7 +10,6 @@ Vue.use(Router)
 const router = new Router({
   routes: routes
 })
-
 function beforeNext (to, from, next) {
   document.title = to.meta.title
 }

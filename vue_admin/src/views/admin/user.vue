@@ -64,7 +64,7 @@
         <el-button @click="deleteMore()"  size="mini" type="primary">批量删除</el-button>
       </div>
       <div class="right">
-        <download  :disable="(!resultData.total || searchLoading)"  page="user" :queryData="lastPostData"></download>
+        <download  :disable="(!resultData.total || searchLoading)"  :token="token"  page="user" :queryData="lastPostData"></download>
       </div>
     </div>
     <div
@@ -335,7 +335,8 @@
           label: 'name',
           checkStrictly: true
         },
-        lastPostData: {},
+        lastPostData: {}, // 最后搜索的条件
+        token: '', // 搜索返回的key
         resultData: {
           total: 0,
           list: []
@@ -431,6 +432,9 @@
           _this.searchLoading = false
           if (res.code === 0) {
             _this.resultData = res.data
+            if (type) {
+              _this.token = res.data.token
+            }
             $('.main').animate({ scrollTop: 0 }, 500)
           } else {
             _this.$message({
@@ -505,10 +509,11 @@
           _this.resetFormD()
           if (obj) {
             _this.dialog.isAdd = false
-            _this.dialog.form = JSON.parse(JSON.stringify(obj.row))
-            _this.dialog.form.password2 = ''
-            _this.dialog.form.password = ''
-            _this.dialog.form.dept_path = JSON.parse(this.dialog.form.dept_path)
+            let data = JSON.parse(JSON.stringify(obj.row))
+            data.password2 = ''
+            data.password = ''
+            data.dept_path = JSON.parse(data.dept_path)
+            _this.dialog.form = data
           } else {
             _this.dialog.isAdd = true
             _this.dialog.form = JSON.parse(JSON.stringify(defaultForm))

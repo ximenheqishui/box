@@ -46,7 +46,7 @@ router.use(async function (req, res, next) {
         next()
     } else {
         let user = {}
-        if (req.path.startsWith('/excelExport') ) {
+        if (req.path.startsWith('/export') ) {
             user =  await redis.getDate(req.query.token)
         } else {
             user =  await redis.getDate(req.get('Admin-Token'))
