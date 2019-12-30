@@ -1,7 +1,7 @@
 <template>
   <div class="room-text">
-    <div class="open-message" @click="drawer = true">
-      <div>聊天<span>0</span></div>
+    <div class="open-message" @click="openDrawer">
+      <div>聊天<span class="unread" v-if="unread">{{unread}}</span></div>
     </div>
     <el-drawer
       title="聊天窗口"
@@ -101,6 +101,7 @@
         </div>
       </div>
     </el-drawer>
+    <audio ref="audio" muted  src="./static/audio/msnaudio.mp3" style="visibility: hidden"></audio>
   </div>
 </template>
 
@@ -116,7 +117,8 @@
         drawer: false,
         textarea: '',
         allMessage: [],
-        canSend: true
+        canSend: true,
+        unread: 0
       }
     },
     methods: {
@@ -179,18 +181,17 @@
           this.allMessage = message
         } else {
           this.allMessage.push(message)
+          if (!this.drawer) {
+            this.unread++
+          }
         }
         if ($('.scroll-view').length) {
           this.$nextTick(() => {
             $('.scroll-view').animate({ scrollTop: $('.scroll-view')[0].scrollHeight + 1000 }, 500)
           })
         }
-        // var ele = document.getElementById('id')
-        // ele.scrollTop = ele.scrollHeight
         if (!type && this.$store.getters.userInfo.id !== message.user_id) {
-          // wx.playBackgroundAudio({
-          //   dataUrl: 'https://chat.xee.link/static/audio/msnaudio.mp3'
-          // })
+          this.$refs.audio.play()
         }
       },
       // 图片上传成功后的操作
@@ -259,6 +260,13 @@
           this.$message.error('小于10MB!')
         }
         return isLt2M
+      },
+      openDrawer () {
+        this.drawer = true
+        this.unread = 0
+        this.$nextTick(() => {
+          $('.scroll-view').animate({ scrollTop: $('.scroll-view')[0].scrollHeight + 1000 }, 500)
+        })
       }
     },
     mounted: function () {
@@ -270,10 +278,11 @@
   .room-text {
     .open-message{
       position: fixed;
+      z-index: 1000;
       cursor: pointer;
-      bottom: 0px;
+      bottom: 20px;
       width: 80px;
-      right:0px;
+      right:0;
       height: 50px;
       text-align: center;
       line-height: 50px;
@@ -281,6 +290,9 @@
       border-radius: 40px 0 0 40px;
       background: #3A71A8;
       color: #fff;
+      .unread{
+        color: #f56c6c;
+      }
     }
     .el-drawer__body {
       display: flex;
@@ -432,7 +444,7 @@
       .send-message {
         box-sizing: border-box;
         flex: none;
-        height: 210px;
+        height: 220px;
         width: 100%;
         background-color: #fff;
         padding: 20px 40px;

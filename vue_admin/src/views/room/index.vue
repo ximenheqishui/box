@@ -1,23 +1,26 @@
 <template>
   <div class="room">
     <room-text ref="roomText"></room-text>
+    <div class="head">治安调解室</div>
     <div class="box">
       <div class="left">
         <div class="head before-head">
-            <el-button id="join" type="button" class="btn btn-raised btn-primary rtc-primary-bg">加入房间</el-button>
-            <el-button id="leave" type="button" class="btn btn-raised btn-primary rtc-primary-bg">离开房间</el-button>
-            <div class="card-body">
-              <div class="form-group">
-                <label for="cameraId" class="bmd-label-floating">摄像头</label>
-                <select class="form-control" id="cameraId" name="cameraId">
-                </select>
-              </div>
-              <div class="form-group">
-                <label for="microphoneId" class="bmd-label-floating">麦克风</label>
-                <select class="form-control" id="microphoneId" name="microphoneId">
-                </select>
-              </div>
-            </div>
+          <div style="margin: 10px 0;text-align: right">
+            <el-button id="join" size="small" type="primary" >加入房间</el-button>
+            <el-button id="leave" size="small" type="danger" >离开房间</el-button>
+          </div>
+          <el-form  ref="form" label-width="80px" size="small">
+            <el-form-item label="摄像头" style="display: inline-block">
+              <el-select v-model="video">
+                <el-option  v-for="item in videoArr" :label="item.label"  :value="item.deviceId" :key="item.deviceId"></el-option>
+              </el-select>
+            </el-form-item>
+            <el-form-item label="麦克风" style="display: inline-block">
+              <el-select v-model="audio">
+                <el-option  v-for="item in audioArr" :label="item.label"  :value="item.deviceId" :key="item.deviceId"></el-option>
+              </el-select>
+            </el-form-item>
+          </el-form>
         </div>
         <div class="before-head">
           <div class="video-grid " id="video_grid">
@@ -52,10 +55,17 @@
     data () {
       return {
         room: '',
-        textarea: ''
+        textarea: '',
+        videoArr: [],
+        video: '',
+        audioArr: [],
+        audio: ''
       }
     },
     methods: {
+      /**
+       * 问题点 没有切换摄像头和音频的处理
+       * */
       initWebRtc (room) {
         let _this = this
         _this.room = room
@@ -76,38 +86,14 @@
 
         // populate camera options
         TRTC.getCameras().then(devices => {
-          devices.forEach(device => {
-            $('<option/>', {
-              value: device.deviceId,
-              text: device.label
-            }).appendTo('#cameraId')
-          })
+          _this.videoArr = devices
+          _this.video = devices[0].deviceId
         })
-
         // populate microphone options
         TRTC.getMicrophones().then(devices => {
-          devices.forEach(device => {
-            $('<option/>', {
-              value: device.deviceId,
-              text: device.label
-            }).appendTo('#microphoneId')
-          })
+          _this.audioArr = devices
+          _this.audio = devices[0].deviceId
         })
-
-        function getCameraId () {
-          const selector = document.getElementById('cameraId')
-          const cameraId = selector[selector.selectedIndex].value
-          console.log('selected cameraId: ' + cameraId)
-          return cameraId
-        }
-
-        function getMicrophoneId () {
-          const selector = document.getElementById('microphoneId')
-          const microphoneId = selector[selector.selectedIndex].value
-          console.log('selected microphoneId: ' + microphoneId)
-          return microphoneId
-        }
-
         // fix jquery touchstart event warn in chrome M76
         jQuery.event.special.touchstart = {
           setup: function (_, ns, handle) {
@@ -325,9 +311,9 @@
             this.localStream_ = TRTC.createStream({
               audio: options.audio, // 采集麦克风
               video: options.video, // 采集摄像头
-              userId: this.userId_
-              // cameraId: getCameraId(),
-              // microphoneId: getMicrophoneId()
+              userId: this.userId_,
+              cameraId: _this.video,
+              microphoneId: _this.audio
             })
             // 设置视频分辨率帧率和码率
             this.localStream_.setVideoProfile('480p')
@@ -449,27 +435,6 @@
           })
           rtc.join()
         })
-
-        $('#publish').on('click', function (e) {
-          e.preventDefault()
-          console.log('publish')
-          if (!rtc) {
-            Toast.error('请先加入房间！')
-            return
-          }
-          rtc.publish()
-        })
-
-        $('#unpublish').on('click', function (e) {
-          e.preventDefault()
-          console.log('unpublish')
-          if (!rtc) {
-            Toast.error('请先加入房间！')
-            return
-          }
-          rtc.unpublish()
-        })
-
         $('#leave').on('click', function (e) {
           e.preventDefault()
           console.log('leave')
@@ -479,12 +444,6 @@
           }
           rtc.leave()
           rtc = null
-        })
-
-        $('#settings').on('click', function (e) {
-          e.preventDefault()
-          $('#settings').toggleClass('btn-raised')
-          $('#setting-collapse').collapse()
         })
       }
     },
@@ -497,25 +456,40 @@
 
 <style lang="scss" type="text/scss">
   .room {
+    padding: 0 20px;
     min-width: 1300px;
-    height: 100%;
+    min-height:100%;
     box-sizing: border-box;
+    background: url("./bg.png");
+    background-size: contain;
+    > .head{
+      height: 65px;
+      line-height: 64px;
+      text-align: center;
+      font-size: 24px;
+    }
     .box{
-      min-height: 100%;
       box-sizing: border-box;
       display: flex;
       flex-flow: nowrap row;
-      background: url("./bg.png");
-      background-size: contain;
       .left{
         flex: none;
         width: 600px;
         margin-right: 24px;
+        .before-head{
+          margin-bottom: 16px;
+          &:before{
+            content: ' ';
+            width: 100%;
+            height: 8px;
+            background: #396afc;
+            display: block;
+            border-radius: 8px 8px 0 0;
+          }
+        }
         .video-grid{
           display: flex;
           justify-content: space-between;
-          .video-view{
-          }
         }
         #local_stream {
           position: relative;
@@ -527,17 +501,6 @@
           width: 295px;
           height: 200px;
           margin-top: 10px;
-        }
-        .before-head{
-          margin-bottom: 16px;
-          &:before{
-            content: ' ';
-            width: 100%;
-            height: 8px;
-            background: #396afc;
-            display: block;
-            border-radius: 8px 8px 0 0;
-          }
         }
       }
       .right{

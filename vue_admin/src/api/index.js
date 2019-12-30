@@ -257,7 +257,7 @@ export default {
   // 测试用的数据
   sendMessage: function (data) {
     return axios({
-      url: baseUrl + '/port/events/onMessage',
+      url: roomUrl + '/port/events/onMessage',
       method: 'get',
       params: data
     })
@@ -265,7 +265,7 @@ export default {
   // 测试用的数据
   bindId: function (data) {
     return axios({
-      url: baseUrl + '/port/events/bind',
+      url: roomUrl + '/port/events/bind',
       method: 'get',
       params: data
     })
@@ -273,7 +273,7 @@ export default {
   // 测试用的数据
   loadAll: function (data) {
     return axios({
-      url: baseUrl + '/port/events/load',
+      url: roomUrl + '/port/events/load',
       method: 'get',
       params: data
     })
