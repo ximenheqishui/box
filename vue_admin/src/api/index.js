@@ -5,16 +5,6 @@ export default {
       uploadUrl: baseConfig.apiHost + '/upload'
   },
   /**
-   * @description 获取各个页面的配置项
-   * */
-  getOption: function (data) {
-    return axios({
-      url: '/dictionaries',
-      method: 'get',
-      params: data
-    })
-  },
-  /**
    * @description 用户信息相关
    * */
   // 登录
@@ -98,6 +88,37 @@ export default {
   delRole: function (data) {
     return axios({
       url: '/role',
+      method: 'DELETE',
+      data: data
+    })
+  },
+  /**
+   * @description  数据字典相关
+   * */
+  getDictionaries: function (data) {
+    return axios({
+      url: '/dictionaries',
+      method: 'get',
+      params: data
+    })
+  },
+  addDictionaries: function (data) {
+    return axios({
+      url: '/dictionaries',
+      method: 'post',
+      data: data
+    })
+  },
+  updateDictionaries: function (data) {
+    return axios({
+      url: '/dictionaries',
+      method: 'PUT',
+      data: data
+    })
+  },
+  delDictionaries: function (data) {
+    return axios({
+      url: '/dictionaries',
       method: 'DELETE',
       data: data
     })

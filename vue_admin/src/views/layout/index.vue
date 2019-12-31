@@ -6,9 +6,9 @@
       <tags-view />
       <el-main class="main">
         <transition name="fade" mode="out-in">
-          <keep-alive :include="cachedViews">
-            <router-view :key="key"></router-view>
-          </keep-alive>
+<!--          <keep-alive :include="cachedViews">-->
+          <router-view :key="key"></router-view>
+<!--          </keep-alive>-->
         </transition>
       </el-main>
       <Footer />

@@ -488,7 +488,7 @@
       },
       // 获取数据字典
       getOption () {
-        this.api.getOption({}).then(res => {
+        this.api.getDictionaries({}).then(res => {
           if (res.code === 0) {
             this.sex = res.data.sex
             this.status = res.data.status

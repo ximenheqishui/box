@@ -1,11 +1,11 @@
 <template>
-  <div class="_404">
+  <div class="exception_404">
     <iframe src="./static/404.html"></iframe>
   </div>
 </template>
 <script>
   export default {
-    name: '_404',
+    name: 'exception_404',
     data () {
       return {
       }
@@ -14,7 +14,7 @@
 </script>
 
 <style lang="scss" type="text/scss">
-  ._404{
+  .exception_404{
     height:100%;
     iframe{
       border: none;

@@ -60,6 +60,15 @@ const routes = [
           title: '用户管理',
           unique_id: 'admin-user'
         }
+      },
+      {
+        path: 'dictionaries',
+        component: () => import('@/views/admin/dictionaries'),
+        name: 'dictionaries',
+        meta: {
+          title: '数据字典管理',
+          unique_id: 'admin-dictionaries'
+        }
       }
     ]
   },
@@ -97,6 +106,39 @@ const routes = [
     ]
   },
   {
+    path: '/case',
+    component: Layout,
+    children: [
+      {
+        path: 'caseType',
+        component: () => import('@/views/case/caseType'),
+        name: 'caseType',
+        meta: {
+          title: '案件分类管理',
+          unique_id: 'case-type'
+        }
+      },
+      {
+        path: 'caseList',
+        component: () => import('@/views/case/caseList'),
+        name: 'caseList',
+        meta: {
+          title: '案件列表',
+          unique_id: 'case-list'
+        }
+      },
+      {
+        path: 'caseEditor',
+        component: () => import('@/views/case/caseEditor'),
+        name: 'caseEditor',
+        meta: {
+          title: '案件编辑',
+          unique_id: 'case-editor'
+        }
+      }
+    ]
+  },
+  {
     path: '/login',
     name: 'login',
     meta: {
@@ -122,7 +164,7 @@ const routes = [
     children: [
       {
         path: '',
-        name: '_403',
+        name: 'exception_403',
         component: () => import('@/views/403'),
         meta: { title: '403' } }
     ]
@@ -133,7 +175,7 @@ const routes = [
     children: [
       {
         path: '',
-        name: '_404',
+        name: 'exception_404',
         component: () => import('@/views/404'),
         meta: { title: '404' } }
     ]

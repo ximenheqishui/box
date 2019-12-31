@@ -51,8 +51,12 @@ let findDataById = function (table, id) {
 }
 
 
-let findDataByPage = function (table, start, end) {
-    let _sql = "SELECT * FROM ??  LIMIT ? , ?"
+let findDataByPage = function (table, start, end, order) {
+    let _sql = "SELECT * FROM ?? "
+    if (order) {
+        _sql += order
+    }
+    _sql += " LIMIT ? , ?"
     return query(_sql, [table, start, end])
 }
 

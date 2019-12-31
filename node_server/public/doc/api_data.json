@@ -1008,6 +1008,226 @@
   },
   {
     "type": "delete",
+    "url": "/admin/dictionaries",
+    "title": "删除字段",
+    "name": "DelDictionaries",
+    "group": "dictionaries",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "id",
+            "description": "<p>id组成的字符串以逗号隔开</p>"
+          }
+        ]
+      }
+    },
+    "version": "0.0.0",
+    "filename": "routes/admin/controllers/dictionaries.js",
+    "groupTitle": "dictionaries",
+    "sampleRequest": [
+      {
+        "url": "http://192.168.199.147:3000/admin/dictionaries"
+      }
+    ],
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "Admin-Token",
+            "description": "<p>Users unique access-key.</p>"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "type": "post",
+    "url": "/admin/dictionaries",
+    "title": "添加字段",
+    "name": "addDictionaries",
+    "group": "dictionaries",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "name",
+            "description": "<p>名称</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "int",
+            "optional": false,
+            "field": "value",
+            "description": "<p>值</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "type",
+            "description": "<p>类型</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "description",
+            "description": "<p>描述</p>"
+          }
+        ]
+      }
+    },
+    "version": "0.0.0",
+    "filename": "routes/admin/controllers/dictionaries.js",
+    "groupTitle": "dictionaries",
+    "sampleRequest": [
+      {
+        "url": "http://192.168.199.147:3000/admin/dictionaries"
+      }
+    ],
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "Admin-Token",
+            "description": "<p>Users unique access-key.</p>"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "type": "get",
+    "url": "/admin/dictionaries",
+    "title": "获取字段",
+    "name": "getDictionaries",
+    "group": "dictionaries",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "pn",
+            "description": "<p>第几页: 不存在获取所有数据</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "page_size",
+            "description": "<p>每页多少条：不存在获取所有数据</p>"
+          }
+        ]
+      }
+    },
+    "version": "0.0.0",
+    "filename": "routes/admin/controllers/dictionaries.js",
+    "groupTitle": "dictionaries",
+    "sampleRequest": [
+      {
+        "url": "http://192.168.199.147:3000/admin/dictionaries"
+      }
+    ],
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "Admin-Token",
+            "description": "<p>Users unique access-key.</p>"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "type": "put",
+    "url": "/admin/dictionaries",
+    "title": "修改字段",
+    "name": "updateDictionaries",
+    "group": "dictionaries",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "id",
+            "description": "<p>id</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "name",
+            "description": "<p>角色名称</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "int",
+            "optional": false,
+            "field": "value",
+            "description": "<p>值</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "type",
+            "description": "<p>类型</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "description",
+            "description": "<p>描述</p>"
+          }
+        ]
+      }
+    },
+    "version": "0.0.0",
+    "filename": "routes/admin/controllers/dictionaries.js",
+    "groupTitle": "dictionaries",
+    "sampleRequest": [
+      {
+        "url": "http://192.168.199.147:3000/admin/dictionaries"
+      }
+    ],
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "Admin-Token",
+            "description": "<p>Users unique access-key.</p>"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "type": "delete",
     "url": "/admin/menu",
     "title": "删除菜单",
     "name": "DelMenu",
