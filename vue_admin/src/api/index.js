@@ -30,6 +30,13 @@ export default {
       method: 'get'
     })
   },
+  updateUserInfo: function (data) {
+    return axios({
+      url: '/userInfo',
+      method: 'PUT',
+      data: data
+    })
+  },
   /**
    * @description  菜单相关
    * */

@@ -88,34 +88,26 @@ module.exports = {
      */
     async upDateUser(req, res, next) {
         try {
-            let requestData = {}
-            if (!req.body.id) {
-                requestData = {
-                    password: cryptoUtil.createPass(req.body.password)
-                }
-                await userModels.update(requestData, req.user.id)
-            } else {
-                requestData = {
-                    user_name: req.body.user_name,
-                    email: req.body.email,
-                    mobile: req.body.mobile,
-                    sex: req.body.sex || 0,
-                    dept_id: req.body.dept_id || 0,
-                    dept_path: req.body.dept_path,
-                    status: req.body.status || 0,
-                    avatar: req.body.avatar
-                }
-                if (req.body.password !== '') {
-                    requestData.password = cryptoUtil.createPass(req.body.password)
-                }
+            let requestData = {
+                user_name: req.body.user_name,
+                email: req.body.email,
+                mobile: req.body.mobile,
+                sex: req.body.sex || 0,
+                dept_id: req.body.dept_id || 0,
+                dept_path: req.body.dept_path,
+                status: req.body.status || 0,
+                avatar: req.body.avatar
+            }
+            if (req.body.password !== '') {
+                requestData.password = cryptoUtil.createPass(req.body.password)
+            }
 
-                let result =  await userModels.getUserOne(req.body.id,null,null)
+            let result =  await userModels.getUserOne(req.body.id,null,null)
 
-                await userModels.update(requestData, req.body.id)
-                await userModels.userRole(req.body.role_ids, req.body.id)
-                if (result[0].dept_id != requestData.dept_id ) {
-                     await departmentModels.delDepartmentLeader([req.body.id])
-                }
+            await userModels.update(requestData, req.body.id)
+            await userModels.userRole(req.body.role_ids, req.body.id)
+            if (result[0].dept_id != requestData.dept_id ) {
+                 await departmentModels.delDepartmentLeader([req.body.id])
             }
             await res.json(req.returnData)
         } catch (e) {

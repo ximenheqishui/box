@@ -100,12 +100,12 @@ module.exports = {
 
     /**
      * @api {get} /admin/userInfo 获取用户信息
-     * @apiName userInfo
+     * @apiName getUserInfo
      * @apiUse APICommon
      * @apiGroup common
      *
      */
-    async userInfo(req, res, next) {
+    async getUserInfo(req, res, next) {
         try {
             let user = req.user
             user.role_ids = await userModels.getUserRole(user.id)
@@ -153,6 +153,40 @@ module.exports = {
             next(e)
         }
     },
+
+    /**
+     * @api {put} /admin/userInfo 修改用户信息
+     * @apiName putUserInfo
+     * @apiUse APICommon
+     * @apiGroup common
+     *
+     *
+     * @apiParam {String} user_name  用户名称
+     * @apiParam {String} email  邮箱
+     * @apiParam {number} mobile  手机号
+     * @apiParam {number} sex  性别：0未知、1是男、2是女
+     * @apiParam {string} avatar  用户头像url
+     * @apiParam {string} password  用户密码
+     */
+    async updateUserInfo(req, res, next) {
+        try {
+            let requestData = {
+                user_name: req.body.user_name,
+                email: req.body.email,
+                mobile: req.body.mobile,
+                sex: req.body.sex || 0,
+                avatar: req.body.avatar
+            }
+            if (req.body.password !== '') {
+                requestData.password = cryptoUtil.createPass(req.body.password)
+            }
+            await userModels.update(requestData, req.user.id)
+            await res.json(req.returnData)
+        } catch (e) {
+            next(e)
+        }
+    },
+
 
     /**
      * @api {get} /admin/excelExport 导出

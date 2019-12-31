@@ -608,6 +608,34 @@
     }
   },
   {
+    "type": "get",
+    "url": "/admin/userInfo",
+    "title": "获取用户信息",
+    "name": "getUserInfo",
+    "group": "common",
+    "version": "0.0.0",
+    "filename": "routes/admin/controllers/common.js",
+    "groupTitle": "common",
+    "sampleRequest": [
+      {
+        "url": "http://192.168.199.147:3000/admin/userInfo"
+      }
+    ],
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "Admin-Token",
+            "description": "<p>Users unique access-key.</p>"
+          }
+        ]
+      }
+    }
+  },
+  {
     "type": "post",
     "url": "/admin/login",
     "title": "登录",
@@ -671,6 +699,82 @@
     }
   },
   {
+    "type": "put",
+    "url": "/admin/userInfo",
+    "title": "修改用户信息",
+    "name": "putUserInfo",
+    "group": "common",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "user_name",
+            "description": "<p>用户名称</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "email",
+            "description": "<p>邮箱</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "number",
+            "optional": false,
+            "field": "mobile",
+            "description": "<p>手机号</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "number",
+            "optional": false,
+            "field": "sex",
+            "description": "<p>性别：0未知、1是男、2是女</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "string",
+            "optional": false,
+            "field": "avatar",
+            "description": "<p>用户头像url</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "string",
+            "optional": false,
+            "field": "password",
+            "description": "<p>用户密码</p>"
+          }
+        ]
+      }
+    },
+    "version": "0.0.0",
+    "filename": "routes/admin/controllers/common.js",
+    "groupTitle": "common",
+    "sampleRequest": [
+      {
+        "url": "http://192.168.199.147:3000/admin/userInfo"
+      }
+    ],
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "Admin-Token",
+            "description": "<p>Users unique access-key.</p>"
+          }
+        ]
+      }
+    }
+  },
+  {
     "type": "all",
     "url": "/null",
     "title": "返回的常规格式",
@@ -702,34 +806,6 @@
         "url": "http://192.168.199.147:3000/null"
       }
     ]
-  },
-  {
-    "type": "get",
-    "url": "/admin/userInfo",
-    "title": "获取用户信息",
-    "name": "userInfo",
-    "group": "common",
-    "version": "0.0.0",
-    "filename": "routes/admin/controllers/common.js",
-    "groupTitle": "common",
-    "sampleRequest": [
-      {
-        "url": "http://192.168.199.147:3000/admin/userInfo"
-      }
-    ],
-    "header": {
-      "fields": {
-        "Header": [
-          {
-            "group": "Header",
-            "type": "String",
-            "optional": false,
-            "field": "Admin-Token",
-            "description": "<p>Users unique access-key.</p>"
-          }
-        ]
-      }
-    }
   },
   {
     "type": "delete",

@@ -14,7 +14,7 @@
         </div>
         <el-dropdown-menu slot="dropdown">
           <el-dropdown-item @click.native="changePass">
-             <span>修改密码</span>
+             <span>修改个人信息</span>
           </el-dropdown-item>
           <el-dropdown-item @click.native="logOut">
             <span>退出系统</span>
@@ -22,18 +22,55 @@
         </el-dropdown-menu>
       </el-dropdown>
     </div>
-    <el-dialog title="修改密码" :visible.sync="dialog.tag" height="80px" width="600px">
-      <el-form size="small" :model="dialog.form" :rules="dialog.rules" ref="ruleForm" label-width="140px" @keyup.enter.native="submitFormD">
-        <el-form-item label="密码" prop="password">
-          <el-input type="password" v-model="dialog.form.password"></el-input>
+    <el-dialog title="修改个人信息"  :visible.sync="dialog.tag" height="80px" width="700px">
+      <el-form size="small" :model="dialog.form" :rules="dialog.rules" ref="ruleForm" label-width="120px" @keyup.enter.native="submitFormD">
+        <el-form-item label="用户名" prop="user_name">
+          <el-input placeholder="请输入用户名"  v-model="dialog.form.user_name"></el-input>
         </el-form-item>
-        <el-form-item label="重复密码" prop="password2">
-          <el-input type="password" v-model="dialog.form.password2"></el-input>
+        <el-row>
+          <el-col :span="12">
+            <el-form-item label="邮箱" prop="email">
+              <el-input placeholder="请输入用邮箱" type="email"  v-model="dialog.form.email"></el-input>
+            </el-form-item>
+          </el-col>
+          <el-col :span="12">
+            <el-form-item label="手机号" prop="mobile">
+              <el-input placeholder="请输入用手机号"  v-model="dialog.form.mobile"></el-input>
+            </el-form-item>
+          </el-col>
+        </el-row>
+        <el-row>
+          <el-col :span="12">
+            <el-form-item  label="密码" prop="password">
+              <el-input placeholder="请输入密码" type="password" v-model="dialog.form.password"></el-input>
+            </el-form-item>
+          </el-col>
+          <el-col :span="12">
+            <el-form-item  label="重复密码" prop="password2">
+              <el-input placeholder="请输入密码" type="password" v-model="dialog.form.password2"></el-input>
+            </el-form-item>
+          </el-col>
+        </el-row>
+        <el-form-item label="性别" prop="sex">
+          <el-radio-group v-model="dialog.form.sex">
+            <el-radio v-for="item in sex" :key="item.id" :label="item.value">{{item.name}}</el-radio>
+          </el-radio-group>
+        </el-form-item>
+        <el-form-item label="头像" prop="avatar">
+          <el-upload
+            class="avatar-uploader"
+            :action="uploadUrl"
+            :show-file-list="false"
+            :on-success="handleAvatarSuccess"
+            :before-upload="beforeAvatarUpload">
+            <img v-if="dialog.form.avatar" :src="dialog.form.avatar" class="avatar">
+            <i v-else class="el-icon-plus avatar-uploader-icon"></i>
+          </el-upload>
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button size="small" @click="dialog.tag = false">取 消</el-button>
-        <el-button size="small" type="primary" :disabled="dialog.disableSubmit" @click="submitFormD">确 定</el-button>
+        <el-button size="small" type="primary" :loading="dialog.disableSubmit" :disabled="dialog.disableSubmit" @click="submitFormD">确 定</el-button>
       </div>
     </el-dialog>
   </el-header>
@@ -55,21 +92,44 @@
           callback()
         }
       }
+      let validatePhone = (rule, value, callback) => {
+        if (!(/^1[3456789]\d{9}$/.test(value))) {
+          callback(new Error('请输入正确的手机号!'))
+        } else {
+          callback()
+        }
+      }
       return {
+        uploadUrl: this.api.commonURL.uploadUrl,
+        sex: [],
         dialog: {
           role: [],
           tag: false,
           form: {
             password: '',
-            password2: ''
+            password2: '',
+            user_name: this.$store.getters.userInfo.user_name,
+            email: this.$store.getters.userInfo.email,
+            mobile: this.$store.getters.userInfo.mobile,
+            sex: this.$store.getters.userInfo.sex,
+            avatar: this.$store.getters.userInfo.avatar
           },
           rules: {
+            user_name: [
+              { required: true, message: '请输入名称', trigger: ['blur', 'change'] }
+            ],
+            email: [
+              { required: true, message: '请输入邮箱', trigger: 'blur' },
+              { type: 'email', message: '请输入正确的邮箱地址', trigger: ['blur', 'change'] }
+            ],
+            mobile: [
+              { required: true, message: '请输入手机号', trigger: ['blur', 'change'] },
+              { validator: validatePhone, trigger: ['blur', 'change'] }
+            ],
             password: [
-              { required: true, message: '请输入密码', trigger: ['blur', 'change'] },
               { validator: validatePass1, trigger: 'blur' }
             ],
             password2: [
-              { required: true, message: '请输入密码', trigger: ['blur', 'change'] },
               { validator: validatePass2, trigger: ['blur', 'change'] }
             ]
           },
@@ -80,6 +140,34 @@
     computed: {
     },
     methods: {
+      // 图片上传成功后的操作
+      handleAvatarSuccess (res, file) {
+        // 这里加一个后台返回连接的
+        // this.dialog.form.avatar = URL.createObjectURL(file.raw)
+        this.dialog.form.avatar = res.data.path
+      },
+      // 图片上传之前的校验
+      beforeAvatarUpload (file) {
+        const isLt2M = file.size / 1024 / 1024 < 2
+        if (!isLt2M) {
+          this.$message.error('上传头像图片大小不能超过 2MB!')
+        }
+        return isLt2M
+      },
+      // 获取数据字典
+      getOption () {
+        this.api.getDictionaries({}).then(res => {
+          if (res.code === 0) {
+            this.sex = res.data.sex
+          }
+        }).catch(error => { // 状态码非2xx时
+          this.$message({
+            type: 'error',
+            showClose: true,
+            message: error.data.message
+          })
+        })
+      },
       logOut () {
         this.$store.dispatch('user/logOut').then((res) => {
           window.location.reload()
@@ -101,8 +189,14 @@
               return false
             }
             _this.dialog.form.password = _this.dialog.form.password.trim()
-            _this.dialog.form.password2 = _this.dialog.form.password2.trim()
-            _this.api.updateUser({ password: _this.dialog.form.password }).then(res => {
+            _this.api.updateUserInfo({
+              password: _this.dialog.form.password,
+              user_name: _this.dialog.form.user_name,
+              email: _this.dialog.form.email,
+              mobile: _this.dialog.form.mobile,
+              sex: _this.dialog.form.sex,
+              avatar: _this.dialog.form.avatar
+            }).then(res => {
               _this.dialog.disableSubmit = false
               if (res.code === 0) {
                 _this.$store.dispatch('user/logOut').then(() => {
@@ -136,6 +230,7 @@
     destroyed () {
     },
     mounted () {
+      this.getOption()
     },
     watch: {
     }
@@ -179,6 +274,30 @@
           color: #999;
         }
      }
+    }
+    .avatar-uploader ::v-deep .el-upload{
+      border: 1px dashed #d9d9d9;
+      border-radius: 6px;
+      cursor: pointer;
+      position: relative;
+      overflow: hidden;
+    }
+    .avatar-uploader ::v-deep .el-upload:hover {
+      border-color: #409EFF;
+    }
+    .avatar-uploader-icon {
+      font-size: 28px;
+      color: #8c939d;
+      width: 150px;
+      height: 150px;
+      line-height: 150px;
+      text-align: center;
+    }
+    .avatar {
+      width: 140px;
+      height: 140px;
+      display: block;
+      object-fit: contain;
     }
   }
 </style>

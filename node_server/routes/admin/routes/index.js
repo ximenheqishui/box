@@ -52,6 +52,7 @@ router.use(async function (req, res, next) {
         } else {
             user =  await redis.getDate(req.get('Admin-Token'))
         }
+        user.sex = parseInt(user.sex)
         req.user = user
         // 这个地方要做每个接口的权限
         // console.log(req.method)
