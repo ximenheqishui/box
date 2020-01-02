@@ -74,7 +74,7 @@
         <el-form-item label="字体图标" prop="icon">
           <el-input placeholder="请输入右侧可用图标中的Font class。如：icon-set" v-model="form.icon">
             <template slot="append">
-              <el-link type="primary"  href="/static/fonts/demo_index.html" target="_blank">可用图标</el-link>
+              <el-link type="primary"  href="./static/fonts/demo_index.html" target="_blank">可用图标</el-link>
             </template>
           </el-input>
         </el-form-item>

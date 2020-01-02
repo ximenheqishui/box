@@ -372,6 +372,10 @@
               addView(id)
               // 在指定的 div 容器上播放音视频
               remoteStream.play(id)
+              let html = `<div class="control">
+                            <i class="jingyin el-icon-microphone"></i>
+                          </div>`
+              $(html).appendTo(`#${id}`)
               console.log('stream-subscribed ID: ', id)
               Toast.info('远端流订阅成功 - ' + remoteStream.getUserId())
             })
@@ -445,6 +449,15 @@
           rtc.leave()
           rtc = null
         })
+        $('#video_grid').on('click', '.jingyin', function (e) {
+          if ($(this).hasClass('el-icon-microphone')) {
+            $(this).removeClass('el-icon-microphone').addClass('el-icon-turn-off-microphone')
+            $(this).parents('.video-view').find('audio').attr('muted', true)
+          } else {
+            $(this).removeClass('el-icon-turn-off-microphone').addClass('el-icon-microphone')
+            $(this).parents('.video-view').find('audio').attr('muted', false)
+          }
+        })
       }
     },
     mounted: function () {
@@ -501,6 +514,21 @@
           width: 295px;
           height: 200px;
           margin-top: 10px;
+        }
+        .video-view {
+          position: relative;
+          .control{
+            position: absolute;
+            bottom:10px;
+            right:10px;
+            z-index: 10000;
+            .jingyin{
+              cursor: pointer;
+              &:hover{
+                color: #3A71A8;
+              }
+            }
+          }
         }
       }
       .right{

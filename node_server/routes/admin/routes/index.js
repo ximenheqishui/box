@@ -43,7 +43,8 @@ router.use(async function (req, res, next) {
     }
 
     // 不需要登录的接口
-    if (req.path === '/login' || req.path === '/upload' ){
+    let whiteList = ['/login', '/upload']
+    if (whiteList.indexOf(req.path) >= 0){
         next()
     } else {
         let user = {}
@@ -52,7 +53,6 @@ router.use(async function (req, res, next) {
         } else {
             user =  await redis.getDate(req.get('Admin-Token'))
         }
-        user.sex = parseInt(user.sex)
         req.user = user
         // 这个地方要做每个接口的权限
         // console.log(req.method)
@@ -62,6 +62,7 @@ router.use(async function (req, res, next) {
         if (!user) {
             res.json({code: 2, message: '未登录或登录超时'})
         } else {
+            user.sex = parseInt(user.sex)
             next()
         }
     }

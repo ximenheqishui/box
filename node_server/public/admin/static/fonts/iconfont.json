@@ -83,6 +83,13 @@
       "unicode_decimal": 58979
     },
     {
+      "icon_id": "5325651",
+      "name": "案件档案",
+      "font_class": "anjiandangan",
+      "unicode": "e6b6",
+      "unicode_decimal": 59062
+    },
+    {
       "icon_id": "5809165",
       "name": "发票",
       "font_class": "fapiao1",

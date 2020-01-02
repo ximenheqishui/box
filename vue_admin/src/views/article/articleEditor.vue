@@ -140,7 +140,7 @@
           _this.$message({
             type: 'error',
             showClose: true,
-            message: error.data.message
+            message: error.message || '错误'
           })
         })
       },
@@ -181,7 +181,9 @@
           _this.api.addArticle(form).then(res => {
             _this.disableSubmit = false
             if (res.code === 0) {
+              // 删除当前页面的tag
               _this.$store.dispatch('tagsView/delView', _this.$route)
+              // 确定下次页面跳转需要刷新
               _this.$store.dispatch('common/changeRefresh', true)
               _this.$router.replace({
                 path: '/article/articleList'
