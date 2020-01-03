@@ -10,6 +10,8 @@ const userRouter = require('./user')
 const dictionariesRouter = require('./dictionaries')
 const articleTypeRouter = require('./articleType')
 const articleRouter = require('./article')
+const caseTypeRouter = require('./caseType')
+const caseRouter = require('./case')
 const uploadRouter = require('./upload')
 
 /**
@@ -76,6 +78,8 @@ router.use('/user', userRouter)
 router.use('/articleType', articleTypeRouter)
 router.use('/article', articleRouter)
 router.use('/dictionaries', dictionariesRouter)
+router.use('/caseType', caseTypeRouter)
+router.use('/case', caseRouter)
 
 router.use('/upload', uploadRouter)
 

@@ -1,5 +1,5 @@
 <template>
-  <div class="">
+  <div class="article">
     <div class="search-box">
       <el-form @keyup.enter.native="search" ref="form" :inline="true" :model="searchData" label-width="80px" size="small">
          <el-form-item label="标题" prop="title">

@@ -280,7 +280,68 @@ export default {
       data: { id: data.id + '' }
     })
   },
-
+  /**
+   * @description 案件分类相关
+   * */
+  getCaseType: function (data) {
+    return axios({
+      url: '/caseType',
+      method: 'get',
+      params: data
+    })
+  },
+  addCaseType: function (data) {
+    return axios({
+      url: '/caseType',
+      method: 'post',
+      data
+    })
+  },
+  updateCaseType: function (data) {
+    return axios({
+      url: '/caseType',
+      method: 'PUT',
+      data: data
+    })
+  },
+  delCaseType: function (data) {
+    return axios({
+      url: '/caseType',
+      method: 'DELETE',
+      data: data
+    })
+  },
+  /**
+   * @description 案件相关
+   * */
+  getCase: function (data) {
+    return axios({
+      url: '/case',
+      method: 'get',
+      params: data
+    })
+  },
+  addCase: function (data) {
+    return axios({
+      url: '/case',
+      method: 'post',
+      data
+    })
+  },
+  updateCase: function (data) {
+    return axios({
+      url: '/case',
+      method: 'PUT',
+      data: data
+    })
+  },
+  delCase: function (data) {
+    return axios({
+      url: '/case',
+      method: 'DELETE',
+      data: data
+    })
+  },
   // 测试用的数据
   sendMessage: function (data) {
     return axios({

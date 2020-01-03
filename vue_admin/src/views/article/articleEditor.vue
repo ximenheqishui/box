@@ -1,5 +1,5 @@
 <template>
-  <div class="article">
+  <div class="article-editor">
     <el-form
       element-loading-text="数据加载中"
       v-loading="pageLoading"
@@ -242,7 +242,7 @@
 </script>
 
 <style lang="scss" type="text/scss">
-  .article {
+  .article-editor {
     .el-icon-loading{
       width: 14px;
     }

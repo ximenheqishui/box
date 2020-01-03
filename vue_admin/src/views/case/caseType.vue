@@ -1,5 +1,5 @@
 <template>
-  <div class="article-type">
+  <div class="case-type">
     <div class="tool-box">
       <div class="left">
         <el-button size="mini" type="primary"  @click="append(0)">添加顶级分类</el-button>
@@ -89,7 +89,7 @@
     status: 0 // 是否启用  0 是启用  1 是不启用
   }
   export default {
-    name: 'articleType',
+    name: 'caseType',
     components: {
     },
     data () {
@@ -125,8 +125,8 @@
         if (!value) return true
         return data.name.indexOf(value) !== -1
       },
-      getArticleType () {
-        this.api.getArticleType({}).then(res => {
+      getCaseType () {
+        this.api.getCaseType({}).then(res => {
           if (res.code === 0) {
             this.data = res.data
           }
@@ -149,7 +149,7 @@
             let form = JSON.parse(JSON.stringify(_this.form))
             // form.leader = form.leader.join(',')
             if (_this.isAdd) {
-              _this.api.addArticleType(form).then(res => {
+              _this.api.addCaseType(form).then(res => {
                 _this.disableSubmit = false
                 if (res.code === 0) {
                   _this.dialog = false
@@ -177,7 +177,7 @@
                 })
               })
             } else {
-              _this.api.updateArticleType(form).then(res => {
+              _this.api.updateCaseType(form).then(res => {
                 _this.disableSubmit = false
                 if (res.code === 0) {
                   _this.dialog = false
@@ -237,7 +237,7 @@
       },
       remove (node, data) {
         let _this = this
-        _this.api.delArticleType({ id: String(data.id) }).then(res => {
+        _this.api.delCaseType({ id: String(data.id) }).then(res => {
           if (res.code === 0) {
             const parent = node.parent
             const children = parent.data.children || parent.data
@@ -265,13 +265,13 @@
         if (!key.length) {
           return false
         }
-        this.api.delArticleType({ id: key.join(',') }).then(res => {
+        this.api.delCaseType({ id: key.join(',') }).then(res => {
           if (res.code === 0) {
             this.$message({
               message: res.message,
               type: 'success'
             })
-            this.getArticleType()
+            this.getCaseType()
           } else {
             this.$message({
               message: res.message,
@@ -287,13 +287,13 @@
       }
     },
     mounted: function () {
-      this.getArticleType()
+      this.getCaseType()
     }
   }
 </script>
 
 <style lang="scss" type="text/scss">
-  .article-type{
+  .case-type{
     .department-tree{
       max-width: 700px;
       .el-input{
