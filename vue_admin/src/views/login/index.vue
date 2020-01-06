@@ -9,12 +9,12 @@
             用户登录 login
           </div>
           <el-form-item label="" prop="account">
-            <el-input autofocus  class="input1" placeholder="请输入用户名" v-model="form.account"  autocomplete="off">
+            <el-input  class="input1" placeholder="请输入用户名" v-model="form.account" >
             <template slot="prepend"><span class="user"></span></template>
           </el-input>
           </el-form-item>
           <el-form-item label="" prop="password" class="input">
-            <el-input placeholder="请输入密码" type="password" v-model="form.password"  autocomplete="off">
+            <el-input placeholder="请输入密码" type="password" v-model="form.password" >
             <template slot="prepend" ><span class="password"></span></template>
           </el-input>
           </el-form-item>
@@ -134,6 +134,74 @@
         height: 48px;
         font-size: 20px;
         letter-spacing: 20px;
+      }
+    }
+  }
+  @media screen and (max-width: 500px) {
+    .login-wrap {
+      width: 100%;
+      height: 100%;
+      background-image: url('./bg.png');
+      background-size: 100% 100%;
+      background-position: center;
+      display: flex;
+      flex-flow: column nowrap;
+      justify-content: space-around;
+      .title{
+        top:60px;
+        width: 100%;
+        height: 60px;
+        display: inline-flex;
+        flex-flow: row nowrap;
+        align-items:center;
+        span{
+          display: inline-block;
+          font-size: 30px;
+          font-weight: 700;
+          color: #fff;
+          margin-left: 20px;
+        }
+        img{
+          height: 60px;
+        }
+      }
+      .right{
+        margin-right: 0px;
+        flex: none;
+        box-sizing: border-box;
+        width: 80%;
+        height: auto;
+        background-color: rgba(74,156,230,0.2);
+        border-radius: 0 4px 4px 0;
+        padding: 40px 34px;
+        .head{
+          font-size: 18px;
+          color: #fff;
+          padding-bottom: 16px;
+          border-bottom: 1px solid #fff;
+          margin-bottom: 33px;
+        }
+        .input{
+          margin-top: 42px;
+          margin-bottom: 18px;
+        }
+        .operation{
+          padding: 0 0 0 4px ;
+          >span{
+            text-align: right;
+            float:right;
+            font-size: 14px;
+            color: #fff;
+            cursor: pointer;
+          }
+        }
+        .btn{
+          margin-top: 42px;
+          width: 100%;
+          height: 48px;
+          font-size: 20px;
+          letter-spacing: 20px;
+        }
       }
     }
   }
