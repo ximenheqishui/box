@@ -5,6 +5,17 @@
     <base target="_blank"/>
     <link rel='stylesheet' href='/css/style.css'/>
     <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
+    <style>
+        body {
+            padding: 20px;
+        }
+        li {
+            margin: 10px;
+        }
+        a:hover{
+            color: #0077aa;
+        }
+    </style>
 </head>
 <body>
 <p>导航页</p>
@@ -12,9 +23,14 @@
     <li>
         <a href="/common/test">公共接口导航页</a>
     </li>
+    <li>
+        <a href="/admin">后台系统</a>
+    </li>
+    <li>
+        <a href="/doc">后台文档</a>
+    </li>
 </ul>
 </body>
 <script>
-    const socket = new WebSocket('ws://127.0.0.1:3000/123');
 </script>
 </html>
