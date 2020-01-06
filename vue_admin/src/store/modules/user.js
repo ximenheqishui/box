@@ -57,7 +57,7 @@ const user = {
           } else {
             reject(res)
           }
-        }).catch(error => { // 状态码非2xx时
+        }).catch(error => {
           reject(error)
         })
       })

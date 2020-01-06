@@ -269,20 +269,12 @@
             _this.resultData = res.data
             $('.main').animate({ scrollTop: 0 }, 500)
           } else {
-            _this.$message({
-              type: 'error',
-              showClose: true,
-              message: res.message
-            })
+            _this.errorHandler(res.message || '获取文章失败')
           }
         }).catch(error => { // 状态码非2xx时
           _this.pageLoading = false
           _this.searchLoading = false
-          _this.$message({
-            type: 'error',
-            showClose: true,
-            message: error.data.message
-          })
+          _this.errorHandler(error.message)
         })
       },
       // 搜索条件恢复默认
@@ -301,9 +293,11 @@
         this.api.getArticleType({}).then(res => {
           if (res.code === 0) {
             this.type = res.data
+          } else {
+            this.errorHandler(res.message || '获取文章类别失败')
           }
-        }).catch(error => { // 状态码非2xx时
-          console.log(error)
+        }).catch(error => {
+          this.errorHandler(error.message)
         })
       },
       // 获取数据字典
@@ -311,13 +305,11 @@
         this.api.getDictionaries({}).then(res => {
           if (res.code === 0) {
             this.status = res.data.status
+          } else {
+            this.errorHandler(res.message || '获取字典失败')
           }
-        }).catch(error => { // 状态码非2xx时
-          this.$message({
-            type: 'error',
-            showClose: true,
-            message: error.data.message
-          })
+        }).catch(error => {
+          this.errorHandler(error.message)
         })
       },
       // 显示添加修改框
@@ -349,9 +341,11 @@
               type: 'success',
               message: '删除成功!'
             })
+          } else {
+            this.errorHandler(res.message || '删除失败')
           }
-        }).catch(error => { // 状态码非2xx时
-          console.log(error)
+        }).catch(error => {
+          this.errorHandler(error.message)
         })
       },
       // 批量删除
@@ -370,9 +364,11 @@
               type: 'success',
               message: '删除成功!'
             })
+          } else {
+            this.errorHandler(res.message || '删除失败')
           }
-        }).catch(error => { // 状态码非2xx时
-          console.log(error)
+        }).catch(error => {
+          this.errorHandler(error.message)
         })
       },
       // 去文章编辑页面

@@ -100,7 +100,6 @@
     methods: {
       // 图片上传成功后的操作
       handleAvatarSuccess (res, file) {
-        // 这里加一个后台返回连接的
         this.form.cover = res.data.path
       },
       // 图片上传之前的校验
@@ -129,37 +128,26 @@
               _this.$refs.tinymce.setContent(_this.defaultForm.content)
             }
           } else {
-            _this.$message({
-              type: 'error',
-              showClose: true,
-              message: res.message
-            })
+            _this.errorHandler(res.message || '获取文章失败')
           }
-        }).catch(error => { // 状态码非2xx时
+        }).catch(error => {
           _this.pageLoading = false
-          _this.$message({
-            type: 'error',
-            showClose: true,
-            message: error.message || '错误'
-          })
+          _this.errorHandler(error.message)
         })
       },
       // 获取所有文章分类
-      getArticleType () {
+      async getArticleType () {
         let _this = this
-
-        async function getType () {
-          await _this.api.getArticleType({}).then(res => {
-            if (res.code === 0) {
-              _this.type = res.data
-            }
-          }).catch(error => { // 状态码非2xx时
-            console.log(error)
-          })
-          _this.getData()
-        }
-
-        getType()
+        await _this.api.getArticleType({}).then(res => {
+          if (res.code === 0) {
+            _this.type = res.data
+          } else {
+            _this.errorHandler(res.message || '获取文章类别失败')
+          }
+        }).catch(error => {
+          _this.errorHandler(error.message)
+        })
+        _this.getData()
       },
       // 提交表单
       submitForm () {
@@ -189,17 +177,11 @@
                 path: '/article/articleList'
               })
             } else {
-              _this.$message({
-                message: res.message,
-                type: 'error'
-              })
+              _this.errorHandler(res.message || '添加文章失败')
             }
           }).catch(error => {
             _this.disableSubmit = false
-            _this.$message({
-              message: error.message || '服务器忙...',
-              type: 'error'
-            })
+            _this.errorHandler(error.message)
           })
         } else {
           _this.api.updateArticle(form).then(res => {
@@ -211,17 +193,11 @@
                 path: '/article/articleList'
               })
             } else {
-              _this.$message({
-                message: res.message,
-                type: 'error'
-              })
+              _this.errorHandler(res.message || '修改文章失败')
             }
           }).catch(error => {
             _this.disableSubmit = false
-            _this.$message({
-              message: error.message || '服务器忙...',
-              type: 'error'
-            })
+            _this.errorHandler(error.message || '添加文章失败')
           })
         }
       },

@@ -25,16 +25,19 @@ axios.interceptors.response.use(
   response => {
     let res = response.data
     if (res.code === 2) {
-      MessageBox.confirm('你已经登录超时，保持当前页或者重新登录', '登录超时', {
-        confirmButtonText: '重新登录',
-        cancelButtonText: '保持当前页',
-        type: 'warning'
-      }).then(() => {
-        store.dispatch('user/fedLogOut').then(() => {
-          window.location.reload()
+      if (response.config.method === 'get' && response.config.url.endsWith('userInfo')) {
+      } else {
+        MessageBox.confirm('你已经登录超时，保持当前页或者重新登录', '登录超时', {
+          confirmButtonText: '重新登录',
+          cancelButtonText: '保持当前页',
+          type: 'warning'
+        }).then(() => {
+          store.dispatch('user/fedLogOut').then(() => {
+            window.location.reload()
+          })
+        }).catch(() => {
         })
-      }).catch(() => {
-      })
+      }
       return Promise.reject(new Error('loginTimeout'))
     } else {
       return res

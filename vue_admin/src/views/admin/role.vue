@@ -195,16 +195,10 @@
               message: '删除成功!'
             })
           } else {
-            this.$message({
-              message: res.message,
-              type: 'error'
-            })
+            this.errorHandler(res.message || '删除失败')
           }
         }).catch(error => {
-          this.$message({
-            message: error.message || '服务器忙...',
-            type: 'error'
-          })
+          this.errorHandler(error.message)
         })
       },
       // 批量删除
@@ -224,16 +218,10 @@
               message: '删除成功!'
             })
           } else {
-            this.$message({
-              message: res.message,
-              type: 'error'
-            })
+            this.errorHandler(res.message || '删除失败')
           }
         }).catch(error => {
-          this.$message({
-            message: error.message || '服务器忙...',
-            type: 'error'
-          })
+          this.errorHandler(error.message)
         })
       },
       indexMethod (index) {
@@ -250,13 +238,12 @@
           if (res.code === 0) {
             _this.resultData = res.data
             $('.main').animate({ scrollTop: 0 }, 500)
+          } else {
+            _this.errorHandler(res.message || '获取角色失败')
           }
         }).catch(error => {
           _this.loading = false
-          _this.$message({
-            message: error.message || '服务器忙...',
-            type: 'error'
-          })
+          _this.errorHandler(error.message)
         })
       },
       submitForm () {
@@ -275,17 +262,11 @@
                   _this.dialog.roleDialog = false
                   _this.getData()
                 } else {
-                  _this.$message({
-                    message: res.message,
-                    type: 'error'
-                  })
+                  _this.errorHandler(res.message || '添加角色失败')
                 }
               }).catch(error => {
                 _this.dialog.disableSubmit = false
-                _this.$message({
-                  message: error.message || '服务器忙...',
-                  type: 'error'
-                })
+                _this.errorHandler(error.message)
               })
             } else {
               _this.api.updateRole(_this.dialog.form).then(res => {
@@ -294,17 +275,11 @@
                   _this.dialog.roleDialog = false
                   _this.getData()
                 } else {
-                  _this.$message({
-                    message: res.message,
-                    type: 'error'
-                  })
+                  _this.errorHandler(res.message || '更新角色失败')
                 }
               }).catch(error => {
                 _this.dialog.disableSubmit = false
-                _this.$message({
-                  message: error.message || '服务器忙...',
-                  type: 'error'
-                })
+                _this.errorHandler(error.message)
               })
             }
           } else {
@@ -348,14 +323,13 @@
             if (res.code === 0) {
               if (res.data && res.data.length) {
                 this.$refs.tree.setCheckedKeys(res.data)
+              } else {
+                this.errorHandler(res.message || '获取角色权限失败')
               }
             }
           }).catch(error => {
             this.treeLoading = false
-            this.$message({
-              message: error.message || '服务器忙...',
-              type: 'error'
-            })
+            this.errorHandler(error.message)
           })
         })
       },
@@ -376,17 +350,11 @@
               message: '修改成功!'
             })
           } else {
-            _this.$message({
-              message: res.message,
-              type: 'error'
-            })
+            _this.errorHandler(res.message || '修改失败')
           }
         }).catch(error => {
           _this.dialog.disableSubmit = false
-          _this.$message({
-            message: error.message || '服务器忙...',
-            type: 'error'
-          })
+          _this.errorHandler(error.message)
         })
       },
       getMenuTree () {
@@ -395,12 +363,11 @@
             if (res.data && res.data.length) {
               this.menuTree = res.data
             }
+          } else {
+            this.errorHandler(res.message || '获取菜单失败')
           }
         }).catch(error => {
-          this.$message({
-            message: error.message || '服务器忙...',
-            type: 'error'
-          })
+          this.errorHandler(error.message)
         })
       }
     },

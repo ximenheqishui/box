@@ -204,16 +204,10 @@
           if (res.code === 0) {
             this.data = res.data
           } else {
-            this.$message({
-              message: res.message,
-              type: 'error'
-            })
+            this.errorHandler(res.message || '获取菜单失败')
           }
         }).catch(error => {
-          this.$message({
-            message: error.message || '服务器忙...',
-            type: 'error'
-          })
+          this.errorHandler(error.message)
         })
       },
       submitForm (form) {
@@ -243,17 +237,11 @@
                     _this.data.push(newData)
                   }
                 } else {
-                  _this.$message({
-                    message: res.message,
-                    type: 'error'
-                  })
+                  _this.errorHandler(res.message || '添加菜单失败')
                 }
-              }).catch(error => { // 状态码非2xx时
+              }).catch(error => {
                 _this.disableSubmit = false
-                _this.$message({
-                  message: error.message || '服务器忙...',
-                  type: 'error'
-                })
+                _this.errorHandler(error.message)
               })
             } else {
               _this.api.updateMenu(_this.form).then(res => {
@@ -273,17 +261,11 @@
                   _this.currentData.status = _this.form.status
                   _this.currentData.last_menu = _this.form.last_menu
                 } else {
-                  _this.$message({
-                    message: res.message,
-                    type: 'error'
-                  })
+                  _this.errorHandler(res.message || '修改菜单失败')
                 }
               }).catch(error => {
                 _this.disableSubmit = false
-                _this.$message({
-                  message: error.message || '服务器忙...',
-                  type: 'error'
-                })
+                _this.errorHandler(error.message)
               })
             }
           } else {
@@ -359,16 +341,10 @@
               type: 'success'
             })
           } else {
-            this.$message({
-              message: res.message,
-              type: 'error'
-            })
+            _this.errorHandler(res.message || '删除菜单失败')
           }
         }).catch(error => {
-          this.$message({
-            message: error.message || '服务器忙...',
-            type: 'error'
-          })
+          _this.errorHandler(error.message)
         })
       },
       deleteMore () {
@@ -384,16 +360,10 @@
             })
             this.getMenu()
           } else {
-            this.$message({
-              message: res.message,
-              type: 'error'
-            })
+            this.errorHandler(res.message || '删除菜单失败')
           }
         }).catch(error => {
-          this.$message({
-            message: error.message || '服务器忙...',
-            type: 'error'
-          })
+          this.errorHandler(error.message)
         })
       }
     },

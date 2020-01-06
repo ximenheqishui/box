@@ -17,8 +17,7 @@ const routes = [
     component: () => import('@/views/room/index'),
     name: 'room',
     meta: {
-      title: '调解房间',
-      unique_id: 'admin-room'
+      title: '调解房间'
     }
   },
   {

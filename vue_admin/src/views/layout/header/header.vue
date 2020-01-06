@@ -142,8 +142,6 @@
     methods: {
       // 图片上传成功后的操作
       handleAvatarSuccess (res, file) {
-        // 这里加一个后台返回连接的
-        // this.dialog.form.avatar = URL.createObjectURL(file.raw)
         this.dialog.form.avatar = res.data.path
       },
       // 图片上传之前的校验
@@ -159,13 +157,11 @@
         this.api.getDictionaries({}).then(res => {
           if (res.code === 0) {
             this.sex = res.data.sex
+          } else {
+            this.errorHandler(res.message || '添加字典失败')
           }
-        }).catch(error => { // 状态码非2xx时
-          this.$message({
-            type: 'error',
-            showClose: true,
-            message: error.data.message
-          })
+        }).catch(error => {
+          this.errorHandler(error.message)
         })
       },
       logOut () {
@@ -203,17 +199,11 @@
                   window.location.reload()
                 })
               } else {
-                _this.$message({
-                  message: res.message,
-                  type: 'error'
-                })
+                _this.errorHandler(res.message || '修改个人资料')
               }
-            }).catch(error => { // 状态码非2xx时
+            }).catch(error => {
               _this.dialog.disableSubmit = false
-              _this.$message({
-                message: error.message,
-                type: 'error'
-              })
+              _this.errorHandler(error.message)
             })
           } else {
             console.log('error submit!!')

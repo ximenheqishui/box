@@ -11,6 +11,17 @@ export default {
     Vue.mixin({
       created: function () {
         // 逻辑...
+      },
+      methods: {
+        errorHandler (message) {
+          if (message !== 'loginTimeout') {
+            this.$message({
+              type: 'error',
+              showClose: true,
+              message: message || '服务器忙。。。'
+            })
+          }
+        }
       }
     })
     /**

@@ -430,6 +430,7 @@
         this.api.getUser(postdata).then(res => {
           _this.pageLoading = false
           _this.searchLoading = false
+          // throw new Error('运算错误')
           if (res.code === 0) {
             _this.resultData = res.data
             if (type) {
@@ -437,20 +438,12 @@
             }
             $('.main').animate({ scrollTop: 0 }, 500)
           } else {
-            _this.$message({
-              type: 'error',
-              showClose: true,
-              message: res.message
-            })
+            _this.errorHandler(res.message || '获取用户信息失败')
           }
-        }).catch(error => { // 状态码非2xx时
+        }).catch(error => {
           _this.pageLoading = false
           _this.searchLoading = false
-          _this.$message({
-            type: 'error',
-            showClose: true,
-            message: error.data.message
-          })
+          _this.errorHandler(error.message)
         })
       },
       // 搜索条件恢复默认
@@ -470,9 +463,11 @@
           if (res.code === 0) {
             this.department = res.data
             this.dialog.department = res.data
+          } else {
+            this.errorHandler(res.message || '获取部门失败')
           }
-        }).catch(error => { // 状态码非2xx时
-          console.log(error)
+        }).catch(error => {
+          this.errorHandler(error.message)
         })
       },
       // 获取所有的角色
@@ -481,9 +476,11 @@
         _this.api.getRole({}).then(res => {
           if (res.code === 0) {
             _this.role = res.data
+          } else {
+            this.errorHandler(res.message || '获取角色失败')
           }
-        }).catch(error => { // 状态码非2xx时
-          console.log(error)
+        }).catch(error => {
+          this.errorHandler(error.message)
         })
       },
       // 获取数据字典
@@ -492,13 +489,11 @@
           if (res.code === 0) {
             this.sex = res.data.sex
             this.status = res.data.status
+          } else {
+            this.errorHandler(res.message || '获取数据字典失败')
           }
-        }).catch(error => { // 状态码非2xx时
-          this.$message({
-            type: 'error',
-            showClose: true,
-            message: error.data.message
-          })
+        }).catch(error => {
+          this.errorHandler(error.message)
         })
       },
       // 显示添加修改框
@@ -531,9 +526,11 @@
               type: 'success',
               message: '删除成功!'
             })
+          } else {
+            this.errorHandler(res.message || '删除失败')
           }
-        }).catch(error => { // 状态码非2xx时
-          console.log(error)
+        }).catch(error => {
+          this.errorHandler(error.message)
         })
       },
       // 批量删除
@@ -552,9 +549,11 @@
               type: 'success',
               message: '删除成功!'
             })
+          } else {
+            this.errorHandler(res.message || '删除失败')
           }
-        }).catch(error => { // 状态码非2xx时
-          console.log(error)
+        }).catch(error => {
+          this.errorHandler(error.message)
         })
       },
       // 提交表单
@@ -577,17 +576,11 @@
                   _this.dialog.tag = false
                   _this.getData(1)
                 } else {
-                  _this.$message({
-                    message: res.message,
-                    type: 'error'
-                  })
+                  _this.errorHandler(res.message || '增加用户失败')
                 }
               }).catch(error => {
                 _this.dialog.disableSubmit = false
-                _this.$message({
-                  message: error.message || '服务器忙...',
-                  type: 'error'
-                })
+                _this.errorHandler(error.message)
               })
             } else {
               _this.api.updateUser(form).then(res => {
@@ -596,17 +589,11 @@
                   _this.dialog.tag = false
                   _this.getData(0)
                 } else {
-                  _this.$message({
-                    message: res.message,
-                    type: 'error'
-                  })
+                  _this.errorHandler(res.message || '修改用户失败')
                 }
               }).catch(error => {
                 _this.dialog.disableSubmit = false
-                _this.$message({
-                  message: error.message || '服务器忙...',
-                  type: 'error'
-                })
+                _this.errorHandler(error.message)
               })
             }
           } else {

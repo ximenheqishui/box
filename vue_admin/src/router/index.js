@@ -30,11 +30,17 @@ router.beforeEach((to, from, next) => {
       } else {
         store.dispatch('user/getUserInfo').then((res) => {
           beforeNext(to, from, next)
-          next()
+          if (to.meta.unique_id && store.getters.userInfo.permission.indexOf(to.meta.unique_id) === -1) {
+            next({ path: '/403' })
+          } else {
+            next()
+          }
         }).catch((error) => {
           store.dispatch('user/fedLogOut').then(() => {
             if (error.message !== 'loginTimeout') {
               Message.error('获取用户信息失败，请重新登录')
+            } else {
+              Message.error('登录超时，请重新登录')
             }
             beforeNext(to, from, next)
             next({ path: '/login' })

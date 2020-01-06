@@ -140,12 +140,11 @@
         this.api.getDepartment({}).then(res => {
           if (res.code === 0) {
             this.data = res.data
+          } else {
+            this.errorHandler(res.message || '获取部门失败')
           }
         }).catch(error => {
-          this.$message({
-            message: error.message || '服务器忙...',
-            type: 'error'
-          })
+          this.errorHandler(error.message)
         })
       },
       submitForm () {
@@ -175,17 +174,11 @@
                     _this.data.push(newData)
                   }
                 } else {
-                  _this.$message({
-                    message: res.message,
-                    type: 'error'
-                  })
+                  _this.errorHandler(res.message || '添加部门失败')
                 }
               }).catch(error => {
                 _this.disableSubmit = false
-                _this.$message({
-                  message: error.message || '服务器忙...',
-                  type: 'error'
-                })
+                _this.errorHandler(error.message)
               })
             } else {
               _this.api.updateDepartment(form).then(res => {
@@ -201,17 +194,11 @@
                   _this.currentData.status = form.status
                   _this.currentData.leader = form.leader
                 } else {
-                  _this.$message({
-                    message: res.message,
-                    type: 'error'
-                  })
+                  _this.errorHandler(res.message || '修改部门失败')
                 }
               }).catch(error => {
                 _this.disableSubmit = false
-                _this.$message({
-                  message: error.message || '服务器忙...',
-                  type: 'error'
-                })
+                _this.errorHandler(error.message)
               })
             }
           } else {
@@ -262,16 +249,10 @@
               type: 'success'
             })
           } else {
-            this.$message({
-              message: res.message,
-              type: 'error'
-            })
+            _this.errorHandler(res.message || '删除部门失败')
           }
         }).catch(error => {
-          this.$message({
-            message: error.message || '服务器忙...',
-            type: 'error'
-          })
+          _this.errorHandler(error.message)
         })
       },
       deleteMore () {
@@ -287,16 +268,10 @@
             })
             this.getDepartment()
           } else {
-            this.$message({
-              message: res.message,
-              type: 'error'
-            })
+            this.errorHandler(res.message || '删除部门失败')
           }
         }).catch(error => {
-          this.$message({
-            message: error.message || '服务器忙...',
-            type: 'error'
-          })
+          this.errorHandler(error.message)
         })
       },
       getDepartUser (data) {
@@ -304,16 +279,20 @@
         this.api.getUser({ dept_id: data.id }).then(res => {
           if (res.code === 0) {
             this.options = res.data
+          } else {
+            this.errorHandler(res.message || '获取部门用户失败')
           }
         }).catch(error => {
-          console.log(error)
+          this.errorHandler(error.message)
         })
         this.api.getDepartmentLeader({ dept_id: data.id }).then(res => {
           if (res.code === 0) {
             this.form.leader = res.data
+          } else {
+            this.errorHandler(res.message || '获取部门领导者失败')
           }
         }).catch(error => {
-          console.log(error)
+          this.errorHandler(error.message)
         })
       }
     },

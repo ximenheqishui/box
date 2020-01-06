@@ -129,12 +129,11 @@
         this.api.getArticleType({}).then(res => {
           if (res.code === 0) {
             this.data = res.data
+          } else {
+            this.errorHandler(res.message || '获取文章类别失败')
           }
         }).catch(error => {
-          this.$message({
-            message: error.message || '服务器忙...',
-            type: 'error'
-          })
+          this.errorHandler(error.message)
         })
       },
       submitForm () {
@@ -164,17 +163,11 @@
                     _this.data.push(newData)
                   }
                 } else {
-                  _this.$message({
-                    message: res.message,
-                    type: 'error'
-                  })
+                  _this.errorHandler(res.message || '新增文章类别失败')
                 }
               }).catch(error => {
                 _this.disableSubmit = false
-                _this.$message({
-                  message: error.message || '服务器忙...',
-                  type: 'error'
-                })
+                _this.errorHandler(error.message)
               })
             } else {
               _this.api.updateArticleType(form).then(res => {
@@ -189,17 +182,11 @@
                   _this.currentData.sort_order = form.sort_order
                   _this.currentData.status = form.status
                 } else {
-                  _this.$message({
-                    message: res.message,
-                    type: 'error'
-                  })
+                  _this.errorHandler(res.message || '修改文章类别失败')
                 }
               }).catch(error => {
                 _this.disableSubmit = false
-                _this.$message({
-                  message: error.message || '服务器忙...',
-                  type: 'error'
-                })
+                _this.errorHandler(error.message)
               })
             }
           } else {
@@ -248,16 +235,10 @@
               type: 'success'
             })
           } else {
-            this.$message({
-              message: res.message,
-              type: 'error'
-            })
+            _this.errorHandler(res.message || '删除文章类别失败')
           }
         }).catch(error => {
-          this.$message({
-            message: error.message || '服务器忙...',
-            type: 'error'
-          })
+          _this.errorHandler(error.message)
         })
       },
       deleteMore () {
@@ -273,16 +254,10 @@
             })
             this.getArticleType()
           } else {
-            this.$message({
-              message: res.message,
-              type: 'error'
-            })
+            this.errorHandler(res.message || '删除文章类别失败')
           }
         }).catch(error => {
-          this.$message({
-            message: error.message || '服务器忙...',
-            type: 'error'
-          })
+          this.errorHandler(error.message)
         })
       }
     },

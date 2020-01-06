@@ -173,16 +173,10 @@
               message: '删除成功!'
             })
           } else {
-            this.$message({
-              message: res.message,
-              type: 'error'
-            })
+            this.errorHandler(res.message || '删除失败')
           }
         }).catch(error => {
-          this.$message({
-            message: error.message || '服务器忙...',
-            type: 'error'
-          })
+          this.errorHandler(error.message)
         })
       },
       // 批量删除
@@ -202,16 +196,10 @@
               message: '删除成功!'
             })
           } else {
-            this.$message({
-              message: res.message,
-              type: 'error'
-            })
+            this.errorHandler(res.message || '删除失败')
           }
         }).catch(error => {
-          this.$message({
-            message: error.message || '服务器忙...',
-            type: 'error'
-          })
+          this.errorHandler(error.message)
         })
       },
       indexMethod (index) {
@@ -228,13 +216,12 @@
           if (res.code === 0) {
             _this.resultData = res.data
             $('.main').animate({ scrollTop: 0 }, 500)
+          } else {
+            _this.errorHandler(res.message || '获取字典失败')
           }
         }).catch(error => {
           _this.loading = false
-          _this.$message({
-            message: error.message || '服务器忙...',
-            type: 'error'
-          })
+          _this.errorHandler(error.message)
         })
       },
       submitForm () {
@@ -253,17 +240,11 @@
                   _this.dialog.tag = false
                   _this.getData()
                 } else {
-                  _this.$message({
-                    message: res.message,
-                    type: 'error'
-                  })
+                  _this.errorHandler(res.message || '添加失败')
                 }
               }).catch(error => {
                 _this.dialog.disableSubmit = false
-                _this.$message({
-                  message: error.message || '服务器忙...',
-                  type: 'error'
-                })
+                _this.errorHandler(error.message)
               })
             } else {
               _this.api.updateDictionaries(_this.dialog.form).then(res => {
@@ -272,17 +253,11 @@
                   _this.dialog.tag = false
                   _this.getData()
                 } else {
-                  _this.$message({
-                    message: res.message,
-                    type: 'error'
-                  })
+                  _this.errorHandler(res.message || '修改菜单失败')
                 }
               }).catch(error => {
                 _this.dialog.disableSubmit = false
-                _this.$message({
-                  message: error.message || '服务器忙...',
-                  type: 'error'
-                })
+                _this.errorHandler(error.message)
               })
             }
           } else {

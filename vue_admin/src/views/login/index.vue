@@ -54,7 +54,7 @@
             this.disabled = true
             this.$store.dispatch('user/login', this.form).catch(error => {
               this.disabled = false
-              console.log(error)
+              this.errorHandler(error.message)
             })
           } else {
             return false
