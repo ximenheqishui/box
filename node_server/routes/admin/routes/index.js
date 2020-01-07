@@ -35,7 +35,7 @@ router.use(async function (req, res, next) {
 
 
 /**
- * @description 接口过滤器
+ * @description 接口拦截器
  * */
 router.use(async function (req, res, next) {
     // 返回值的模板
@@ -57,7 +57,7 @@ router.use(async function (req, res, next) {
         }
         req.user = user
         if (!user) {
-            res.json({code: 2, message: '未登录或登录超时'})
+            res.json({code: 2, message: '登录超时'})
         } else {
             user.sex = parseInt(user.sex)
             // 这个地方要做每个接口的权限
