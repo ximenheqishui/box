@@ -323,9 +323,9 @@
             if (res.code === 0) {
               if (res.data && res.data.length) {
                 this.$refs.tree.setCheckedKeys(res.data)
-              } else {
-                this.errorHandler(res.message || '获取角色权限失败')
               }
+            } else {
+              this.errorHandler(res.message || '获取角色权限失败')
             }
           }).catch(error => {
             this.treeLoading = false

@@ -1,5 +1,4 @@
 import { setToken, removeToken, getToken } from '@/utils/auth'
-import { Message } from 'element-ui'
 import router from '@/router/index.js'
 import api from '@/api/index.js'
 const user = {
@@ -27,22 +26,13 @@ const user = {
               setToken(res.data.token)
               router.push('/')
             } catch (e) {
-              console.log(e)
+              reject(e)
             }
           } else {
             reject(res)
-            Message({
-              message: res.message,
-              type: 'warning'
-            })
           }
-        }).catch(error => { // 状态码非2xx时
+        }).catch(error => {
           reject(error)
-          Message({
-            message: error.message || '登录失败',
-            type: 'error',
-            duration: 5 * 1000
-          })
         })
       })
     },
