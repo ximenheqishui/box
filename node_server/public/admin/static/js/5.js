@@ -46,10 +46,10 @@ __webpack_require__.r(__webpack_exports__);
   computed: {
     downloadUrl: function downloadUrl() {
       if (this.token) {
-        return baseConfig.apiHost + "/export/?token=".concat(this.token);
+        return baseConfig.apiHost + "/export?token=".concat(this.token);
       }
 
-      return baseConfig.apiHost + "/export/".concat(this.page, "/?token=").concat(this.$store.getters.token, "&") + this.qs.stringify(this.queryData);
+      return baseConfig.apiHost + "/export/".concat(this.page, "?token=").concat(this.$store.getters.token, "&") + this.qs.stringify(this.queryData);
     }
   },
   methods: {},

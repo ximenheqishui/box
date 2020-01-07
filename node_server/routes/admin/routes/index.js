@@ -61,10 +61,10 @@ router.use(async function (req, res, next) {
         } else {
             user.sex = parseInt(user.sex)
             // 这个地方要做每个接口的权限
-            console.log(user)
-            console.log(req.method)
-            console.log(req.baseUrl)
-            console.log(req.path)
+            // console.log(user)
+            // console.log(req.method)
+            // console.log(req.baseUrl)
+            // console.log(req.path)
             let unique_id = (req.method + '-' + req.baseUrl + req.path).toLowerCase()
             if (user.uniqueAll.indexOf(unique_id) >= 0) {
                if (user.permission.indexOf(unique_id) >= 0) {

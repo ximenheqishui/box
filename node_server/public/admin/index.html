@@ -19,91 +19,91 @@
     <![endif]-->
   <link href="static/js/0.js" rel="prefetch"><link href="static/js/1.js" rel="prefetch"><link href="static/js/10.js" rel="prefetch"><link href="static/js/11.js" rel="prefetch"><link href="static/js/12.js" rel="prefetch"><link href="static/js/13.js" rel="prefetch"><link href="static/js/14.js" rel="prefetch"><link href="static/js/15.js" rel="prefetch"><link href="static/js/16.js" rel="prefetch"><link href="static/js/17.js" rel="prefetch"><link href="static/js/18.js" rel="prefetch"><link href="static/js/19.js" rel="prefetch"><link href="static/js/2.js" rel="prefetch"><link href="static/js/20.js" rel="prefetch"><link href="static/js/3.js" rel="prefetch"><link href="static/js/4.js" rel="prefetch"><link href="static/js/5.js" rel="prefetch"><link href="static/js/6.js" rel="prefetch"><link href="static/js/7.js" rel="prefetch"><link href="static/js/8.js" rel="prefetch"><link href="static/js/9.js" rel="prefetch"><link href="static/js/app.js" rel="preload" as="script"></head>
   <body>
-  <div id="app">
-    <style>
-      .loader {
-        width: 10em;
-        height: 10em;
-        font-size: 10px;
-        position: relative;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        margin:100px auto;
-        color: #ccc;
-      }
-
-      .loader .face {
-        position: absolute;
-        border-radius: 50%;
-        border-style: solid;
-        animation: animate 3s linear infinite;
-      }
-
-      .loader .face:nth-child(1) {
-        width: 100%;
-        height: 100%;
-        color: gold;
-        border-color: currentColor transparent transparent currentColor;
-        border-width: 0.2em 0.2em 0em 0em;
-        --deg: -45deg;
-        animation-direction: normal;
-      }
-
-      .loader .face:nth-child(2) {
-        width: 70%;
-        height: 70%;
-        color: lime;
-        border-color: currentColor currentColor transparent transparent;
-        border-width: 0.2em 0em 0em 0.2em;
-        --deg: -135deg;
-        animation-direction: reverse;
-      }
-
-      .loader .face .circle {
-        position: absolute;
-        width: 50%;
-        height: 0.1em;
-        top: 50%;
-        left: 50%;
-        background-color: transparent;
-        transform: rotate(var(--deg));
-        transform-origin: left;
-      }
-
-      .loader .face .circle::before {
-        position: absolute;
-        top: -0.5em;
-        right: -0.5em;
-        content: '';
-        width: 1em;
-        height: 1em;
-        background-color: currentColor;
-        border-radius: 50%;
-        box-shadow: 0 0 2em,
-        0 0 4em,
-        0 0 6em,
-        0 0 8em,
-        0 0 10em,
-        0 0 0 0.5em rgba(255, 255, 0, 0.1);
-      }
-
-      @keyframes animate {
-        to {
-          transform: rotate(1turn);
+    <div id="app">
+      <style>
+        .loader {
+          width: 10em;
+          height: 10em;
+          font-size: 10px;
+          position: relative;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          margin:100px auto;
+          color: #ccc;
         }
-      }
-    </style>
-    <div class="loader">
-      loading...
-      <div class="face">
-        <div class="circle"></div>
-      </div>
-      <div class="face">
-        <div class="circle"></div>
+
+        .loader .face {
+          position: absolute;
+          border-radius: 50%;
+          border-style: solid;
+          animation: animate 3s linear infinite;
+        }
+
+        .loader .face:nth-child(1) {
+          width: 100%;
+          height: 100%;
+          color: gold;
+          border-color: currentColor transparent transparent currentColor;
+          border-width: 0.2em 0.2em 0em 0em;
+          --deg: -45deg;
+          animation-direction: normal;
+        }
+
+        .loader .face:nth-child(2) {
+          width: 70%;
+          height: 70%;
+          color: lime;
+          border-color: currentColor currentColor transparent transparent;
+          border-width: 0.2em 0em 0em 0.2em;
+          --deg: -135deg;
+          animation-direction: reverse;
+        }
+
+        .loader .face .circle {
+          position: absolute;
+          width: 50%;
+          height: 0.1em;
+          top: 50%;
+          left: 50%;
+          background-color: transparent;
+          transform: rotate(var(--deg));
+          transform-origin: left;
+        }
+
+        .loader .face .circle::before {
+          position: absolute;
+          top: -0.5em;
+          right: -0.5em;
+          content: '';
+          width: 1em;
+          height: 1em;
+          background-color: currentColor;
+          border-radius: 50%;
+          box-shadow: 0 0 2em,
+          0 0 4em,
+          0 0 6em,
+          0 0 8em,
+          0 0 10em,
+          0 0 0 0.5em rgba(255, 255, 0, 0.1);
+        }
+
+        @keyframes animate {
+          to {
+            transform: rotate(1turn);
+          }
+        }
+      </style>
+      <div class="loader">
+        loading...
+        <div class="face">
+          <div class="circle"></div>
+        </div>
+        <div class="face">
+          <div class="circle"></div>
+        </div>
       </div>
     </div>
-  </div>
     <!-- built files will be auto injected -->
   <script type="text/javascript" src="static/js/app.js"></script></body>
 </html>
