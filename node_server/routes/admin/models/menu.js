@@ -73,5 +73,27 @@ module.exports = {
         let _sql = "SELECT * FROM ?? WHERE parent_id = ? and status = 0 and id IN (?) ORDER BY sort_order ASC"
         let result = await dbUtils.query(_sql, ['menu', pid, ids])
         return result
+    },
+    /**
+     * 根据父节点查找   可用有权限的菜单
+     * @param  {int} pid 菜单的父节点
+     * @param  {array} ids 有权限的id
+     * @return {object|null}   查找结果
+     */
+    async getUsableById(ids) {
+        let _sql = "SELECT * FROM ?? WHERE status = 0 and id IN (?) "
+        let result = await dbUtils.query(_sql, ['menu', ids])
+        return result
+    },
+    /**
+     * 根据父节点查找   可用有权限的菜单
+     * @param  {int} pid 菜单的父节点
+     * @param  {array} ids 有权限的id
+     * @return {object|null}   查找结果
+     */
+    async getUsableByIdAll() {
+        let _sql = "SELECT * FROM ?? WHERE status = 0 "
+        let result = await dbUtils.query(_sql, ['menu'])
+        return result
     }
 }

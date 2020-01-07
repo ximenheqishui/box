@@ -37,9 +37,9 @@
     computed: {
       downloadUrl: function () {
         if (this.token) {
-          return baseConfig.apiHost + `/export/?token=${this.token}`
+          return baseConfig.apiHost + `/export?token=${this.token}`
         }
-        return baseConfig.apiHost + `/export/${this.page}/?token=${this.$store.getters.token}&` + this.qs.stringify(this.queryData)
+        return baseConfig.apiHost + `/export/${this.page}?token=${this.$store.getters.token}&` + this.qs.stringify(this.queryData)
       }
     },
     methods: {

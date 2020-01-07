@@ -64,7 +64,26 @@ module.exports = {
             let result = await userModels.getUserOne(null, req.body.account, null)
             if (result && result.length) {
                 if (cryptoUtil.createPass(req.body.password) === result[0].password) {
-                    let token = await redis.setLoginToken(result[0])
+                    let user = result[0]
+                    user.role_ids = await userModels.getUserRole(user.id)
+                    let menuIds = []
+                    for (let i = 0; i < user.role_ids.length; i++) {
+                        let menuId = await roleModels.getRoleMenu(user.role_ids[i])
+                        menuId.forEach(function (item) {
+                            if (menuIds.indexOf(item) == -1) {
+                                menuIds.push(item)
+                            }
+                        })
+                    }
+                    let menu = await menuModels.getUsableById(menuIds)
+                    user.permission= menu.map(function(item){
+                        return item.unique_id
+                    })
+                    let menuAll = await menuModels.getUsableByIdAll()
+                    user.uniqueAll= menuAll.map(function(item){
+                        return item.unique_id
+                    })
+                    let token = await redis.setLoginToken(user)
                     req.returnData.data = {
                         token: token
                     }

@@ -56,16 +56,26 @@ router.use(async function (req, res, next) {
             user =  await redis.getDate(req.get('Admin-Token'))
         }
         req.user = user
-        // 这个地方要做每个接口的权限
-        // console.log(req.method)
-        // console.log(req.originalUrl)
-        // console.log(req.baseUrl)
-        // console.log(req.path)
         if (!user) {
             res.json({code: 2, message: '未登录或登录超时'})
         } else {
             user.sex = parseInt(user.sex)
-            next()
+            // 这个地方要做每个接口的权限
+            console.log(user)
+            console.log(req.method)
+            console.log(req.baseUrl)
+            console.log(req.path)
+            let unique_id = (req.method + '-' + req.baseUrl + req.path).toLowerCase()
+            if (user.uniqueAll.indexOf(unique_id) >= 0) {
+               if (user.permission.indexOf(unique_id) >= 0) {
+                   next()
+               } else {
+                   res.json({code: 3, message: '无接口权限'})
+               }
+            } else {
+                next()
+            }
+
         }
     }
 });
