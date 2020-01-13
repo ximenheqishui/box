@@ -13,14 +13,6 @@ const routes = [
     ]
   },
   {
-    path: '/room',
-    component: () => import('@/views/room/index'),
-    name: 'room',
-    meta: {
-      title: '调解房间'
-    }
-  },
-  {
     path: '/admin',
     component: Layout,
     children: [
@@ -100,39 +92,6 @@ const routes = [
         meta: {
           title: '文章编辑',
           unique_id: 'article-editor'
-        }
-      }
-    ]
-  },
-  {
-    path: '/case',
-    component: Layout,
-    children: [
-      {
-        path: 'caseType',
-        component: () => import('@/views/case/caseType'),
-        name: 'caseType',
-        meta: {
-          title: '案件分类管理',
-          unique_id: 'case-type'
-        }
-      },
-      {
-        path: 'caseList',
-        component: () => import('@/views/case/caseList'),
-        name: 'caseList',
-        meta: {
-          title: '案件列表',
-          unique_id: 'case-list'
-        }
-      },
-      {
-        path: 'caseEditor',
-        component: () => import('@/views/case/caseEditor'),
-        name: 'caseEditor',
-        meta: {
-          title: '案件编辑',
-          unique_id: 'case-editor'
         }
       }
     ]
