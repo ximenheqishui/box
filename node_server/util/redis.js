@@ -41,6 +41,9 @@ let getDate = (token) => {
                 reject(err);
             } else {
                 resolve(obj)
+                if (obj) {
+                    client.expire(token, 60 * 60 * 24) //设置key 为token的超时时间  单位为秒
+                }
             }
         })
     })

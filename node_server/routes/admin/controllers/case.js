@@ -7,6 +7,13 @@ module.exports = {
             next(e)
         }
     },
+    async addCaseParty(req, res, next) {
+        try {
+            await res.json(req.returnData)
+        } catch (e) {
+            next(e)
+        }
+    },
     async delCase(req, res, next) {
         try {
             await res.json(req.returnData)
