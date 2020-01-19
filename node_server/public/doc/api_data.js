@@ -42,47 +42,6 @@ define({ "api": [
   },
   {
     "type": "delete",
-    "url": "/admin/article",
-    "title": "删除文章",
-    "name": "DelArticle",
-    "group": "article",
-    "parameter": {
-      "fields": {
-        "Parameter": [
-          {
-            "group": "Parameter",
-            "type": "String",
-            "optional": false,
-            "field": "id",
-            "description": "<p>以逗号隔开的id字符串</p>"
-          }
-        ]
-      }
-    },
-    "version": "0.0.0",
-    "filename": "routes/admin/controllers/case.js",
-    "groupTitle": "article",
-    "sampleRequest": [
-      {
-        "url": "http://192.168.199.147:3000/admin/article"
-      }
-    ],
-    "header": {
-      "fields": {
-        "Header": [
-          {
-            "group": "Header",
-            "type": "String",
-            "optional": false,
-            "field": "Admin-Token",
-            "description": "<p>Users unique access-key.</p>"
-          }
-        ]
-      }
-    }
-  },
-  {
-    "type": "delete",
     "url": "/admin/articleType",
     "title": "删除文章分类",
     "name": "DelArticleType",
@@ -377,96 +336,6 @@ define({ "api": [
       }
     },
     "version": "0.0.0",
-    "filename": "routes/admin/controllers/case.js",
-    "groupTitle": "article",
-    "sampleRequest": [
-      {
-        "url": "http://192.168.199.147:3000/admin/article"
-      }
-    ],
-    "header": {
-      "fields": {
-        "Header": [
-          {
-            "group": "Header",
-            "type": "String",
-            "optional": false,
-            "field": "Admin-Token",
-            "description": "<p>Users unique access-key.</p>"
-          }
-        ]
-      }
-    }
-  },
-  {
-    "type": "post",
-    "url": "/admin/article",
-    "title": "添加文章",
-    "name": "addArticle",
-    "group": "article",
-    "parameter": {
-      "fields": {
-        "Parameter": [
-          {
-            "group": "Parameter",
-            "type": "String",
-            "optional": false,
-            "field": "title",
-            "description": "<p>文章名称</p>"
-          },
-          {
-            "group": "Parameter",
-            "type": "Number",
-            "optional": false,
-            "field": "type_id",
-            "description": "<p>文章类别ID</p>"
-          },
-          {
-            "group": "Parameter",
-            "type": "String",
-            "optional": false,
-            "field": "type_path",
-            "description": "<p>文章类别路径</p>"
-          },
-          {
-            "group": "Parameter",
-            "type": "String",
-            "optional": false,
-            "field": "keyword",
-            "description": "<p>关键词</p>"
-          },
-          {
-            "group": "Parameter",
-            "type": "String",
-            "optional": false,
-            "field": "description",
-            "description": "<p>文章描述</p>"
-          },
-          {
-            "group": "Parameter",
-            "type": "String",
-            "optional": false,
-            "field": "content",
-            "description": "<p>文章内容</p>"
-          },
-          {
-            "group": "Parameter",
-            "type": "String",
-            "optional": false,
-            "field": "cover",
-            "description": "<p>文章封面url</p>"
-          },
-          {
-            "group": "Parameter",
-            "type": "Number",
-            "optional": false,
-            "field": "status",
-            "description": "<p>是否启用  0 是启用  1 是不启用</p>"
-          }
-        ]
-      }
-    },
-    "version": "0.0.0",
     "filename": "routes/admin/controllers/article.js",
     "groupTitle": "article",
     "sampleRequest": [
@@ -564,201 +433,7 @@ define({ "api": [
       }
     },
     "version": "0.0.0",
-    "filename": "routes/admin/controllers/case.js",
-    "groupTitle": "article",
-    "sampleRequest": [
-      {
-        "url": "http://192.168.199.147:3000/admin/article"
-      }
-    ],
-    "header": {
-      "fields": {
-        "Header": [
-          {
-            "group": "Header",
-            "type": "String",
-            "optional": false,
-            "field": "Admin-Token",
-            "description": "<p>Users unique access-key.</p>"
-          }
-        ]
-      }
-    }
-  },
-  {
-    "type": "get",
-    "url": "/admin/article",
-    "title": "获取文章",
-    "name": "getArticle",
-    "group": "article",
-    "parameter": {
-      "fields": {
-        "Parameter": [
-          {
-            "group": "Parameter",
-            "type": "Number",
-            "optional": false,
-            "field": "id",
-            "description": "<p>文章id</p>"
-          },
-          {
-            "group": "Parameter",
-            "type": "Number",
-            "optional": false,
-            "field": "pn",
-            "description": "<p>第几页: 不存在获取所有符合筛选条件数据</p>"
-          },
-          {
-            "group": "Parameter",
-            "type": "Number",
-            "optional": false,
-            "field": "page_size",
-            "description": "<p>每页多少条：不存在获取所有符合筛选条件数据</p>"
-          },
-          {
-            "group": "Parameter",
-            "type": "String",
-            "optional": false,
-            "field": "title",
-            "description": "<p>文章名称</p>"
-          },
-          {
-            "group": "Parameter",
-            "type": "String",
-            "optional": false,
-            "field": "type_id",
-            "description": "<p>文章类别</p>"
-          },
-          {
-            "group": "Parameter",
-            "type": "String",
-            "optional": false,
-            "field": "keyword",
-            "description": "<p>关键词</p>"
-          },
-          {
-            "group": "Parameter",
-            "type": "Number",
-            "optional": false,
-            "field": "status",
-            "description": "<p>是否启用 ：0 是启用、1 是不启用</p>"
-          },
-          {
-            "group": "Parameter",
-            "type": "string",
-            "optional": false,
-            "field": "start_date",
-            "description": "<p>开始时间</p>"
-          },
-          {
-            "group": "Parameter",
-            "type": "string",
-            "optional": false,
-            "field": "end_date",
-            "description": "<p>结束时间</p>"
-          }
-        ]
-      }
-    },
-    "version": "0.0.0",
     "filename": "routes/admin/controllers/article.js",
-    "groupTitle": "article",
-    "sampleRequest": [
-      {
-        "url": "http://192.168.199.147:3000/admin/article"
-      }
-    ],
-    "header": {
-      "fields": {
-        "Header": [
-          {
-            "group": "Header",
-            "type": "String",
-            "optional": false,
-            "field": "Admin-Token",
-            "description": "<p>Users unique access-key.</p>"
-          }
-        ]
-      }
-    }
-  },
-  {
-    "type": "put",
-    "url": "/admin/article",
-    "title": "修改文章",
-    "name": "updateArticle",
-    "group": "article",
-    "parameter": {
-      "fields": {
-        "Parameter": [
-          {
-            "group": "Parameter",
-            "type": "String",
-            "optional": false,
-            "field": "title",
-            "description": "<p>文章名称</p>"
-          },
-          {
-            "group": "Parameter",
-            "type": "Number",
-            "optional": false,
-            "field": "id",
-            "description": "<p>文章id</p>"
-          },
-          {
-            "group": "Parameter",
-            "type": "Number",
-            "optional": false,
-            "field": "type_id",
-            "description": "<p>文章类别ID</p>"
-          },
-          {
-            "group": "Parameter",
-            "type": "String",
-            "optional": false,
-            "field": "type_path",
-            "description": "<p>文章类别路径</p>"
-          },
-          {
-            "group": "Parameter",
-            "type": "String",
-            "optional": false,
-            "field": "keyword",
-            "description": "<p>关键词</p>"
-          },
-          {
-            "group": "Parameter",
-            "type": "String",
-            "optional": false,
-            "field": "description",
-            "description": "<p>文章描述</p>"
-          },
-          {
-            "group": "Parameter",
-            "type": "String",
-            "optional": false,
-            "field": "content",
-            "description": "<p>文章内容</p>"
-          },
-          {
-            "group": "Parameter",
-            "type": "String",
-            "optional": false,
-            "field": "cover",
-            "description": "<p>文章封面url</p>"
-          },
-          {
-            "group": "Parameter",
-            "type": "Number",
-            "optional": false,
-            "field": "status",
-            "description": "<p>是否启用  0 是启用  1 是不启用</p>"
-          }
-        ]
-      }
-    },
-    "version": "0.0.0",
-    "filename": "routes/admin/controllers/case.js",
     "groupTitle": "article",
     "sampleRequest": [
       {
@@ -1087,6 +762,240 @@ define({ "api": [
     "sampleRequest": [
       {
         "url": "http://192.168.199.147:3000/admin/caseType"
+      }
+    ],
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "Admin-Token",
+            "description": "<p>Users unique access-key.</p>"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "type": "post",
+    "url": "/admin/case",
+    "title": "添加案件",
+    "name": "addCase",
+    "group": "case",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "name",
+            "description": "<p>案件名称</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "type_id",
+            "description": "<p>案件类别ID</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "type_path",
+            "description": "<p>案件类别路径</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "description",
+            "description": "<p>案件简述</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "time",
+            "description": "<p>案发时间</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "location",
+            "description": "<p>案发地点</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "id",
+            "description": "<p>案件id.</p>"
+          }
+        ]
+      }
+    },
+    "version": "0.0.0",
+    "filename": "routes/admin/controllers/case.js",
+    "groupTitle": "case",
+    "sampleRequest": [
+      {
+        "url": "http://192.168.199.147:3000/admin/case"
+      }
+    ],
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "Admin-Token",
+            "description": "<p>Users unique access-key.</p>"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "type": "post",
+    "url": "/admin/case/party",
+    "title": "添加案件当事人",
+    "name": "addCaseParty",
+    "group": "case",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "id",
+            "description": "<p>案件ID</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Object[]",
+            "optional": false,
+            "field": "form_list",
+            "description": "<p>当事人的对象的数组</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "form_list.id",
+            "description": "<p>有就是修改没有就是添加</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "form_list.name",
+            "description": "<p>当事人名称</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "form_list.sex",
+            "description": "<p>当事人性别</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "form_list.mobile",
+            "description": "<p>当事人手机号</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "form_list.id_card",
+            "description": "<p>当事人身份证号</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "form_list.location",
+            "description": "<p>当事人常驻地址</p>"
+          }
+        ]
+      }
+    },
+    "version": "0.0.0",
+    "filename": "routes/admin/controllers/case.js",
+    "groupTitle": "case",
+    "sampleRequest": [
+      {
+        "url": "http://192.168.199.147:3000/admin/case/party"
+      }
+    ],
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "Admin-Token",
+            "description": "<p>Users unique access-key.</p>"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "type": "put",
+    "url": "/admin/case/setting",
+    "title": "添加案件设置",
+    "name": "addCaseSetting",
+    "group": "case",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "id",
+            "description": "<p>案件ID</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "reserve_time",
+            "description": "<p>约定时间</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number[]",
+            "optional": false,
+            "field": "user_ids",
+            "description": "<p>调解员id</p>"
+          }
+        ]
+      }
+    },
+    "version": "0.0.0",
+    "filename": "routes/admin/controllers/case.js",
+    "groupTitle": "case",
+    "sampleRequest": [
+      {
+        "url": "http://192.168.199.147:3000/admin/case/setting"
       }
     ],
     "header": {
