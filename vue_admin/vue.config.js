@@ -29,14 +29,6 @@ module.exports = {
         pathRewrite: {
           '^/common': '/common'
         }
-      },
-      '/port': {
-        target: 'https://chat.xee.link',
-        ws: true,
-        changeOrigin: true,
-        pathRewrite: {
-          '^/port': '/port'
-        }
       }
     }
   },

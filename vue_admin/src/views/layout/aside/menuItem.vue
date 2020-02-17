@@ -1,15 +1,17 @@
 <template>
   <div>
-    <a v-if="link(path)" :href="path" target="_blank">
-      <el-menu-item index="">
+    <template v-if="path">
+      <a v-if="link(path)" :href="path" target="_blank">
+        <el-menu-item index="">
+          <i class="icon iconfont" :class="icon"></i>
+          <span slot="title">{{ name }}</span>
+        </el-menu-item>
+      </a>
+      <el-menu-item v-else :index="path" >
         <i class="icon iconfont" :class="icon"></i>
         <span slot="title">{{ name }}</span>
       </el-menu-item>
-    </a>
-    <el-menu-item v-else :index="path" >
-      <i class="icon iconfont" :class="icon"></i>
-      <span slot="title">{{ name }}</span>
-    </el-menu-item>
+    </template>
   </div>
 </template>
 

@@ -5,9 +5,11 @@
       <Header />
       <tags-view />
       <el-main class="main">
-        <keep-alive :include="cachedViews">
-          <router-view :key="key"></router-view>
-        </keep-alive>
+        <transition name="fade" mode="out-in">
+          <keep-alive :include="cachedViews">
+            <router-view :key="key"></router-view>
+          </keep-alive>
+        </transition>
       </el-main>
       <Footer />
     </el-container>

@@ -5,7 +5,7 @@ module.exports ={
         host: '127.0.0.1',
         user: 'root',
         password: 'root',
-        database: 'box'
+        database: 'box' // mediation 案件管理的数据库
     },
     redis:{
         host: "127.0.0.1",
