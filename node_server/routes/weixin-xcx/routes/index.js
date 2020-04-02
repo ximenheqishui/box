@@ -32,6 +32,581 @@ router.get('/init', function (req, res, next) {
     res.json(aa)
 });
 
+router.get('/business/getBusinessCate', function (req, res, next) {
+    let data = {
+        "code": 0,
+        "msg": "ok",
+        "url": "",
+        "data": [
+            {
+                "id": 1,
+                "pid": 0,
+                "title": "机动车业务",
+                "description": "",
+                "sort": 0,
+                "delete_time": null,
+                "children": [
+                    {
+                        "id": 3,
+                        "pid": 1,
+                        "title": "补换驾驶证",
+                        "description": "",
+                        "sort": 0,
+                        "delete_time": null,
+                        "children": [
+                            {
+                                "id": 29,
+                                "pid": 3,
+                                "title": "补领驾驶证",
+                                "description": "",
+                                "sort": 0,
+                                "delete_time": null,
+                                "children": []
+                            },
+                            {
+                                "id": 30,
+                                "pid": 3,
+                                "title": "期满换证",
+                                "description": "",
+                                "sort": 0,
+                                "delete_time": null,
+                                "children": []
+                            },
+                            {
+                                "id": 31,
+                                "pid": 3,
+                                "title": "驾驶证降级",
+                                "description": "",
+                                "sort": 0,
+                                "delete_time": null,
+                                "children": []
+                            }
+                        ]
+                    },
+                    {
+                        "id": 4,
+                        "pid": 1,
+                        "title": "外地转入驾驶证",
+                        "description": "",
+                        "sort": 0,
+                        "delete_time": null,
+                        "children": []
+                    },
+                    {
+                        "id": 5,
+                        "pid": 1,
+                        "title": "注销驾驶证",
+                        "description": "",
+                        "sort": 0,
+                        "delete_time": null,
+                        "children": []
+                    },
+                    {
+                        "id": 6,
+                        "pid": 1,
+                        "title": "提交体检证明",
+                        "description": "",
+                        "sort": 0,
+                        "delete_time": null,
+                        "children": []
+                    },
+                    {
+                        "id": 7,
+                        "pid": 1,
+                        "title": "变更驾驶证信息",
+                        "description": "",
+                        "sort": 0,
+                        "delete_time": null,
+                        "children": [
+                            {
+                                "id": 32,
+                                "pid": 7,
+                                "title": "变更姓名",
+                                "description": "",
+                                "sort": 0,
+                                "delete_time": null,
+                                "children": []
+                            },
+                            {
+                                "id": 33,
+                                "pid": 7,
+                                "title": "变更联系方式",
+                                "description": "",
+                                "sort": 0,
+                                "delete_time": null,
+                                "children": []
+                            }
+                        ]
+                    },
+                    {
+                        "id": 8,
+                        "pid": 1,
+                        "title": "申请延期换证",
+                        "description": "",
+                        "sort": 0,
+                        "delete_time": null,
+                        "children": []
+                    },
+                    {
+                        "id": 9,
+                        "pid": 1,
+                        "title": "校车业务",
+                        "description": "",
+                        "sort": 0,
+                        "delete_time": null,
+                        "children": [
+                            {
+                                "id": 34,
+                                "pid": 9,
+                                "title": "校车驾驶证",
+                                "description": "",
+                                "sort": 0,
+                                "delete_time": null,
+                                "children": []
+                            },
+                            {
+                                "id": 35,
+                                "pid": 9,
+                                "title": "取消校车驾驶证",
+                                "description": "",
+                                "sort": 0,
+                                "delete_time": null,
+                                "children": []
+                            }
+                        ]
+                    },
+                    {
+                        "id": 10,
+                        "pid": 1,
+                        "title": "满分学习",
+                        "description": "",
+                        "sort": 0,
+                        "delete_time": null,
+                        "children": []
+                    },
+                    {
+                        "id": 11,
+                        "pid": 1,
+                        "title": "实习期考试",
+                        "description": "",
+                        "sort": 0,
+                        "delete_time": null,
+                        "children": []
+                    },
+                    {
+                        "id": 12,
+                        "pid": 1,
+                        "title": "恢复驾驶资格",
+                        "description": "",
+                        "sort": 0,
+                        "delete_time": null,
+                        "children": []
+                    },
+                    {
+                        "id": 13,
+                        "pid": 1,
+                        "title": "互联网注册",
+                        "description": "",
+                        "sort": 0,
+                        "delete_time": null,
+                        "children": [
+                            {
+                                "id": 36,
+                                "pid": 13,
+                                "title": "个人互联网注册",
+                                "description": "",
+                                "sort": 0,
+                                "delete_time": null,
+                                "children": []
+                            },
+                            {
+                                "id": 37,
+                                "pid": 13,
+                                "title": "企业互联网注册",
+                                "description": "",
+                                "sort": 0,
+                                "delete_time": null,
+                                "children": []
+                            }
+                        ]
+                    },
+                    {
+                        "id": 14,
+                        "pid": 1,
+                        "title": "驾驶证审验",
+                        "description": "",
+                        "sort": 0,
+                        "delete_time": null,
+                        "children": []
+                    },
+                    {
+                        "id": 15,
+                        "pid": 1,
+                        "title": "网约车五年无事故证明",
+                        "description": "",
+                        "sort": 0,
+                        "delete_time": null,
+                        "children": []
+                    },
+                    {
+                        "id": 16,
+                        "pid": 1,
+                        "title": "申请机动车驾驶证",
+                        "description": "",
+                        "sort": 0,
+                        "delete_time": null,
+                        "children": []
+                    },
+                    {
+                        "id": 17,
+                        "pid": 1,
+                        "title": "异地分科目考试",
+                        "description": "",
+                        "sort": 0,
+                        "delete_time": null,
+                        "children": []
+                    }
+                ]
+            },
+            {
+                "id": 2,
+                "pid": 0,
+                "title": "驾驶证业务",
+                "description": "",
+                "sort": 0,
+                "delete_time": null,
+                "children": [
+                    {
+                        "id": 18,
+                        "pid": 2,
+                        "title": "补换牌证/登记证书/合格标志",
+                        "description": "",
+                        "sort": 0,
+                        "delete_time": null,
+                        "children": [
+                            {
+                                "id": 38,
+                                "pid": 18,
+                                "title": "补换行车证",
+                                "description": "",
+                                "sort": 0,
+                                "delete_time": null,
+                                "children": []
+                            },
+                            {
+                                "id": 39,
+                                "pid": 18,
+                                "title": "委托代办补换行车证",
+                                "description": "",
+                                "sort": 0,
+                                "delete_time": null,
+                                "children": []
+                            },
+                            {
+                                "id": 40,
+                                "pid": 18,
+                                "title": "补换号牌",
+                                "description": "",
+                                "sort": 0,
+                                "delete_time": null,
+                                "children": []
+                            },
+                            {
+                                "id": 41,
+                                "pid": 18,
+                                "title": "委托代办补换号牌",
+                                "description": "",
+                                "sort": 0,
+                                "delete_time": null,
+                                "children": []
+                            },
+                            {
+                                "id": 42,
+                                "pid": 18,
+                                "title": "补领机动车登记证书",
+                                "description": "",
+                                "sort": 0,
+                                "delete_time": null,
+                                "children": []
+                            },
+                            {
+                                "id": 43,
+                                "pid": 18,
+                                "title": "换领登记证书",
+                                "description": "",
+                                "sort": 0,
+                                "delete_time": null,
+                                "children": []
+                            },
+                            {
+                                "id": 44,
+                                "pid": 18,
+                                "title": "委托代办换领登记证书",
+                                "description": "",
+                                "sort": 0,
+                                "delete_time": null,
+                                "children": []
+                            },
+                            {
+                                "id": 45,
+                                "pid": 18,
+                                "title": "补领机动车检验合格标志",
+                                "description": "",
+                                "sort": 0,
+                                "delete_time": null,
+                                "children": []
+                            },
+                            {
+                                "id": 46,
+                                "pid": 18,
+                                "title": "委托代办补领机动车检验合格标志",
+                                "description": "",
+                                "sort": 0,
+                                "delete_time": null,
+                                "children": []
+                            }
+                        ]
+                    },
+                    {
+                        "id": 19,
+                        "pid": 2,
+                        "title": "变更登记",
+                        "description": "",
+                        "sort": 0,
+                        "delete_time": null,
+                        "children": [
+                            {
+                                "id": 47,
+                                "pid": 19,
+                                "title": "变更登记",
+                                "description": "",
+                                "sort": 0,
+                                "delete_time": null,
+                                "children": []
+                            },
+                            {
+                                "id": 48,
+                                "pid": 19,
+                                "title": "委托代办变更登记",
+                                "description": "",
+                                "sort": 0,
+                                "delete_time": null,
+                                "children": []
+                            }
+                        ]
+                    },
+                    {
+                        "id": 20,
+                        "pid": 2,
+                        "title": "注册登记",
+                        "description": "",
+                        "sort": 0,
+                        "delete_time": null,
+                        "children": [
+                            {
+                                "id": 49,
+                                "pid": 20,
+                                "title": "注册登记",
+                                "description": "",
+                                "sort": 0,
+                                "delete_time": null,
+                                "children": []
+                            },
+                            {
+                                "id": 50,
+                                "pid": 20,
+                                "title": "委托代办注册登记",
+                                "description": "",
+                                "sort": 0,
+                                "delete_time": null,
+                                "children": []
+                            }
+                        ]
+                    },
+                    {
+                        "id": 21,
+                        "pid": 2,
+                        "title": "解抵押登记",
+                        "description": "",
+                        "sort": 0,
+                        "delete_time": null,
+                        "children": [
+                            {
+                                "id": 51,
+                                "pid": 21,
+                                "title": "抵押登记",
+                                "description": "",
+                                "sort": 0,
+                                "delete_time": null,
+                                "children": []
+                            },
+                            {
+                                "id": 52,
+                                "pid": 21,
+                                "title": "解押登记",
+                                "description": "车主必须到场",
+                                "sort": 0,
+                                "delete_time": null,
+                                "children": []
+                            }
+                        ]
+                    },
+                    {
+                        "id": 22,
+                        "pid": 2,
+                        "title": "转入登记",
+                        "description": "",
+                        "sort": 0,
+                        "delete_time": null,
+                        "children": [
+                            {
+                                "id": 53,
+                                "pid": 22,
+                                "title": "转入登记",
+                                "description": "",
+                                "sort": 0,
+                                "delete_time": null,
+                                "children": []
+                            },
+                            {
+                                "id": 54,
+                                "pid": 22,
+                                "title": "委托代办转入登记",
+                                "description": "",
+                                "sort": 0,
+                                "delete_time": null,
+                                "children": []
+                            }
+                        ]
+                    },
+                    {
+                        "id": 23,
+                        "pid": 2,
+                        "title": "临时号牌",
+                        "description": "",
+                        "sort": 0,
+                        "delete_time": null,
+                        "children": [
+                            {
+                                "id": 55,
+                                "pid": 23,
+                                "title": "个人临时号牌",
+                                "description": "",
+                                "sort": 0,
+                                "delete_time": null,
+                                "children": []
+                            },
+                            {
+                                "id": 56,
+                                "pid": 23,
+                                "title": "单位临时号牌",
+                                "description": "",
+                                "sort": 0,
+                                "delete_time": null,
+                                "children": []
+                            },
+                            {
+                                "id": 57,
+                                "pid": 23,
+                                "title": "委托代办个人临时号牌",
+                                "description": "",
+                                "sort": 0,
+                                "delete_time": null,
+                                "children": []
+                            }
+                        ]
+                    },
+                    {
+                        "id": 25,
+                        "pid": 2,
+                        "title": "申领机动车免检标志",
+                        "description": "可以在检验期满前三个月申请，申请前，机动车所有人应当将涉及该车的道路交通安全违法行为和交通事故处理完毕",
+                        "sort": 0,
+                        "delete_time": null,
+                        "children": [
+                            {
+                                "id": 58,
+                                "pid": 25,
+                                "title": "申领机动车免检标志",
+                                "description": "可以在检验期满前三个月申请，申请前，机动车所有人应当将涉及该车的道路交通安全违法行为和交通事故处理完毕",
+                                "sort": 0,
+                                "delete_time": null,
+                                "children": []
+                            },
+                            {
+                                "id": 59,
+                                "pid": 25,
+                                "title": "委托代办申领机动车免检标志",
+                                "description": "可以在检验期满前三个月申请，申请前，机动车所有人应当将涉及该车的道路交通安全违法行为和交通事故处理完毕",
+                                "sort": 0,
+                                "delete_time": null,
+                                "children": []
+                            }
+                        ]
+                    },
+                    {
+                        "id": 26,
+                        "pid": 2,
+                        "title": "变更联系电话",
+                        "description": "",
+                        "sort": 0,
+                        "delete_time": null,
+                        "children": [
+                            {
+                                "id": 60,
+                                "pid": 26,
+                                "title": "变更联系电话",
+                                "description": "",
+                                "sort": 0,
+                                "delete_time": null,
+                                "children": []
+                            },
+                            {
+                                "id": 61,
+                                "pid": 26,
+                                "title": "委托代办变更联系电话",
+                                "description": "",
+                                "sort": 0,
+                                "delete_time": null,
+                                "children": []
+                            }
+                        ]
+                    },
+                    {
+                        "id": 28,
+                        "pid": 2,
+                        "title": "车牌互换",
+                        "description": "",
+                        "sort": 0,
+                        "delete_time": null,
+                        "children": [
+                            {
+                                "id": 62,
+                                "pid": 28,
+                                "title": "个人车主",
+                                "description": "",
+                                "sort": 0,
+                                "delete_time": null,
+                                "children": []
+                            },
+                            {
+                                "id": 63,
+                                "pid": 28,
+                                "title": "单位车主",
+                                "description": "",
+                                "sort": 0,
+                                "delete_time": null,
+                                "children": []
+                            }
+                        ]
+                    }
+                ]
+            }
+        ]
+    }
+    res.json(data)
+})
+
 router.get('/area', function (req, res, next) {
     let data = {
         "code": 0,

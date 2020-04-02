@@ -40,8 +40,19 @@ app.use(express.urlencoded({extended: false}));
 app.use(cookieParser());
 app.use(session)
 
-
-app.use(express.static(path.join(__dirname, 'public')));
+// 以前没有注意这个地方要查文档
+var options = {
+    // dotfiles: 'ignore',
+    // etag: false,
+    // extensions: ['htm', 'html'],
+    // index: false,
+    // maxAge: '1d',
+    // redirect: false,
+    setHeaders: function (res, path, stat) {
+        res.set('Access-Control-Allow-Origin', '*')
+    }
+}
+app.use(express.static(path.join(__dirname, 'public'),options));
 
 app.all('*', (req, res, next) => {
     const { origin, Origin, referer, Referer } = req.headers;
