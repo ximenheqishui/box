@@ -10,6 +10,7 @@ Vue.use(Router)
 const router = new Router({
   routes: routes
 })
+
 function beforeNext (to, from, next) {
   document.title = to.meta.title
 }
@@ -51,6 +52,17 @@ router.beforeEach((to, from, next) => {
       beforeNext(to, from, next)
       next({ path: '/login' })
     }
+  }
+})
+
+router.afterEach((to, from) => {
+  // 刷页面 Number 类型的参数会转变为string类型
+  // 这种方式是页面刷新用的
+  // 页面跳转刷新的需要在每个页面的active中处理，实现方式不同差距很大的
+  if (to.path === '/refresh') {
+    store.dispatch('tagsView/delCachedView', from).then(() => {
+      router.replace(from)
+    })
   }
 })
 

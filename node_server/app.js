@@ -7,6 +7,7 @@ const cookieParser = require('cookie-parser');
 // 用redis长时间存贮session不至于服务器重启session丢失
 const session = require("./util/session_redis")
 const logger = require('morgan');
+const { createProxyMiddleware } = require('http-proxy-middleware');
 
 let app = express();
 
@@ -15,6 +16,16 @@ app.set('env',config.env || 'development')
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
 app.set('view cache', false);
+
+
+// proxy middleware options 设置代理服务
+// const proxyOptions = {
+//     target: 'http://qrcode-api.xee.link',
+//     changeOrigin: true,
+//     logLevel: 'debug'
+// };
+// // 设置代理服务器 要设置到最上面
+// app.use(createProxyMiddleware('/api',proxyOptions));
 
 if (app.get('env') === 'development') {
     app.use(logger('dev'));
@@ -40,7 +51,7 @@ app.use(express.urlencoded({extended: false}));
 app.use(cookieParser());
 app.use(session)
 
-// 以前没有注意这个地方要查文档
+// 以前没有注意这个地方要查文档  静态资源加跨域头
 var options = {
     // dotfiles: 'ignore',
     // etag: false,

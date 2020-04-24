@@ -97,6 +97,12 @@
     computed: {},
     watch: {},
     filters: {},
+    activated () {
+      if (this.$store.getters.common.refresh) {
+        this.$store.dispatch('common/changeRefresh', false)
+        this.getData()
+      }
+    },
     methods: {
       // 图片上传成功后的操作
       handleAvatarSuccess (res, file) {

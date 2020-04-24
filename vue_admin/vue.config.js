@@ -15,7 +15,7 @@ module.exports = {
     },
     proxy: {
       '/admin': {
-        target: 'http://localhost:3000',
+        target: 'http://localhost:9000',
         ws: true,
         changeOrigin: true,
         pathRewrite: {
@@ -23,7 +23,7 @@ module.exports = {
         }
       },
       '/common': {
-        target: 'http://localhost:3000',
+        target: 'http://localhost:9000',
         ws: true,
         changeOrigin: true,
         pathRewrite: {

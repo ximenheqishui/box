@@ -105,13 +105,13 @@ const routes = [
     component: () => import('@/views/login/index')
   },
   {
-    path: '/redirect',
+    path: '/refresh',
     component: Layout,
     hidden: true,
     children: [
       {
-        path: '/redirect/:path*',
-        component: () => import('@/views/redirect/index'),
+        path: '',
+        component: { template: '<div></div>' },
         meta: {}
       }
     ]

@@ -191,6 +191,12 @@
         }
       }
     },
+    activated () {
+      if (this.$store.getters.common.refresh) {
+        this.$store.dispatch('common/changeRefresh', false)
+        this.getData(1)
+      }
+    },
     computed: {
       downloadUrl: function () {
         return this.api.commonURL.exportUrl + '/article/?' + this.qs.stringify(this.lastPostData)

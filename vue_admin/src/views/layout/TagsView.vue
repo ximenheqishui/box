@@ -102,12 +102,7 @@
       addTags () {
         const { name } = this.$route
         if (name) {
-          if (this.$store.getters.common.refresh) {
-            this.$store.dispatch('common/changeRefresh', false)
-            this.refreshSelectedTag(this.$route)
-          } else {
-            this.$store.dispatch('tagsView/addView', this.$route)
-          }
+          this.$store.dispatch('tagsView/addView', this.$route)
         }
         return false
       },
@@ -127,14 +122,7 @@
         })
       },
       refreshSelectedTag (view) {
-        this.$store.dispatch('tagsView/delCachedView', view).then(() => {
-          const { fullPath } = view
-          this.$nextTick(() => {
-            this.$router.replace({
-              path: '/redirect' + fullPath
-            })
-          })
-        })
+        this.$router.replace({ path: '/refresh' })
       },
       closeSelectedTag (view) {
         this.$store.dispatch('tagsView/delView', view).then(({ visitedViews }) => {
