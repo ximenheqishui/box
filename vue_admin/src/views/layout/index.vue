@@ -6,7 +6,7 @@
       <tags-view />
       <el-main class="main">
         <transition name="fade" mode="out-in">
-          <keep-alive :include="cachedViews">
+          <keep-alive :max="40" :include="cachedViews">
             <router-view :key="key"></router-view>
           </keep-alive>
         </transition>

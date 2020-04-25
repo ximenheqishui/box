@@ -9,6 +9,14 @@ export default {
     })
     // 注入组件 全局混淆
     Vue.mixin({
+      activated () {
+        if (this.$store.getters.common.refresh) {
+          this.$store.dispatch('common/changeRefresh', false)
+          if (this.refresh) {
+            this.refresh()
+          }
+        }
+      },
       created: function () {
         // 逻辑...
       },

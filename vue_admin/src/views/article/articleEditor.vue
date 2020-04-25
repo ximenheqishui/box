@@ -97,13 +97,10 @@
     computed: {},
     watch: {},
     filters: {},
-    activated () {
-      if (this.$store.getters.common.refresh) {
-        this.$store.dispatch('common/changeRefresh', false)
-        this.getData()
-      }
-    },
     methods: {
+      refresh () {
+        this.getData()
+      },
       // 图片上传成功后的操作
       handleAvatarSuccess (res, file) {
         this.form.cover = res.data.path

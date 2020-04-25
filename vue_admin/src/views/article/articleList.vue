@@ -191,12 +191,6 @@
         }
       }
     },
-    activated () {
-      if (this.$store.getters.common.refresh) {
-        this.$store.dispatch('common/changeRefresh', false)
-        this.getData(1)
-      }
-    },
     computed: {
       downloadUrl: function () {
         return this.api.commonURL.exportUrl + '/article/?' + this.qs.stringify(this.lastPostData)
@@ -207,6 +201,9 @@
     filters: {
     },
     methods: {
+      refresh () {
+        this.getData(1)
+      },
       // 表格勾选
       handleSelectionChange (val) {
         this.multipleSelection = val
