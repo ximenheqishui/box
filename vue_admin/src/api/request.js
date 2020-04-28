@@ -3,6 +3,7 @@
  * axios 配置
  */
 import store from '@/store'
+import router from '@/router'
 import { getToken } from '@/utils/auth'
 import axios from 'axios'
 import { MessageBox } from 'element-ui'
@@ -12,6 +13,12 @@ axios.defaults.baseURL = baseConfig.apiHost
 
 axios.interceptors.request.use(
   config => {
+      try {
+        let name = router.app._route.name
+        config.headers['Page-Name'] = name
+      } catch (e) {
+        console.log(e)
+      }
      if (getToken()) {
        config.headers['Admin-Token'] = getToken()
      }

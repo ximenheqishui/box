@@ -13,7 +13,7 @@ export default {
         try {
           document.getElementsByClassName('main')[0].scrollTop = this.$route.meta.mainScroll
         } catch (e) {
-          console.log(e)
+          console.warn(e)
         }
       },
       created: function () {

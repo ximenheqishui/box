@@ -437,7 +437,11 @@
             if (type) {
               _this.token = res.data.token
             }
-            _this.$refs.tableScrollbar.scrollTop = 0
+            try {
+              _this.$refs.tableScrollbar.scrollTop = 0
+            } catch (e) {
+              console.warn(e)
+            }
           } else {
             _this.errorHandler(res.message || '获取用户信息失败')
           }

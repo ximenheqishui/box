@@ -43,7 +43,11 @@
     },
     methods: {
       mainScroll () {
-        this.$route.meta.mainScroll = this.$refs.mainScroll.$el.scrollTop
+        try {
+          this.$route.meta.mainScroll = this.$refs.mainScroll.$el.scrollTop
+        } catch (e) {
+          console.warn(e)
+        }
       }
     },
     mounted () {

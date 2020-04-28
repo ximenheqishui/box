@@ -238,7 +238,11 @@
           _this.loading = false
           if (res.code === 0) {
             _this.resultData = res.data
-            _this.$refs.tableScrollbar.scrollTop = 0
+            try {
+              _this.$refs.tableScrollbar.scrollTop = 0
+            } catch (e) {
+              console.warn(e)
+            }
           } else {
             _this.errorHandler(res.message || '获取角色失败')
           }
