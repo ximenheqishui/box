@@ -1,5 +1,5 @@
 <template>
-  <div class="user">
+  <div class="user main-table">
     <div class="search-box">
       <el-form @keyup.enter.native="search" ref="form" :inline="true" :model="searchData" label-width="80px" size="small">
          <el-form-item label="用户名" prop="user_name">
@@ -71,7 +71,8 @@
       class="list-box"
       element-loading-text="数据加载中"
       v-loading="pageLoading || searchLoading"
-      element-loading-background="rgba(255, 255, 255, 0.6)">
+      element-loading-background="rgba(255, 255, 255, 0.6)"
+      ref="tableScrollbar">
       <el-table
         size="mini"
         :border="true"
@@ -144,17 +145,17 @@
           </template>
         </el-table-column>
       </el-table>
-      <el-pagination
-        v-show="resultData.total"
-        @size-change="handleSizeChange"
-        @current-change="handleCurrentChange"
-        :current-page.sync ="searchData.pn"
-        :page-sizes="searchData.pageSizes"
-        :page-size.sync="searchData.page_size"
-        layout="total, sizes, prev, pager, next, jumper"
-        :total="resultData.total">
-      </el-pagination>
     </div>
+    <el-pagination
+      :disabled="pageLoading || searchLoading"
+      @size-change="handleSizeChange"
+      @current-change="handleCurrentChange"
+      :current-page.sync ="searchData.pn"
+      :page-sizes="searchData.pageSizes"
+      :page-size.sync="searchData.page_size"
+      layout="total, sizes, prev, pager, next, jumper"
+      :total="resultData.total">
+    </el-pagination>
 
     <el-dialog  :title="dialog.isAdd ?  '添加用户': '修改用户'" :visible.sync="dialog.tag" height="80px" width="700px">
       <el-form size="small" :model="dialog.form" :rules="dialog.rules" ref="ruleForm" label-width="120px" @keyup.enter.native="submitFormD">
@@ -436,7 +437,7 @@
             if (type) {
               _this.token = res.data.token
             }
-            $('.main').animate({ scrollTop: 0 }, 500)
+            _this.$refs.tableScrollbar.scrollTop = 0
           } else {
             _this.errorHandler(res.message || '获取用户信息失败')
           }

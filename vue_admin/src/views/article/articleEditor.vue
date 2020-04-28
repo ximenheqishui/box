@@ -1,61 +1,61 @@
 <template>
   <div class="article-editor">
-    <el-form
-      element-loading-text="数据加载中"
-      v-loading="pageLoading"
-      element-loading-background="rgba(255, 255, 255, 0.6)"
-      size="small"
-      :model="form"
-      ref="ruleForm"
-      label-width="70px">
-      <el-form-item label="标题" prop="title" style="max-width: 600px">
-        <el-input placeholder="请输入标题" v-model="form.title"></el-input>
-      </el-form-item>
-      <el-form-item label="分类" prop="type_id" style="max-width: 600px">
-        <el-cascader
-          style="width: 100%"
-          clearable
-          placeholder="请选择分类"
-          v-model="form.type_path"
-          :props="defaultProps"
-          :options="type">
-        </el-cascader>
-      </el-form-item>
-      <el-form-item label="关键词" prop="keyword" style="max-width: 600px">
-        <el-input placeholder='请输入关键词,用 "," 隔开' v-model="form.keyword"></el-input>
-      </el-form-item>
-      <el-form-item label="描述" prop="description" style="max-width: 600px">
-        <el-input placeholder="请输入描述" :rows="4" type="textarea" v-model="form.description"></el-input>
-      </el-form-item>
-      <el-form-item label="封面" prop="cover">
-        <el-upload
-          class="avatar-uploader"
-          :action="uploadUrl"
-          :show-file-list="false"
-          :on-success="handleAvatarSuccess"
-          :before-upload="beforeAvatarUpload">
-          <img v-if="form.cover" :src="form.cover" class="avatar">
-          <i v-else class="el-icon-plus avatar-uploader-icon"></i>
-        </el-upload>
-      </el-form-item>
-      <el-form-item label="内容">
-        <tinymce ref="tinymce"></tinymce>
-      </el-form-item>
-      <el-form-item label="是否启用" prop="status">
-        <el-switch
-          v-model="form.status"
-          :active-value="0"
-          :inactive-value="1">
-        </el-switch>
-      </el-form-item>
-      <el-form-item>
-        <el-button style="margin:20px 20px 20px 0;letter-spacing: 10px" size="mini" type="primary"
-                   :loading="disableSubmit" :disabled="disableSubmit" @click="submitForm">提交
-        </el-button>
-        <el-button  @click="backList()" :disabled="disableSubmit"  style="margin:20px 20px 20px 0px;letter-spacing: 10px" size="mini" type="primary">返回</el-button>
-        <el-button size="mini" @click="resetForm">重置</el-button>
-      </el-form-item>
-    </el-form>
+      <el-form
+        element-loading-text="数据加载中"
+        v-loading="pageLoading"
+        element-loading-background="rgba(255, 255, 255, 0.6)"
+        size="small"
+        :model="form"
+        ref="ruleForm"
+        label-width="70px">
+        <el-form-item label="标题" prop="title" style="max-width: 600px">
+          <el-input placeholder="请输入标题" v-model="form.title"></el-input>
+        </el-form-item>
+        <el-form-item label="分类" prop="type_id" style="max-width: 600px">
+          <el-cascader
+            style="width: 100%"
+            clearable
+            placeholder="请选择分类"
+            v-model="form.type_path"
+            :props="defaultProps"
+            :options="type">
+          </el-cascader>
+        </el-form-item>
+        <el-form-item label="关键词" prop="keyword" style="max-width: 600px">
+          <el-input placeholder='请输入关键词,用 "," 隔开' v-model="form.keyword"></el-input>
+        </el-form-item>
+        <el-form-item label="描述" prop="description" style="max-width: 600px">
+          <el-input placeholder="请输入描述" :rows="4" type="textarea" v-model="form.description"></el-input>
+        </el-form-item>
+        <el-form-item label="封面" prop="cover">
+          <el-upload
+            class="avatar-uploader"
+            :action="uploadUrl"
+            :show-file-list="false"
+            :on-success="handleAvatarSuccess"
+            :before-upload="beforeAvatarUpload">
+            <img v-if="form.cover" :src="form.cover" class="avatar">
+            <i v-else class="el-icon-plus avatar-uploader-icon"></i>
+          </el-upload>
+        </el-form-item>
+        <el-form-item label="内容">
+          <tinymce ref="tinymce"></tinymce>
+        </el-form-item>
+        <el-form-item label="是否启用" prop="status">
+          <el-switch
+            v-model="form.status"
+            :active-value="0"
+            :inactive-value="1">
+          </el-switch>
+        </el-form-item>
+        <el-form-item>
+          <el-button style="margin:20px 20px 20px 0;letter-spacing: 10px" size="mini" type="primary"
+                     :loading="disableSubmit" :disabled="disableSubmit" @click="submitForm">提交
+          </el-button>
+          <el-button  @click="backList()" :disabled="disableSubmit"  style="margin:20px 20px 20px 0px;letter-spacing: 10px" size="mini" type="primary">返回</el-button>
+          <el-button size="mini" @click="resetForm">重置</el-button>
+        </el-form-item>
+      </el-form>
   </div>
 </template>
 
@@ -97,10 +97,13 @@
     computed: {},
     watch: {},
     filters: {},
-    methods: {
-      refresh () {
+    activated () {
+      if (this.$store.getters.common.refresh) {
+        this.$store.dispatch('common/changeRefresh', false)
         this.getData()
-      },
+      }
+    },
+    methods: {
       // 图片上传成功后的操作
       handleAvatarSuccess (res, file) {
         this.form.cover = res.data.path
@@ -215,6 +218,7 @@
     },
     mounted: function () {
       this.id = this.$route.query.id || ''
+      this.$store.dispatch('common/changeRefresh', false)
       this.getArticleType()
     }
   }

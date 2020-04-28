@@ -1,5 +1,5 @@
 <template>
-    <div class="role">
+    <div class="role main-table">
         <div class="tool-box">
           <div class="left">
             <el-button size="mini" type="primary" @click="showRoleDialog(false)">添加角色</el-button>
@@ -12,7 +12,8 @@
                 class="list-box"
                 element-loading-text="数据加载中"
                 v-loading="loading"
-                element-loading-background="rgba(255, 255, 255, 0.6)">
+                element-loading-background="rgba(255, 255, 255, 0.6)"
+                ref="tableScrollbar">
             <el-table
                     size="mini"
                     align="left"
@@ -69,17 +70,17 @@
                     </template>
                 </el-table-column>
             </el-table>
-            <el-pagination
-                    v-show="resultData.total"
-                    @size-change="handleSizeChange"
-                    @current-change="handleCurrentChange"
-                    :current-page="searchData.pn"
-                    :page-sizes="searchData.pageSizes"
-                    :page-size="searchData.page_size"
-                    layout="total, sizes, prev, pager, next, jumper"
-                    :total="resultData.total">
-            </el-pagination>
         </div>
+        <el-pagination
+        :disabled="loading"
+        @size-change="handleSizeChange"
+        @current-change="handleCurrentChange"
+        :current-page="searchData.pn"
+        :page-sizes="searchData.pageSizes"
+        :page-size="searchData.page_size"
+        layout="total, sizes, prev, pager, next, jumper"
+        :total="resultData.total">
+      </el-pagination>
       <el-dialog :title="dialog.isAdd ?  '添加角色': '修改角色'" :visible.sync="dialog.roleDialog" height="80px" width="600px">
             <el-form size="small" :model="dialog.form" :rules="dialog.rules" ref="ruleForm" label-width="120px">
                 <el-form-item label="角色名称" prop="name">
@@ -237,7 +238,7 @@
           _this.loading = false
           if (res.code === 0) {
             _this.resultData = res.data
-            $('.main').animate({ scrollTop: 0 }, 500)
+            _this.$refs.tableScrollbar.scrollTop = 0
           } else {
             _this.errorHandler(res.message || '获取角色失败')
           }

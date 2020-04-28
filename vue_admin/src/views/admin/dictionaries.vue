@@ -1,5 +1,5 @@
 <template>
-  <div class="dictionaries">
+  <div class="dictionaries main-table">
     <div class="tool-box">
       <div class="left">
         <el-button size="mini" type="primary" @click="showDialog(false)">添加字段</el-button>
@@ -12,7 +12,8 @@
       class="list-box"
       element-loading-text="数据加载中"
       v-loading="loading"
-      element-loading-background="rgba(255, 255, 255, 0.6)">
+      element-loading-background="rgba(255, 255, 255, 0.6)"
+      ref="tableScrollbar">
       <el-table
         size="mini"
         align="left"
@@ -66,17 +67,17 @@
           </template>
         </el-table-column>
       </el-table>
-      <el-pagination
-        v-show="resultData.total"
-        @size-change="handleSizeChange"
-        @current-change="handleCurrentChange"
-        :current-page="searchData.pn"
-        :page-sizes="searchData.pageSizes"
-        :page-size="searchData.page_size"
-        layout="total, sizes, prev, pager, next, jumper"
-        :total="resultData.total">
-      </el-pagination>
     </div>
+    <el-pagination
+      :disabled="loading"
+      @size-change="handleSizeChange"
+      @current-change="handleCurrentChange"
+      :current-page="searchData.pn"
+      :page-sizes="searchData.pageSizes"
+      :page-size="searchData.page_size"
+      layout="total, sizes, prev, pager, next, jumper"
+      :total="resultData.total">
+    </el-pagination>
     <el-dialog :title="dialog.isAdd ?  '添加字段': '修改字段'" :visible.sync="dialog.tag" height="80px" width="600px">
       <el-form @keyup.enter.native="submitForm"  size="small" :model="dialog.form" :rules="dialog.rules" ref="ruleForm" label-width="120px">
         <el-form-item label="字段名称" prop="name">
@@ -215,7 +216,7 @@
           _this.loading = false
           if (res.code === 0) {
             _this.resultData = res.data
-            $('.main').animate({ scrollTop: 0 }, 500)
+            _this.$refs.tableScrollbar.scrollTop = 0
           } else {
             _this.errorHandler(res.message || '获取字典失败')
           }

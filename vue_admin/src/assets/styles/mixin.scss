@@ -7,19 +7,18 @@
   }
 }
 
-@mixin scrollBar {
+@mixin scrollBar($back,$item) {
   &::-webkit-scrollbar-track-piece {
-    background: #d3dce6;
+    background: #{$back};
   }
   &::-webkit-scrollbar {
     width: 6px;
   }
   &::-webkit-scrollbar-thumb {
-    background: #99a9bf;
+    background: #{$item};
     border-radius: 20px;
   }
 }
-
 @mixin relative {
   position: relative;
   width: 100%;

@@ -1,5 +1,5 @@
 <template>
-  <div class="article">
+  <div class="article main-table">
     <div class="search-box">
       <el-form @keyup.enter.native="search" ref="form" :inline="true" :model="searchData" label-width="80px" size="small">
          <el-form-item label="标题" prop="title">
@@ -62,7 +62,8 @@
       class="list-box"
       element-loading-text="数据加载中"
       v-loading="pageLoading || searchLoading"
-      element-loading-background="rgba(255, 255, 255, 0.6)">
+      element-loading-background="rgba(255, 255, 255, 0.6)"
+      ref="tableScrollbar">
       <el-table
         size="mini"
         :border="true"
@@ -137,17 +138,17 @@
           </template>
         </el-table-column>
       </el-table>
-      <el-pagination
-        v-show="resultData.total"
-        @size-change="handleSizeChange"
-        @current-change="handleCurrentChange"
-        :current-page.sync ="searchData.pn"
-        :page-sizes="searchData.pageSizes"
-        :page-size.sync="searchData.page_size"
-        layout="total, sizes, prev, pager, next, jumper"
-        :total="resultData.total">
-      </el-pagination>
     </div>
+    <el-pagination
+      :disabled="pageLoading || searchLoading"
+      @size-change="handleSizeChange"
+      @current-change="handleCurrentChange"
+      :current-page.sync ="searchData.pn"
+      :page-sizes="searchData.pageSizes"
+      :page-size.sync="searchData.page_size"
+      layout="total, sizes, prev, pager, next, jumper"
+      :total="resultData.total">
+    </el-pagination>
   </div>
 </template>
 
@@ -200,10 +201,13 @@
     },
     filters: {
     },
-    methods: {
-      refresh () {
+    activated () {
+      if (this.$store.getters.common.refresh) {
+        this.$store.dispatch('common/changeRefresh', false)
         this.getData(1)
-      },
+      }
+    },
+    methods: {
       // 表格勾选
       handleSelectionChange (val) {
         this.multipleSelection = val
@@ -270,7 +274,7 @@
           _this.searchLoading = false
           if (res.code === 0) {
             _this.resultData = res.data
-            $('.main').animate({ scrollTop: 0 }, 500)
+            _this.$refs.tableScrollbar.scrollTop = 0
           } else {
             _this.errorHandler(res.message || '获取文章失败')
           }
@@ -392,6 +396,7 @@
     },
     mounted: function () {
       // 所有的方式加载数据
+      this.$store.dispatch('common/changeRefresh', false)
       this.getOption()
       this.getArticleType()
       this.getData(1)

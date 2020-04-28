@@ -1,4 +1,5 @@
 const webpack = require('webpack')
+const HtmlWebpackPlugin = require('html-webpack-plugin')
 // vue.config.js
 module.exports = {
   publicPath: './', // 静态资源对应的路径
@@ -35,14 +36,20 @@ module.exports = {
   configureWebpack: {
     // devtool: false, // productionSourceMap 不起作用 打包的时候把这个放开
     output: {
-      filename: 'static/js/[name].js'
+      filename: `static/js/[name]${new Date().getTime()}.js`
     },
     plugins: [
-      new webpack.ProvidePlugin({
-        $: 'jquery',
-        jQuery: 'jquery',
-        'windows.jQuery': 'jquery'
-      }) // 全局引用一下其他的库，并重命名。 要在校验.eslintrc.js文件中定义一下全局变量
+      new HtmlWebpackPlugin({
+        title: 'box',
+        time: new Date().getTime(),
+        filename: 'index.html',
+        template: 'public/index.html'
+      })
+      // new webpack.ProvidePlugin({
+      //   $: 'jquery',
+      //   jQuery: 'jquery',
+      //   'windows.jQuery': 'jquery'
+      // }) // 全局引用一下其他的库，并重命名。 要在校验.eslintrc.js文件中定义一下全局变量
     ]
   },
   productionSourceMap: false

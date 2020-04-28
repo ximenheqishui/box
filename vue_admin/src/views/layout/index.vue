@@ -4,14 +4,14 @@
     <el-container direction="vertical" style="position: relative">
       <Header />
       <tags-view />
-      <el-main class="main">
+      <el-main class="main" @scroll.native="mainScroll" ref="mainScroll">
         <transition name="fade" mode="out-in">
           <keep-alive :max="40" :include="cachedViews">
-            <router-view :key="key"></router-view>
+              <router-view :key="key"></router-view>
           </keep-alive>
         </transition>
       </el-main>
-      <Footer />
+<!--      <Footer />-->
     </el-container>
   </el-container>
 </template>
@@ -24,7 +24,7 @@
     props: {
     },
     components: {
-      Footer,
+      // Footer,
       Header,
       Aside,
       TagsView
@@ -42,6 +42,9 @@
       }
     },
     methods: {
+      mainScroll () {
+        this.$route.meta.mainScroll = this.$refs.mainScroll.$el.scrollTop
+      }
     },
     mounted () {
     },
@@ -55,8 +58,9 @@
     height: 100%;
     min-width: 800px;
     .el-main{
+      box-sizing: border-box;
       height: 0;
-      @include scrollBar();
+      @include scrollBar('#d3dce6','#99a9bf');
     }
   }
 </style>

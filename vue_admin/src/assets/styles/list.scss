@@ -1,66 +1,11 @@
-.search{
-  margin-top: 20px;
-  .el-form-item{
-    margin-right: 20px;
-  }
-}
-.table-tool{
-  margin: 10px 0px;
-  display: flex;
-  justify-content: space-between;
-  .left{
-    flex: 1;
-    text-align: left;
-    .icon-change{
-      position: relative;
-      .iconfont{
-        position: absolute;
-        top:6px;
-      }
-      .el-icon-loading{
-        position: absolute;
-        top:6px;
-      }
-      span{
-        display: inline-block;
-        margin-left:20px;
-      }
-    }
-    .el-button{
-      margin-right: 20px;
-    }
-  }
-  .right{
-    flex: 1;
-    text-align: right;
-    .switch{
-      display: inline-block;
-      > span{
-        font-size: 14px;
-        display: inline-block;
-        margin: 4px;
-      }
-    }
-  }
-}
-.el-table thead {
-  color: #555;
-  font-weight: 500;
-}
-.el-pagination{
-  text-align: right;
-  margin: 25px 0px;
-}
+@import "../../assets/styles/mixin";
 
-
-/*搜索样式*/
 .search-box{
   margin-top: 20px;
   .el-form-item{
     margin-right: 20px;
   }
 }
-/*工具样式*/
 .tool-box{
   margin: 10px 0px;
   display: flex;
@@ -77,18 +22,38 @@
     text-align: right;
   }
 }
-/*列表样式*/
-.list-box{
-  .table-list {
+
+.main-table{
+  height: 100%;
+  display: flex;
+  flex-flow: nowrap column;
+  .search-box{
+    flex: none;
   }
-  .card-list{
+  .tool-box{
+    flex: none;
   }
-}
-/*分页样式*/
-.pagination-box{
-}
-/*loading样式*/
-.loading-box{
+  .list-box{
+    width: 100%;
+    flex: auto;
+    height: 0;
+    overflow-x: hidden;
+    overflow-y: auto;
+    @include scrollBar('transparent', rgba(200,200,200,0.5));
+    .el-table thead {
+      color: #555;
+      font-weight: 500;
+    }
+    .table-list {
+    }
+    .card-list{
+    }
+  }
+  .el-pagination{
+    text-align: right;
+    margin-top: 25px;
+    flex: none;
+  }
 }
 
 

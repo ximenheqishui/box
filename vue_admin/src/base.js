@@ -10,11 +10,10 @@ export default {
     // 注入组件 全局混淆
     Vue.mixin({
       activated () {
-        if (this.$store.getters.common.refresh) {
-          this.$store.dispatch('common/changeRefresh', false)
-          if (this.refresh) {
-            this.refresh()
-          }
+        try {
+          document.getElementsByClassName('main')[0].scrollTop = this.$route.meta.mainScroll
+        } catch (e) {
+          console.log(e)
         }
       },
       created: function () {

@@ -109,7 +109,7 @@ module.exports = {
         if (pn && page_size) {
             let resultTotal= await dbUtils.query(_sqlCount + _sql, arr)
             result.total = resultTotal[0].total_count
-            _sql += ` LIMIT ${(pn - 1) * page_size} , ${pn * page_size}`
+            _sql += ` LIMIT ${(pn - 1) * page_size} , ${page_size}`
             result.list = await dbUtils.query(_sqlUser + _sql, arr)
         } else {
             result = await dbUtils.query(_sqlUser + _sql, arr)
