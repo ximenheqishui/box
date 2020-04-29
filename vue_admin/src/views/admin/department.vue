@@ -101,6 +101,7 @@
   }
   export default {
     name: 'department',
+    mixins: [boxGlobal.commonMixin],
     components: {
     },
     data () {

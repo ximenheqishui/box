@@ -15,6 +15,7 @@ module.exports = {
      * @apiParam {String} parent_name 父节点名称
      * @apiParam {Number} sort_order  排序
      * @apiParam {Number} status  是否启用  0 是启用  1 是不启用
+     * @apiParam {Number} show  是否显示  0 是显示  1 是不显示
      * @apiParam {Number} type 节点是按钮还是菜单   1 菜单类型  2 按钮类型
      * @apiParam {String} unique_id 节点唯一标识 要唯一
      * @apiParam {String} path  页面前端路由
@@ -31,6 +32,7 @@ module.exports = {
                 path: req.body.path,
                 sort_order: req.body.sort_order,
                 status: req.body.status,
+                show: req.body.show,
                 type: req.body.type,
                 unique_id: req.body.unique_id
             }
@@ -117,6 +119,7 @@ module.exports = {
                 path: req.body.path,
                 sort_order: req.body.sort_order,
                 status: req.body.status,
+                show: req.body.show,
                 type: req.body.type,
                 unique_id: req.body.unique_id
             }

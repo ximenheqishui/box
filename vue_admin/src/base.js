@@ -9,16 +9,8 @@ export default {
     })
     // 注入组件 全局混淆
     Vue.mixin({
-      activated () {
-        try {
-          document.getElementsByClassName('main')[0].scrollTop = this.$route.meta.mainScroll
-        } catch (e) {
-          console.warn(e)
-        }
-      },
-      created: function () {
-        // 逻辑...
-      },
+      // activated () {},
+      // created: function () {},
       methods: {
         errorHandler (message) {
           if (message !== 'loginTimeout') {
@@ -69,5 +61,42 @@ export default {
     }
     Vue.prototype.api = api
     Vue.prototype.qs = qs
+  }
+}
+window.boxGlobal = {
+  commonMixin: {
+    activated () {
+      console.log('activated')
+      // 保持页面滚动条的位置
+      try {
+        document.getElementsByClassName('main')[0].scrollTop = this.$route.meta.mainScroll || 0
+      } catch (e) {
+        console.warn(e)
+      }
+      // 页面刷新处理方法
+      if (this.$store.getters.common.refresh) {
+        this.$store.dispatch('common/changeRefresh', false)
+        if (this.refresh) {
+          try {
+            this.$route.meta.mainScroll = 0
+            document.getElementsByClassName('main')[0].scrollTop = 0
+          } catch (e) {
+            console.warn(e)
+          }
+          this.refresh()
+        }
+      }
+    },
+    created: function () {},
+    methods: {},
+    mounted: function () {
+      // 初始化的时候不激活activated  changeRefresh改变为false
+      this.$store.dispatch('common/changeRefresh', false)
+      // 组件绑定完成再加入到Cached中， 路由一变化就加入 第一次就会触发 activated
+      const { name } = this.$route
+      if (name) {
+        this.$store.dispatch('tagsView/addCachedView', this.$route)
+      }
+    }
   }
 }

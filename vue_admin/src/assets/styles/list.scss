@@ -33,27 +33,6 @@
   .tool-box{
     flex: none;
   }
-  .list-box{
-    width: 100%;
-    flex: auto;
-    height: 0;
-    overflow-x: hidden;
-    overflow-y: auto;
-    @include scrollBar('transparent', rgba(200,200,200,0.5));
-    .el-table thead {
-      color: #555;
-      font-weight: 500;
-    }
-    .table-list {
-    }
-    .card-list{
-    }
-  }
-  .el-pagination{
-    text-align: right;
-    margin-top: 25px;
-    flex: none;
-  }
 }
 
 

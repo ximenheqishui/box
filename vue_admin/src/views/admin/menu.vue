@@ -24,12 +24,10 @@
         ref="tree"
         :expand-on-click-node="false">
       <span class="custom-tree-node" slot-scope="{ node, data }">
-        <el-tooltip transition=""   class="item" effect="light" :content=" '唯一标识：' +  data.unique_id + (data.path ? '；路径：' + data.path: '') " placement="right">
-              <span style="padding: 0 6px;display: inline-block">
-                <i :class="data.type !== 2 ?  ('icon iconfont ' + data.icon) : 'icon iconfont icon-anniu' "></i>
-                {{ node.label }}
-              </span>
-        </el-tooltip>
+        <span style="padding: 0 6px;display: inline-block">
+          <i :class="data.type !== 2 ?  ('icon iconfont ' + data.icon) : 'icon iconfont icon-anniu' "></i>
+          {{ node.label }}
+        </span>
         <span>
           <el-button
             v-if="data.type !== 2"
@@ -85,6 +83,13 @@
         <el-form-item label="是否启用" prop="status">
           <el-switch
             v-model="form.status"
+            :active-value="0"
+            :inactive-value="1">
+          </el-switch>
+        </el-form-item>
+        <el-form-item label="是否显示" prop="status">
+          <el-switch
+            v-model="form.show"
             :active-value="0"
             :inactive-value="1">
           </el-switch>
@@ -148,11 +153,13 @@
     sort_order: '', // 排序值
     icon: '', // 字体图标
     unique_id: '', // 唯一标识
+    show: 0, // 是否在导航中显示  0 是显示  1 是不显示
     status: 0, // 是否启用  0 是启用  1 是不启用
     last_menu: 0 // 是否为最后一级  0不是最后一层   1 是最后一层
   }
   export default {
     name: 'menus',
+    mixins: [boxGlobal.commonMixin],
     components: {
     },
     data () {
@@ -250,16 +257,9 @@
                   _this.dialog = false
                   _this.dialog2 = false
                   // 给对象赋值
-                  _this.currentData.type = _this.form.type
-                  _this.currentData.name = _this.form.name
-                  _this.currentData.path = _this.form.path
-                  _this.currentData.parent_id = _this.form.parent_id
-                  _this.currentData.parent_name = _this.form.parent_name
-                  _this.currentData.sort_order = _this.form.sort_order
-                  _this.currentData.icon = _this.form.icon
-                  _this.currentData.unique_id = _this.form.unique_id
-                  _this.currentData.status = _this.form.status
-                  _this.currentData.last_menu = _this.form.last_menu
+                  for (let key in _this.currentData) {
+                    _this.currentData[key] = _this.form[key]
+                  }
                 } else {
                   _this.errorHandler(res.message || '修改菜单失败')
                 }

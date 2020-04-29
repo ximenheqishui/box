@@ -52,7 +52,7 @@
             </el-form-item>
           </div>
         <el-form-item>
-          <el-button size="mini" :loading="searchLoading" type="primary" @click="search">搜索</el-button>
+          <el-button size="mini" :loading="loading" type="primary" @click="search">搜索</el-button>
           <el-button size="mini" @click="resetForm">重置</el-button>
           <el-button size="mini" type="success" @click="sswitch = !sswitch">{{!sswitch ? '更多': '精简'}}</el-button>
         </el-form-item>
@@ -61,102 +61,66 @@
     <div class="tool-box">
       <div class="left">
         <el-button @click="showDialog(false)"  size="mini" type="primary">添加用户</el-button>
-        <el-button @click="deleteMore()"  size="mini" type="primary">批量删除</el-button>
+        <el-button @click="deleteRow(false)"  size="mini" type="primary">批量删除</el-button>
       </div>
       <div class="right">
-        <download  :disable="(!resultData.total || searchLoading)"  :token="token"  page="user" :queryData="lastPostData"></download>
+        <download  :disable="(!resultData.total || loading)"  :token="token"  page="user" :queryData="lastPostData"></download>
       </div>
     </div>
-    <div
-      class="list-box"
-      element-loading-text="数据加载中"
-      v-loading="pageLoading || searchLoading"
-      element-loading-background="rgba(255, 255, 255, 0.6)"
-      ref="tableScrollbar">
-      <el-table
-        size="mini"
-        :border="true"
-        :stripe="true"
-        :data="resultData.list"
-        @selection-change="handleSelectionChange"
-        @sort-change="handleSortChange"
-        style="width: 100%">
-        <el-table-column
-          type="selection"
-          width="55">
-        </el-table-column>
-        <el-table-column
-          fixed
-          width="80"
-          type="index"
-          :index="indexMethod"
-          label="序号">
-        </el-table-column>
-        <el-table-column
-          prop="user_name"
-          width="120"
-          :sortable="true"
-          label="用户名">
-        </el-table-column>
-        <el-table-column
-          prop="sex_name"
-          width="80"
-          label="性别">
-        </el-table-column>
-        <el-table-column
-          width="80"
-          label="头像">
-          <template slot-scope="scope">
-            <el-avatar size="large" :src="scope.row.avatar"></el-avatar>
-          </template>
-        </el-table-column>
-        <el-table-column
-          prop="dept_name"
-          label="所属部门">
-        </el-table-column>
-        <el-table-column
-          prop="mobile"
-          :sortable="true"
-          label="手机">
-        </el-table-column>
-        <el-table-column
-          prop="email"
-          :sortable="true"
-          label="邮箱">
-        </el-table-column>
-        <el-table-column
-          :sortable="true"
-          prop="create_time"
-          width="180"
-          label="创建时间">
-        </el-table-column>
-        <el-table-column
-          prop="operation"
-          width="120"
-          fixed="right"
-          label="操作">
-          <template slot-scope="scope">
-            <el-button @click.native.prevent="showDialog(scope)" type="text" size="small">
-              修改
-            </el-button>
-            <el-button @click.native.prevent="deleteRow(scope, resultData.list)" type="text" size="small">
-              移除
-            </el-button>
-          </template>
-        </el-table-column>
-      </el-table>
-    </div>
-    <el-pagination
-      :disabled="pageLoading || searchLoading"
-      @size-change="handleSizeChange"
-      @current-change="handleCurrentChange"
-      :current-page.sync ="searchData.pn"
-      :page-sizes="searchData.pageSizes"
-      :page-size.sync="searchData.page_size"
-      layout="total, sizes, prev, pager, next, jumper"
-      :total="resultData.total">
-    </el-pagination>
-
+    <result ref="result" apiName="User" @searchComplete="searchComplete" :selection="true" :index="true" :page_size="2">
+      <el-table-column
+        prop="user_name"
+        width="120"
+        :sortable="true"
+        label="用户名">
+      </el-table-column>
+      <el-table-column
+        prop="sex_name"
+        width="80"
+        label="性别">
+      </el-table-column>
+      <el-table-column
+        width="80"
+        label="头像">
+        <template slot-scope="scope">
+          <el-avatar size="large" :src="scope.row.avatar"></el-avatar>
+        </template>
+      </el-table-column>
+      <el-table-column
+        prop="dept_name"
+        label="所属部门">
+      </el-table-column>
+      <el-table-column
+        prop="mobile"
+        :sortable="true"
+        label="手机">
+      </el-table-column>
+      <el-table-column
+        prop="email"
+        :sortable="true"
+        label="邮箱">
+      </el-table-column>
+      <el-table-column
+        :sortable="true"
+        prop="create_time"
+        width="180"
+        label="创建时间">
+      </el-table-column>
+      <el-table-column
+        prop="operation"
+        width="120"
+        fixed="right"
+        label="操作">
+        <template slot-scope="scope">
+          <el-button @click.native.prevent="showDialog(scope)" type="text" size="small">
+            修改
+          </el-button>
+          <el-button @click.native.prevent="deleteRow(scope)" type="text" size="small">
+            移除
+          </el-button>
+        </template>
+      </el-table-column>
+    </result>
     <el-dialog  :title="dialog.isAdd ?  '添加用户': '修改用户'" :visible.sync="dialog.tag" height="80px" width="700px">
       <el-form size="small" :model="dialog.form" :rules="dialog.rules" ref="ruleForm" label-width="120px" @keyup.enter.native="submitFormD">
         <el-form-item label="用户名" prop="user_name">
@@ -240,6 +204,7 @@
 
 <script>
   import download from '@/components/Download/index.vue'
+  import result from '@/components/result/index.vue'
   let defaultForm = {
     id: '',
     user_name: '',
@@ -256,8 +221,10 @@
   }
   export default {
     name: 'user',
+    mixins: [boxGlobal.commonMixin],
     components: {
-      download
+      download,
+      result
     },
     data () {
       let validatePass1 = (rule, value, callback) => {
@@ -282,13 +249,9 @@
       }
       return {
         uploadUrl: this.api.commonURL.uploadUrl,
-        searchLoading: false, // 搜索中的loading
-        pageLoading: false, // 分页的loading
+        loading: false,
         sswitch: false, // 是否展开高级搜索
         searchData: {
-          pageSizes: [10, 25, 50, 100],
-          pn: 1,
-          page_size: 10,
           user_name: '',
           dept_id: '',
           dept_path: [],
@@ -351,17 +314,10 @@
     filters: {
     },
     methods: {
-      // 表格勾选
-      handleSelectionChange (val) {
-        this.multipleSelection = val
-      },
-      handleSortChange (column, prop, order) {
-        // 如果有需要排序的需求在再后台排序 现在前端单页面排序
-        // console.log(column, prop, order)
-      },
-      // 表格序号
-      indexMethod (index) {
-        return (this.searchData.pn - 1) * this.searchData.page_size + (index + 1)
+      searchComplete (result) {
+        this.loading = false
+        this.resultData = result
+        this.token = result.token
       },
       // 图片上传成功后的操作
       handleAvatarSuccess (res, file) {
@@ -377,90 +333,37 @@
         }
         return isLt2M
       },
-      // 分页改变时候的回调
-      handleCurrentChange (val) {
-        // console.log(`当前页: ${val}`)
-        this.$nextTick(() => {
-          this.getData(0)
-        })
-      },
-      // 每页多少条变化时候的函数
-      handleSizeChange (val) {
-        // console.log(`每页 ${val} 条`)
-        this.searchData.pn = 1
-        this.$nextTick(() => {
-          this.getData(0)
-        })
-      },
-      /**
-       *  @param type 是1的时候是搜索请求   0的时候是分页请求
-       * */
-      getData (type) {
-        let _this = this
-        let postdata = {}
-        if (type) {
-          this.searchLoading = true
-          postdata = JSON.parse(JSON.stringify(this.searchData))
-          postdata.dept_id = postdata.dept_path.length ? postdata.dept_path[postdata.dept_path.length - 1] : ''
-          if (postdata.date) {
-            postdata.start_date = postdata.date[0] ? this.dateFmt('yyyy-MM-dd hh:mm:ss', new Date(postdata.date[0])) : ''
-            postdata.end_date = postdata.date[1] ? this.dateFmt('yyyy-MM-dd hh:mm:ss', new Date(postdata.date[1])) : ''
-          } else {
-            postdata.end_date = ''
-            postdata.start_date = ''
-          }
-          delete postdata.pageSizes
-          delete postdata.dept_path
-          delete postdata.date
-          if (!_this.sswitch) {
-            postdata.mobile = ''
-            postdata.email = ''
-            postdata.sex = ''
-            postdata.date = ''
-            postdata.status = ''
-            postdata.end_date = ''
-            postdata.start_date = ''
-          }
-          this.lastPostData = postdata
-        } else {
-          postdata = this.lastPostData
-          postdata.pn = this.searchData.pn
-          postdata.page_size = this.searchData.page_size
-          this.pageLoading = true
-        }
-        this.api.getUser(postdata).then(res => {
-          _this.pageLoading = false
-          _this.searchLoading = false
-          // throw new Error('运算错误')
-          if (res.code === 0) {
-            _this.resultData = res.data
-            if (type) {
-              _this.token = res.data.token
-            }
-            try {
-              _this.$refs.tableScrollbar.scrollTop = 0
-            } catch (e) {
-              console.warn(e)
-            }
-          } else {
-            _this.errorHandler(res.message || '获取用户信息失败')
-          }
-        }).catch(error => {
-          _this.pageLoading = false
-          _this.searchLoading = false
-          _this.errorHandler(error.message)
-        })
-      },
       // 搜索条件恢复默认
       resetForm () {
         this.$refs['form'].resetFields()
       },
       // 搜索
       search () {
-        this.searchData.pn = 1
-        this.$nextTick(() => {
-          this.getData(1)
-        })
+        let data = JSON.parse(JSON.stringify(this.searchData))
+        data.dept_id = data.dept_path.length ? data.dept_path[data.dept_path.length - 1] : ''
+        if (data.date) {
+          data.start_date = data.date[0] ? this.dateFmt('yyyy-MM-dd hh:mm:ss', new Date(data.date[0])) : ''
+          data.end_date = data.date[1] ? this.dateFmt('yyyy-MM-dd hh:mm:ss', new Date(data.date[1])) : ''
+        } else {
+          data.end_date = ''
+          data.start_date = ''
+        }
+        delete data.date
+        delete data.dept_path
+        if (!this.sswitch) {
+          data.mobile = ''
+          data.email = ''
+          data.sex = ''
+          data.status = ''
+          data.end_date = ''
+          data.start_date = ''
+        }
+        this.getData(data)
+      },
+      getData (data) {
+        this.loading = true
+        this.lastPostData = data
+        this.$refs.result.getData(data)
       },
       // 获取所有的部门
       getDepartment () {
@@ -520,46 +423,13 @@
           }
         })
       },
-      // 删除一条
+      // 删除
       deleteRow (scope, rows) {
-        let _this = this
-        _this.api.delUser({ id: scope.row.id }).then(res => {
-          if (res.code === 0) {
-            let index = rows.indexOf(scope.row)
-            rows.splice(index, 1)
-            this.$message({
-              type: 'success',
-              message: '删除成功!'
-            })
-          } else {
-            this.errorHandler(res.message || '删除失败')
-          }
-        }).catch(error => {
-          this.errorHandler(error.message)
-        })
-      },
-      // 批量删除
-      deleteMore () {
-        if (!this.multipleSelection.length) {
-          return false
+        if (scope) {
+          this.$refs.result.deleteRow(scope)
+        } else {
+          this.$refs.result.deleteMore()
         }
-        let arr = []
-        this.multipleSelection.forEach(function (item) {
-          arr.push(item.id)
-        })
-        this.api.delUser({ id: arr.join(',') }).then(res => {
-          if (res.code === 0) {
-            this.getData(0)
-            this.$message({
-              type: 'success',
-              message: '删除成功!'
-            })
-          } else {
-            this.errorHandler(res.message || '删除失败')
-          }
-        }).catch(error => {
-          this.errorHandler(error.message)
-        })
       },
       // 提交表单
       submitFormD (e) {
@@ -615,9 +485,9 @@
     mounted: function () {
       // 所有的方式加载数据
       this.getOption()
-      this.getData(1)
       this.getDepartment()
       this.getRole()
+      this.search()
     }
   }
 </script>

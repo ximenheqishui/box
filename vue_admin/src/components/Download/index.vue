@@ -1,8 +1,8 @@
 <template>
-  <a :href=" !disable ? downloadUrl : 'javascript:void(0)'" target="_blank" style="display: inline-block;box-sizing: border-box">
-    <el-button class="icon-change" :disabled="disable"  size="mini" type="primary" icon="icon iconfont icon-daochu">
-      导出
-    </el-button>
+  <a :href=" !disable ? downloadUrl : false"  target="_blank" style="display: inline-block;box-sizing: border-box">
+     <el-button class="icon-change" :disabled="disable"  size="mini" type="primary" icon="icon iconfont icon-daochu">
+       导出
+     </el-button>
   </a>
 </template>
 

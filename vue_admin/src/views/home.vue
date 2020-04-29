@@ -6,6 +6,7 @@
 <script>
   export default {
     name: 'home',
+    mixins: [boxGlobal.commonMixin],
     components: {
     },
     data () {

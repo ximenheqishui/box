@@ -90,6 +90,7 @@
   }
   export default {
     name: 'articleType',
+    mixins: [boxGlobal.commonMixin],
     components: {
     },
     data () {

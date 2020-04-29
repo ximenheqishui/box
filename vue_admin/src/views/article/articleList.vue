@@ -39,7 +39,7 @@
             </el-form-item>
           </div>
         <el-form-item>
-          <el-button size="mini" :loading="searchLoading" type="primary" @click="search">搜索</el-button>
+          <el-button size="mini" :loading="loading" type="primary" @click="search">搜索</el-button>
           <el-button size="mini" @click="resetForm">重置</el-button>
           <el-button size="mini" type="success" @click="sswitch = !sswitch">{{!sswitch ? '更多': '精简'}}</el-button>
         </el-form-item>
@@ -48,41 +48,12 @@
     <div class="tool-box">
       <div class="left">
         <el-button @click="goPage(false)"  size="mini" type="primary">添加文章</el-button>
-        <el-button @click="deleteMore()"  size="mini" type="primary">批量删除</el-button>
+        <el-button @click="deleteRow(false)"  size="mini" type="primary">批量删除</el-button>
       </div>
       <div class="right">
-<!--        <a :href=" !(!resultData.total || searchLoading) ? downloadUrl : 'javascript:void(0)'" target="_blank" style="display: inline-block;box-sizing: border-box">-->
-<!--          <el-button class="icon-change" :disabled="!resultData.total"  :loading="searchLoading" size="mini" type="primary" icon="icon iconfont icon-daochu">-->
-<!--            导出-->
-<!--          </el-button>-->
-<!--        </a>-->
       </div>
     </div>
-    <div
-      class="list-box"
-      element-loading-text="数据加载中"
-      v-loading="pageLoading || searchLoading"
-      element-loading-background="rgba(255, 255, 255, 0.6)"
-      ref="tableScrollbar">
-      <el-table
-        size="mini"
-        :border="true"
-        :stripe="true"
-        :data="resultData.list"
-        @selection-change="handleSelectionChange"
-        @sort-change="handleSortChange"
-        style="width: 100%">
-        <el-table-column
-          type="selection"
-          width="55">
-        </el-table-column>
-        <el-table-column
-          fixed
-          width="80"
-          type="index"
-          :index="indexMethod"
-          label="序号">
-        </el-table-column>
+    <result ref="result" apiName="Article" @searchComplete="searchComplete" :selection="true" :index="true" :page_size="26">
         <el-table-column
           prop="title"
           width="120"
@@ -132,52 +103,38 @@
             <el-button @click.native.prevent="goPage(scope)" type="text" size="small">
               修改
             </el-button>
-            <el-button @click.native.prevent="deleteRow(scope, resultData.list)" type="text" size="small">
+            <el-button @click.native.prevent="deleteRow(scope)" type="text" size="small">
               移除
             </el-button>
           </template>
         </el-table-column>
-      </el-table>
-    </div>
-    <el-pagination
-      :disabled="pageLoading || searchLoading"
-      @size-change="handleSizeChange"
-      @current-change="handleCurrentChange"
-      :current-page.sync ="searchData.pn"
-      :page-sizes="searchData.pageSizes"
-      :page-size.sync="searchData.page_size"
-      layout="total, sizes, prev, pager, next, jumper"
-      :total="resultData.total">
-    </el-pagination>
+    </result>
   </div>
 </template>
 
 <script>
+  import result from '@/components/result/index.vue'
   export default {
     name: 'articleList',
+    mixins: [boxGlobal.commonMixin],
     components: {
+      result
     },
     data () {
       return {
-        uploadUrl: this.api.commonURL.uploadUrl,
-        searchLoading: false, // 搜索中的loading
-        pageLoading: false, // 分页的loading
+        loading: false, // 搜索中的loading
         sswitch: false, // 是否展开高级搜索
         searchData: {
-          pageSizes: [10, 25, 50, 100],
-          pn: 1,
-          page_size: 10,
+          date: ['', ''],
+          type_path: [],
           title: '',
           type_id: '',
-          type_path: [],
           end_date: '',
           start_date: '',
-          date: ['', ''],
           keyword: '',
           status: ''
         },
         type: [],
-        multipleSelection: [],
         status: [],
         defaultProps: {
           value: 'id',
@@ -187,8 +144,7 @@
         },
         lastPostData: {},
         resultData: {
-          total: 0,
-          list: []
+          total: 0
         }
       }
     },
@@ -201,92 +157,9 @@
     },
     filters: {
     },
-    activated () {
-      if (this.$store.getters.common.refresh) {
-        this.$store.dispatch('common/changeRefresh', false)
-        this.getData(1)
-      }
-    },
     methods: {
-      // 表格勾选
-      handleSelectionChange (val) {
-        this.multipleSelection = val
-      },
-      handleSortChange (column, prop, order) {
-        // 如果有需要排序的需求在再后台排序 现在前端单页面排序
-        // console.log(column, prop, order)
-      },
-      // 表格序号
-      indexMethod (index) {
-        return (this.searchData.pn - 1) * this.searchData.page_size + (index + 1)
-      },
-      // 分页改变时候的回调
-      handleCurrentChange (val) {
-        // console.log(`当前页: ${val}`)
-        this.$nextTick(() => {
-          this.getData(0)
-        })
-      },
-      // 每页多少条变化时候的函数
-      handleSizeChange (val) {
-        // console.log(`每页 ${val} 条`)
-        this.searchData.pn = 1
-        this.$nextTick(() => {
-          this.getData(0)
-        })
-      },
-      /**
-       *  @param type 是1的时候是搜索请求   0的时候是分页请求
-       * */
-      getData (type) {
-        let _this = this
-        let postdata = {}
-        if (type) {
-          this.searchLoading = true
-          postdata = JSON.parse(JSON.stringify(this.searchData))
-          postdata.type_id = postdata.type_path.length ? postdata.type_path[postdata.type_path.length - 1] : ''
-          if (postdata.date) {
-            postdata.start_date = postdata.date[0] ? this.dateFmt('yyyy-MM-dd hh:mm:ss', new Date(postdata.date[0])) : ''
-            postdata.end_date = postdata.date[1] ? this.dateFmt('yyyy-MM-dd hh:mm:ss', new Date(postdata.date[1])) : ''
-          } else {
-            postdata.end_date = ''
-            postdata.start_date = ''
-          }
-          delete postdata.pageSizes
-          delete postdata.type_path
-          delete postdata.date
-          if (!_this.sswitch) {
-            postdata.date = ''
-            postdata.keyword = ''
-            postdata.status = ''
-            postdata.end_date = ''
-            postdata.start_date = ''
-          }
-          this.lastPostData = postdata
-        } else {
-          postdata = this.lastPostData
-          postdata.pn = this.searchData.pn
-          postdata.page_size = this.searchData.page_size
-          this.pageLoading = true
-        }
-        this.api.getArticle(postdata).then(res => {
-          _this.pageLoading = false
-          _this.searchLoading = false
-          if (res.code === 0) {
-            _this.resultData = res.data
-            try {
-              _this.$refs.tableScrollbar.scrollTop = 0
-            } catch (e) {
-              console.warn(e)
-            }
-          } else {
-            _this.errorHandler(res.message || '获取文章失败')
-          }
-        }).catch(error => { // 状态码非2xx时
-          _this.pageLoading = false
-          _this.searchLoading = false
-          _this.errorHandler(error.message)
-        })
+      refresh () {
+        this.search()
       },
       // 搜索条件恢复默认
       resetForm () {
@@ -294,12 +167,35 @@
       },
       // 搜索
       search () {
-        this.searchData.pn = 1
-        this.$nextTick(() => {
-          this.getData(1)
-        })
+        let data = JSON.parse(JSON.stringify(this.searchData))
+        data.type_id = data.type_path.length ? data.type_path[data.type_path.length - 1] : ''
+        if (data.date) {
+          data.start_date = data.date[0] ? this.dateFmt('yyyy-MM-dd hh:mm:ss', new Date(data.date[0])) : ''
+          data.end_date = data.date[1] ? this.dateFmt('yyyy-MM-dd hh:mm:ss', new Date(data.date[1])) : ''
+        } else {
+          data.end_date = ''
+          data.start_date = ''
+        }
+        delete data.date
+        delete data.type_path
+        if (!this.sswitch) {
+          data.keyword = ''
+          data.status = ''
+          data.end_date = ''
+          data.start_date = ''
+        }
+        this.getData(data)
       },
-      // 获取所有的部门
+      getData (data) {
+        this.loading = true
+        this.lastPostData = data
+        this.$refs.result.getData(data)
+      },
+      searchComplete (result) {
+        this.loading = false
+        this.resultData = result
+      },
+      // 获取文章类别
       getArticleType () {
         this.api.getArticleType({}).then(res => {
           if (res.code === 0) {
@@ -323,64 +219,13 @@
           this.errorHandler(error.message)
         })
       },
-      // 显示添加修改框
-      articleEditor (obj) {
-        let _this = this
-        _this.dialog.tag = true
-        _this.$nextTick(() => {
-          _this.resetFormD()
-          if (obj) {
-            _this.dialog.isAdd = false
-            _this.dialog.form = JSON.parse(JSON.stringify(obj.row))
-            _this.dialog.form.password2 = ''
-            _this.dialog.form.password = ''
-            _this.dialog.form.dept_path = JSON.parse(this.dialog.form.dept_path)
-          } else {
-            _this.dialog.isAdd = true
-            _this.dialog.form = JSON.parse(JSON.stringify(defaultForm))
-          }
-        })
-      },
-      // 删除一条
-      deleteRow (scope, rows) {
-        let _this = this
-        _this.api.delArticle({ id: scope.row.id }).then(res => {
-          if (res.code === 0) {
-            let index = rows.indexOf(scope.row)
-            rows.splice(index, 1)
-            this.$message({
-              type: 'success',
-              message: '删除成功!'
-            })
-          } else {
-            this.errorHandler(res.message || '删除失败')
-          }
-        }).catch(error => {
-          this.errorHandler(error.message)
-        })
-      },
-      // 批量删除
-      deleteMore () {
-        if (!this.multipleSelection.length) {
-          return false
+      // 删除
+      deleteRow (scope) {
+        if (scope) {
+          this.$refs.result.deleteRow(scope)
+        } else {
+          this.$refs.result.deleteMore()
         }
-        let arr = []
-        this.multipleSelection.forEach(function (item) {
-          arr.push(item.id)
-        })
-        this.api.delArticle({ id: arr.join(',') }).then(res => {
-          if (res.code === 0) {
-            this.getData(0)
-            this.$message({
-              type: 'success',
-              message: '删除成功!'
-            })
-          } else {
-            this.errorHandler(res.message || '删除失败')
-          }
-        }).catch(error => {
-          this.errorHandler(error.message)
-        })
       },
       // 去文章编辑页面
       goPage (scope) {
@@ -400,10 +245,9 @@
     },
     mounted: function () {
       // 所有的方式加载数据
-      this.$store.dispatch('common/changeRefresh', false)
       this.getOption()
       this.getArticleType()
-      this.getData(1)
+      this.search()
     }
   }
 </script>

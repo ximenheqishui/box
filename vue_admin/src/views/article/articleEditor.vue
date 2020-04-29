@@ -52,7 +52,6 @@
           <el-button style="margin:20px 20px 20px 0;letter-spacing: 10px" size="mini" type="primary"
                      :loading="disableSubmit" :disabled="disableSubmit" @click="submitForm">提交
           </el-button>
-          <el-button  @click="backList()" :disabled="disableSubmit"  style="margin:20px 20px 20px 0px;letter-spacing: 10px" size="mini" type="primary">返回</el-button>
           <el-button size="mini" @click="resetForm">重置</el-button>
         </el-form-item>
       </el-form>
@@ -74,6 +73,7 @@
   }
   export default {
     name: 'articleEditor',
+    mixins: [boxGlobal.commonMixin],
     components: {
       Tinymce
     },
@@ -97,13 +97,10 @@
     computed: {},
     watch: {},
     filters: {},
-    activated () {
-      if (this.$store.getters.common.refresh) {
-        this.$store.dispatch('common/changeRefresh', false)
-        this.getData()
-      }
-    },
     methods: {
+      refresh () {
+        this.$router.replace({ path: '/refresh' })
+      },
       // 图片上传成功后的操作
       handleAvatarSuccess (res, file) {
         this.form.cover = res.data.path
@@ -207,9 +204,6 @@
           })
         }
       },
-      backList () {
-        this.$router.back()
-      },
       // 重置表单
       resetForm () {
         this.$refs.tinymce.setContent(this.defaultForm.content)
@@ -218,7 +212,6 @@
     },
     mounted: function () {
       this.id = this.$route.query.id || ''
-      this.$store.dispatch('common/changeRefresh', false)
       this.getArticleType()
     }
   }

@@ -50,7 +50,7 @@
     },
     watch: {
       $route () {
-        this.addTagsDelay()
+        this.addVisitedTag()
       },
       visible (value) {
         if (value) {
@@ -98,14 +98,11 @@
           }
         }
       },
-      addTagsDelay () {
+      addVisitedTag () {
         const { name } = this.$route
         if (name) {
           this.$store.dispatch('tagsView/addVisitedView', this.$route)
           this.moveToCurrentTag()
-          setTimeout(() => {
-            this.$store.dispatch('tagsView/addCachedView', this.$route)
-          }, 1000)
         }
       },
       addTags () {

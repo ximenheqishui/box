@@ -6,8 +6,12 @@
       <tags-view />
       <el-main class="main" @scroll.native="mainScroll" ref="mainScroll">
         <transition name="fade" mode="out-in">
-          <keep-alive :max="40" :include="cachedViews">
-              <router-view :key="key"></router-view>
+<!--          <keep-alive :max="40" :include="cachedViews">-->
+<!--              <router-view :key="key"></router-view>-->
+<!--          </keep-alive>-->
+          <!--自己控制页面是否需要刷新 上面的必须设置max不然可能缓存太多了页面了 key是fullpath-->
+          <keep-alive :include="cachedViews">
+            <router-view></router-view>
           </keep-alive>
         </transition>
       </el-main>
@@ -39,12 +43,22 @@
     },
     data () {
       return {
+        mainScrollS: true
+      }
+    },
+    watch: {
+      $route () {
+        this.mainScrollS = false
       }
     },
     methods: {
       mainScroll () {
         try {
-          this.$route.meta.mainScroll = this.$refs.mainScroll.$el.scrollTop
+          if (this.mainScrollS) {
+            this.$route.meta.mainScroll = this.$refs.mainScroll.$el.scrollTop
+          } else {
+            this.mainScrollS = true
+          }
         } catch (e) {
           console.warn(e)
         }

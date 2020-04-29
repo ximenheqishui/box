@@ -1,15 +1,15 @@
 <template>
   <div>
-    <template v-if="path">
-      <a v-if="link(path)" :href="path" target="_blank">
+    <template v-if="!itemData.show">
+      <a v-if="link(itemData.path)" :href="itemData.path" target="_blank">
         <el-menu-item index="">
-          <i class="icon iconfont" :class="icon"></i>
-          <span slot="title">{{ name }}</span>
+          <i class="icon iconfont" :class="itemData.icon"></i>
+          <span slot="title">{{ itemData.name }}</span>
         </el-menu-item>
       </a>
-      <el-menu-item v-else :index="path" >
-        <i class="icon iconfont" :class="icon"></i>
-        <span slot="title">{{ name }}</span>
+      <el-menu-item v-else :index="itemData.path" >
+        <i class="icon iconfont" :class="itemData.icon"></i>
+        <span slot="title">{{ itemData.name }}</span>
       </el-menu-item>
     </template>
   </div>
@@ -19,16 +19,8 @@
 
   export default {
     props: {
-      path: {
-        type: String,
-        required: true
-      },
-      name: {
-        type: String,
-        required: true
-      },
-      icon: {
-        type: String,
+      itemData: {
+        type: Object,
         required: true
       }
     },

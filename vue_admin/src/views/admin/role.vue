@@ -127,6 +127,7 @@
 <script>
   export default {
     name: 'role',
+    mixins: [boxGlobal.commonMixin],
     components: {},
     data () {
       return {

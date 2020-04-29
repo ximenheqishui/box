@@ -25,6 +25,8 @@
 
 <script>
   export default {
+    name: 'login',
+    mixins: [boxGlobal.commonMixin],
     data () {
       return {
         systemName: baseConfig.systemName,

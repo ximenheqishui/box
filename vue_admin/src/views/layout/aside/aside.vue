@@ -33,12 +33,12 @@
                     <i class="icon iconfont" :class="item2.icon"></i>
                     <span>{{item2.name}}</span>
                   </template>
-                  <menu-item  v-for="item3 in item2.children"  v-bind:key="item3.id" v-bind:path="item3.path" v-bind:name="item3.name" v-bind:icon="item3.icon"></menu-item>
+                  <menu-item  v-for="item3 in item2.children"  v-bind:key="item3.id"  :itemData="item3"></menu-item>
                 </el-submenu>
-                <menu-item v-else v-bind:key="item2.id" v-bind:path="item2.path" v-bind:name="item2.name" v-bind:icon="item2.icon"></menu-item>
+                <menu-item v-else v-bind:key="item2.id" :itemData="item2"></menu-item>
               </template>
             </el-submenu>
-            <menu-item v-else v-bind:key="item.id" v-bind:path="item.path" v-bind:name="item.name" v-bind:icon="item.icon"></menu-item>
+            <menu-item v-else v-bind:key="item.id" :itemData="item"></menu-item>
           </template>
         </el-menu>
       </el-scrollbar>

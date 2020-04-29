@@ -104,6 +104,7 @@
 <script>
   export default {
     name: 'dictionaries',
+    mixins: [boxGlobal.commonMixin],
     components: {},
     data () {
       return {
