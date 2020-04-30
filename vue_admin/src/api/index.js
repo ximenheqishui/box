@@ -4,6 +4,13 @@ export default {
   commonURL: {
       uploadUrl: baseConfig.apiHost + '/upload'
   },
+  // 获取字体图标的json
+  getIconJson () {
+    return axios({
+      url: './static/fonts/iconfont.json',
+      method: 'get'
+    })
+  },
   /**
    * @description 用户信息相关
    * */
@@ -214,7 +221,7 @@ export default {
     return axios({
       url: `/user`,
       method: 'DELETE',
-      data: { id: data.id + '' }
+      data: data
     })
   },
   /**
@@ -277,7 +284,7 @@ export default {
     return axios({
       url: '/article',
       method: 'DELETE',
-      data: { id: data.id + '' }
+      data: data
     })
   }
 }

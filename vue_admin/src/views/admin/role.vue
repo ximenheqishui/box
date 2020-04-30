@@ -3,135 +3,102 @@
         <div class="tool-box">
           <div class="left">
             <el-button size="mini" type="primary" @click="showRoleDialog(false)">添加角色</el-button>
-            <el-button @click="deleteMore()"  size="mini" type="primary">批量删除</el-button>
+            <el-button @click="deleteRow(false)"  size="mini" type="primary">批量删除</el-button>
           </div>
           <div class="right">
           </div>
         </div>
-        <div
-                class="list-box"
-                element-loading-text="数据加载中"
-                v-loading="loading"
-                element-loading-background="rgba(255, 255, 255, 0.6)"
-                ref="tableScrollbar">
-            <el-table
-                    size="mini"
-                    align="left"
-                    :border="true"
-                    :stripe="true"
-                    :data="resultData.list"
-                    @selection-change="handleSelectionChange"
-                    style="width: 100%">
-                <el-table-column
-                  type="selection"
-                  width="55">
-                </el-table-column>
-                <el-table-column
-                        fixed
-                        type="index"
-                        :index="indexMethod"
-                        label="序号"
-                        width="80">
-                </el-table-column>
-                <el-table-column
-                        fixed
-                        prop="name"
-                        label="名称"
-                        width="160">
-                </el-table-column>
-                <el-table-column
-                        prop="description"
-                        label="备注">
-                </el-table-column>
-                <el-table-column
-                  width="160"
-                  prop="create_time"
-                  label="创建时间">
-                </el-table-column>
-                <el-table-column
-                  width="160"
-                  prop="update_time"
-                  label="更新时间">
-                </el-table-column>
-                <el-table-column
-                        fixed="right"
-                        label="操作"
-                        width="180">
-                    <template slot-scope="scope">
-                        <el-button @click.native.prevent="showMenuDialog(scope)" type="text" size="small">
-                          菜单权限
-                        </el-button>
-                        <el-button @click.native.prevent="showRoleDialog(scope)" type="text" size="small">
-                            编辑
-                        </el-button>
-                        <el-button @click.native.prevent="deleteRow(scope, resultData.list)" type="text" size="small">
-                            移除
-                        </el-button>
-                    </template>
-                </el-table-column>
-            </el-table>
-        </div>
-        <el-pagination
-        :disabled="loading"
-        @size-change="handleSizeChange"
-        @current-change="handleCurrentChange"
-        :current-page="searchData.pn"
-        :page-sizes="searchData.pageSizes"
-        :page-size="searchData.page_size"
-        layout="total, sizes, prev, pager, next, jumper"
-        :total="resultData.total">
-      </el-pagination>
-      <el-dialog :title="dialog.isAdd ?  '添加角色': '修改角色'" :visible.sync="dialog.roleDialog" height="80px" width="600px">
-            <el-form size="small" :model="dialog.form" :rules="dialog.rules" ref="ruleForm" label-width="120px">
-                <el-form-item label="角色名称" prop="name">
-                    <el-input placeholder="请输入角色名称" @keyup.enter.native="submitForm" v-model="dialog.form.name"></el-input>
-                </el-form-item>
-                <el-form-item label="备注" prop="description">
-                    <el-input type="textarea" :rows="4" placeholder="请输入备注" v-model="dialog.form.description"></el-input>
-                </el-form-item>
-            </el-form>
-            <div slot="footer" class="dialog-footer">
-                <el-button size="small" @click="dialog.roleDialog = false">取 消</el-button>
-                <el-button size="small" type="primary" :disabled="dialog.disableSubmit" @click="submitForm">确 定</el-button>
-            </div>
-      </el-dialog>
-      <el-dialog title="菜单权限" :visible.sync="menuDialog" height="80px" width="600px">
-        <el-tree
-          element-loading-text="数据加载中"
-          v-loading="treeLoading"
-          element-loading-background="rgba(255, 255, 255, 0.6)"
-          style="max-height: 320px;overflow-y: auto"
-          :data="menuTree"
-          :props="defaultProps"
-          :check-strictly="true"
-          show-checkbox
-          node-key="id"
-          default-expand-all
-          ref="tree"
-          :expand-on-click-node="false">
-            <span class="custom-tree-node" slot-scope="{ node, data }">
-              <span style="padding: 0 6px;display: inline-block">
-                <i :class="String(data.type) !== '2' ?  ('icon iconfont ' + data.icon) : 'icon iconfont icon-anniu' "></i>
-                {{ node.label }}
+        <result ref="result" apiName="Role" @searchComplete="searchComplete" :selection="true" :index="true">
+             <el-table-column
+               fixed
+               prop="name"
+               label="名称"
+               width="160">
+             </el-table-column>
+             <el-table-column
+               prop="description"
+               label="备注">
+             </el-table-column>
+             <el-table-column
+               width="160"
+               prop="create_time"
+               label="创建时间">
+             </el-table-column>
+             <el-table-column
+               width="160"
+               prop="update_time"
+               label="更新时间">
+             </el-table-column>
+             <el-table-column
+               fixed="right"
+               label="操作"
+               width="180">
+               <template slot-scope="scope">
+                 <el-button @click.native.prevent="showMenuDialog(scope)" type="text" size="small">
+                   菜单权限
+                 </el-button>
+                 <el-button @click.native.prevent="showRoleDialog(scope)" type="text" size="small">
+                   编辑
+                 </el-button>
+                 <el-button @click.native.prevent="deleteRow(scope)" type="text" size="small">
+                   移除
+                 </el-button>
+               </template>
+             </el-table-column>
+           </result>
+        <el-dialog :title="dialog.isAdd ?  '添加角色': '修改角色'" :visible.sync="dialog.roleDialog" height="80px" width="600px">
+              <el-form size="small" :model="dialog.form" :rules="dialog.rules" ref="ruleForm" label-width="120px">
+                  <el-form-item label="角色名称" prop="name">
+                      <el-input placeholder="请输入角色名称" @keyup.enter.native="submitForm" v-model="dialog.form.name"></el-input>
+                  </el-form-item>
+                  <el-form-item label="备注" prop="description">
+                      <el-input type="textarea" :rows="4" placeholder="请输入备注" v-model="dialog.form.description"></el-input>
+                  </el-form-item>
+              </el-form>
+              <div slot="footer" class="dialog-footer">
+                  <el-button size="small" @click="dialog.roleDialog = false">取 消</el-button>
+                  <el-button size="small" type="primary" :disabled="dialog.disableSubmit" @click="submitForm">确 定</el-button>
+              </div>
+        </el-dialog>
+        <el-dialog title="菜单权限" :visible.sync="menuDialog" height="80px" width="600px">
+          <el-tree
+            element-loading-text="数据加载中"
+            v-loading="treeLoading"
+            element-loading-background="rgba(255, 255, 255, 0.6)"
+            style="max-height: 320px;overflow-y: auto"
+            :data="menuTree"
+            :props="defaultProps"
+            :check-strictly="true"
+            show-checkbox
+            node-key="id"
+            default-expand-all
+            ref="tree"
+            :expand-on-click-node="false">
+              <span class="custom-tree-node" slot-scope="{ node, data }">
+                <span style="padding: 0 6px;display: inline-block">
+                  <i :class="String(data.type) !== '2' ?  ('icon iconfont ' + data.icon) : 'icon iconfont icon-anniu' "></i>
+                  {{ node.label }}
+                </span>
               </span>
-            </span>
-        </el-tree>
-        <div slot="footer" class="dialog-footer">
-          <el-button size="small" @click="menuDialog = false">取 消</el-button>
-          <el-button size="small" type="primary" :disabled="dialog.disableSubmit" @click="submitFormMenu">确 定</el-button>
-        </div>
-      </el-dialog>
+          </el-tree>
+          <div slot="footer" class="dialog-footer">
+            <el-button size="small" @click="menuDialog = false">取 消</el-button>
+            <el-button size="small" type="primary" :disabled="dialog.disableSubmit" @click="submitFormMenu">确 定</el-button>
+          </div>
+        </el-dialog>
     </div>
 </template>
 
 <script>
+  import result from '@/components/result/index.vue'
   export default {
     name: 'role',
     mixins: [boxGlobal.commonMixin],
-    components: {},
+    components: {
+      result
+    },
     data () {
       return {
-        loading: true,
         treeLoading: false,
         menuDialog: false,
         defaultProps: {
@@ -154,103 +121,23 @@
           disableSubmit: false
         },
         menuTree: [],
-        multipleSelection: [],
-        searchData: {
-          pageSizes: [10, 20, 50, 100],
-          pn: 1,
-          page_size: 10
-        },
-        resultData: {
-          list: [],
-          total: 0
-        },
         roleId: ''
       }
     },
     filters: {},
     methods: {
-      // 表格勾选
-      handleSelectionChange (val) {
-        this.multipleSelection = val
+      searchComplete (result) {
+        // this.resultData = result
       },
-      handleCurrentChange (val) {
-        this.searchData.pn = val
-        this.$nextTick(() => {
-          this.getData()
-        })
-      },
-      handleSizeChange (val) {
-        this.searchData.pn = 1
-        this.searchData.page_size = val
-        this.$nextTick(() => {
-          this.getData()
-        })
-      },
-      deleteRow (scope, rows) {
-        let index = scope.$index
-        let id = String(scope.row.id)
-        this.api.delRole({ id: id }).then(res => {
-          if (res.code === 0) {
-            rows.splice(index, 1)
-            this.$message({
-              type: 'success',
-              message: '删除成功!'
-            })
-          } else {
-            this.errorHandler(res.message || '删除失败')
-          }
-        }).catch(error => {
-          this.errorHandler(error.message)
-        })
-      },
-      // 批量删除
-      deleteMore () {
-        if (!this.multipleSelection.length) {
-          return false
+      deleteRow (scope) {
+        if (scope) {
+          this.$refs.result.deleteRow(scope)
+        } else {
+          this.$refs.result.deleteMore()
         }
-        let arr = []
-        this.multipleSelection.forEach(function (item) {
-          arr.push(item.id)
-        })
-        this.api.delRole({ id: arr.join(',') }).then(res => {
-          if (res.code === 0) {
-            this.getData()
-            this.$message({
-              type: 'success',
-              message: '删除成功!'
-            })
-          } else {
-            this.errorHandler(res.message || '删除失败')
-          }
-        }).catch(error => {
-          this.errorHandler(error.message)
-        })
       },
-      indexMethod (index) {
-        return (this.searchData.pn - 1) * this.searchData.page_size + (index + 1)
-      },
-      getData () {
-        let _this = this
-        this.loading = true
-        _this.api.getRole({
-          pn: _this.searchData.pn,
-          page_size: _this.searchData.page_size
-        }).then(res => {
-          _this.loading = false
-          if (res.code === 0) {
-            _this.resultData = res.data
-            try {
-              _this.$refs.tableScrollbar.scrollTop = 0
-            } catch (e) {
-              console.warn(e)
-            }
-          } else {
-            _this.errorHandler(res.message || '获取角色失败')
-          }
-        }).catch(error => {
-          _this.loading = false
-          _this.errorHandler(error.message)
-        })
+      getData (data) {
+        this.$refs.result.getData(data)
       },
       submitForm () {
         let _this = this
@@ -266,7 +153,7 @@
                 _this.dialog.disableSubmit = false
                 if (res.code === 0) {
                   _this.dialog.roleDialog = false
-                  _this.getData()
+                  _this.getData({})
                 } else {
                   _this.errorHandler(res.message || '添加角色失败')
                 }
@@ -378,7 +265,7 @@
       }
     },
     mounted: function () {
-      this.getData()
+      this.getData({})
       this.getMenuTree()
     }
   }

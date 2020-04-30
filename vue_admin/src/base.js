@@ -66,7 +66,6 @@ export default {
 window.boxGlobal = {
   commonMixin: {
     activated () {
-      console.log('activated')
       // 保持页面滚动条的位置
       try {
         document.getElementsByClassName('main')[0].scrollTop = this.$route.meta.mainScroll || 0

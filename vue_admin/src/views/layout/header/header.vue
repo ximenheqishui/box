@@ -7,6 +7,9 @@
       </div>
     </div>
     <div class="right">
+      <div title="刷新" class="refresh" @click="refresh">
+        <i class="el-icon-refresh"></i>
+      </div>
       <el-dropdown trigger="click">
         <div>
           <el-avatar size="medium" :src="$store.getters.userInfo.avatar"></el-avatar>
@@ -140,6 +143,10 @@
     computed: {
     },
     methods: {
+      refresh () {
+        console.log(123)
+        this.$router.replace({ path: '/refresh' })
+      },
       // 图片上传成功后的操作
       handleAvatarSuccess (res, file) {
         this.dialog.form.avatar = res.data.path
@@ -250,10 +257,22 @@
       }
     }
     .right{
-      text-align: right;
+      display: flex;
       flex: none;
+      justify-content: flex-end;
       width: 200px;
       color: #000;
+      .refresh{
+        transition: all 0.3s;
+        transition-timing-function: ease, ease, ease;
+        color: #409EFF;
+        font-size: 30px;
+        margin-right: 20px;
+        transform: rotate(0deg);
+        &:hover{
+          transform: rotate(360deg);
+        }
+      }
       .el-dropdown-selfdefine {
        height: 50px;
         .el-avatar{

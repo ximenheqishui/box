@@ -67,7 +67,7 @@
           </el-form-item>
         </el-tooltip>
         <el-form-item label="路径" prop="path">
-          <el-input placeholder="请输入页面路径,如空则不在导航中显示" v-model="form.path"></el-input>
+          <el-input placeholder="请输入页面路径。http，https开头的会新开页面" v-model="form.path"></el-input>
         </el-form-item>
         <el-form-item label="字体图标" prop="icon">
           <el-input placeholder="请输入右侧可用图标中的Font class。如：icon-set" v-model="form.icon">
@@ -122,10 +122,6 @@
             <el-input  placeholder="请输入唯一标识" v-model="form.unique_id"></el-input>
           </el-form-item>
         </el-tooltip>
-        <el-form-item label="排序值" prop="sort_order">
-          <el-input-number v-model="form.sort_order" controls-position="right" :min="1"></el-input-number>
-          <span>&nbsp;&nbsp;&nbsp;&nbsp;值越小越靠前</span>
-        </el-form-item>
         <el-form-item label="是否启用" prop="status">
           <el-switch
             v-model="form.status"

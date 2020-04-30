@@ -53,7 +53,7 @@
       <div class="right">
       </div>
     </div>
-    <result ref="result" apiName="Article" @searchComplete="searchComplete" :selection="true" :index="true" :page_size="26">
+    <result ref="result" apiName="Article" @searchComplete="searchComplete" :selection="true" :index="true">
         <el-table-column
           prop="title"
           width="120"

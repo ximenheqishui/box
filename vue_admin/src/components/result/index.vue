@@ -186,7 +186,7 @@
       deleteRow (scope) {
         let rows = this.resultData.list
         let _this = this
-        _this.api[`del${this.apiName}`]({ id: scope.row.id }).then(res => {
+        _this.api[`del${this.apiName}`]({ id: String(scope.row.id) }).then(res => {
           if (res.code === 0) {
             let index = rows.indexOf(scope.row)
             rows.splice(index, 1)
@@ -233,6 +233,7 @@
 <style scoped lang="scss">
   @import "../../assets/styles/mixin";
   .result{
+    position: relative;
     width: 100%;
     flex: auto;
     height: 0;

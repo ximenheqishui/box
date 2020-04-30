@@ -3,81 +3,46 @@
     <div class="tool-box">
       <div class="left">
         <el-button size="mini" type="primary" @click="showDialog(false)">添加字段</el-button>
-        <el-button @click="deleteMore()"  size="mini" type="primary">批量删除</el-button>
+        <el-button @click="deleteRow(false)"  size="mini" type="primary">批量删除</el-button>
       </div>
       <div class="right">
       </div>
     </div>
-    <div
-      class="list-box"
-      element-loading-text="数据加载中"
-      v-loading="loading"
-      element-loading-background="rgba(255, 255, 255, 0.6)"
-      ref="tableScrollbar">
-      <el-table
-        size="mini"
-        align="left"
-        :border="true"
-        :stripe="true"
-        :data="resultData.list"
-        @selection-change="handleSelectionChange"
-        style="width: 100%">
-        <el-table-column
-          type="selection"
-          width="55">
-        </el-table-column>
-        <el-table-column
-          fixed
-          type="index"
-          :index="indexMethod"
-          label="序号"
-          width="80">
-        </el-table-column>
-        <el-table-column
-          fixed
-          prop="name"
-          label="名称"
-          width="160">
-        </el-table-column>
-        <el-table-column
-          prop="value"
-          label="值"
-          width="160">
-        </el-table-column>
-        <el-table-column
-          prop="type"
-          label="类型"
-          width="160">
-        </el-table-column>
-        <el-table-column
-          prop="description"
-          label="备注">
-        </el-table-column>
-        <el-table-column
-          fixed="right"
-          label="操作"
-          width="120">
-          <template slot-scope="scope">
-            <el-button @click.native.prevent="showDialog(scope)" type="text" size="small">
-              编辑
-            </el-button>
-            <el-button @click.native.prevent="deleteRow(scope, resultData.list)" type="text" size="small">
-              移除
-            </el-button>
-          </template>
-        </el-table-column>
-      </el-table>
-    </div>
-    <el-pagination
-      :disabled="loading"
-      @size-change="handleSizeChange"
-      @current-change="handleCurrentChange"
-      :current-page="searchData.pn"
-      :page-sizes="searchData.pageSizes"
-      :page-size="searchData.page_size"
-      layout="total, sizes, prev, pager, next, jumper"
-      :total="resultData.total">
-    </el-pagination>
+    <result ref="result" apiName="Dictionaries" :selection="true">
+      <el-table-column
+        fixed
+        prop="name"
+        label="名称"
+        width="160">
+      </el-table-column>
+      <el-table-column
+        prop="value"
+        label="值"
+        width="160">
+      </el-table-column>
+      <el-table-column
+        prop="type"
+        label="类型"
+        width="160">
+      </el-table-column>
+      <el-table-column
+        prop="description"
+        label="备注">
+      </el-table-column>
+      <el-table-column
+        fixed="right"
+        label="操作"
+        width="120">
+        <template slot-scope="scope">
+          <el-button @click.native.prevent="showDialog(scope)" type="text" size="small">
+            编辑
+          </el-button>
+          <el-button @click.native.prevent="deleteRow(scope)" type="text" size="small">
+            移除
+          </el-button>
+        </template>
+      </el-table-column>
+    </result>
     <el-dialog :title="dialog.isAdd ?  '添加字段': '修改字段'" :visible.sync="dialog.tag" height="80px" width="600px">
       <el-form @keyup.enter.native="submitForm"  size="small" :model="dialog.form" :rules="dialog.rules" ref="ruleForm" label-width="120px">
         <el-form-item label="字段名称" prop="name">
@@ -102,13 +67,15 @@
 </template>
 
 <script>
+  import result from '@/components/result/index.vue'
   export default {
     name: 'dictionaries',
     mixins: [boxGlobal.commonMixin],
-    components: {},
+    components: {
+      result
+    },
     data () {
       return {
-        loading: true,
         dialog: {
           isAdd: true,
           form: {
@@ -131,104 +98,20 @@
           },
           tag: false,
           disableSubmit: false
-        },
-        menuTree: [],
-        multipleSelection: [],
-        searchData: {
-          pageSizes: [10, 20, 50, 100],
-          pn: 1,
-          page_size: 100
-        },
-        resultData: {
-          list: [],
-          total: 0
         }
       }
     },
     filters: {},
     methods: {
-      // 表格勾选
-      handleSelectionChange (val) {
-        this.multipleSelection = val
-      },
-      handleCurrentChange (val) {
-        this.searchData.pn = val
-        this.$nextTick(() => {
-          this.getData()
-        })
-      },
-      handleSizeChange (val) {
-        this.searchData.pn = 1
-        this.searchData.page_size = val
-        this.$nextTick(() => {
-          this.getData()
-        })
-      },
-      deleteRow (scope, rows) {
-        let index = scope.$index
-        let id = String(scope.row.id)
-        this.api.delDictionaries({ id: id }).then(res => {
-          if (res.code === 0) {
-            rows.splice(index, 1)
-            this.$message({
-              type: 'success',
-              message: '删除成功!'
-            })
-          } else {
-            this.errorHandler(res.message || '删除失败')
-          }
-        }).catch(error => {
-          this.errorHandler(error.message)
-        })
-      },
-      // 批量删除
-      deleteMore () {
-        if (!this.multipleSelection.length) {
-          return false
+      deleteRow (scope) {
+        if (scope) {
+          this.$refs.result.deleteRow(scope)
+        } else {
+          this.$refs.result.deleteMore()
         }
-        let arr = []
-        this.multipleSelection.forEach(function (item) {
-          arr.push(item.id)
-        })
-        this.api.delDictionaries({ id: arr.join(',') }).then(res => {
-          if (res.code === 0) {
-            this.getData()
-            this.$message({
-              type: 'success',
-              message: '删除成功!'
-            })
-          } else {
-            this.errorHandler(res.message || '删除失败')
-          }
-        }).catch(error => {
-          this.errorHandler(error.message)
-        })
       },
-      indexMethod (index) {
-        return (this.searchData.pn - 1) * this.searchData.page_size + (index + 1)
-      },
-      getData () {
-        let _this = this
-        this.loading = true
-        _this.api.getDictionaries({
-          pn: _this.searchData.pn,
-          page_size: _this.searchData.page_size
-        }).then(res => {
-          _this.loading = false
-          if (res.code === 0) {
-            _this.resultData = res.data
-            try {
-              _this.$refs.tableScrollbar.scrollTop = 0
-            } catch (e) {
-              console.warn(e)
-            }
-          } else {
-            _this.errorHandler(res.message || '获取字典失败')
-          }
-        }).catch(error => {
-          _this.loading = false
-          _this.errorHandler(error.message)
-        })
+      getData (data) {
+        this.$refs.result.getData(data)
       },
       submitForm () {
         let _this = this
@@ -244,7 +127,7 @@
                 _this.dialog.disableSubmit = false
                 if (res.code === 0) {
                   _this.dialog.tag = false
-                  _this.getData()
+                  _this.getData({})
                 } else {
                   _this.errorHandler(res.message || '添加失败')
                 }
@@ -281,26 +164,17 @@
           this.resetForm()
           if (obj) {
             this.dialog.isAdd = false
-            this.dialog.form = {
-              id: obj.row.id,
-              name: obj.row.name,
-              value: obj.row.value,
-              type: obj.row.type,
-              description: obj.row.description
+            for (let key in this.dialog.form) {
+              this.dialog.form[key] = obj.row[key]
             }
           } else {
             this.dialog.isAdd = true
-            this.dialog.form = {
-              id: '',
-              name: '',
-              description: ''
-            }
           }
         })
       }
     },
     mounted: function () {
-      this.getData()
+      this.getData({})
     }
   }
 </script>

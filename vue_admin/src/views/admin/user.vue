@@ -67,7 +67,7 @@
         <download  :disable="(!resultData.total || loading)"  :token="token"  page="user" :queryData="lastPostData"></download>
       </div>
     </div>
-    <result ref="result" apiName="User" @searchComplete="searchComplete" :selection="true" :index="true" :page_size="2">
+    <result ref="result" apiName="User" @searchComplete="searchComplete" :selection="true" :index="true">
       <el-table-column
         prop="user_name"
         width="120"
@@ -424,7 +424,7 @@
         })
       },
       // 删除
-      deleteRow (scope, rows) {
+      deleteRow (scope) {
         if (scope) {
           this.$refs.result.deleteRow(scope)
         } else {
