@@ -45,7 +45,7 @@ router.use(async function (req, res, next) {
     }
 
     // 不需要登录的接口
-    let whiteList = ['/login', '/upload']
+    let whiteList = ['/login', '/upload','/article']
     if (whiteList.indexOf(req.path) >= 0){
         next()
     } else {

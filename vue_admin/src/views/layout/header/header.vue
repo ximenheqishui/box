@@ -2,8 +2,7 @@
   <el-header>
     <div class="left">
       <div class="aside-switch">
-        <span v-show="!$store.getters.isCollapse" @click="collapse" class="el-icon-s-fold"></span>
-        <span v-show="$store.getters.isCollapse" @click="collapse" class="el-icon-s-unfold"></span>
+        <span @click="collapse" :class="$store.getters.isCollapse ? 'el-icon-s-unfold': 'el-icon-s-fold'"></span>
       </div>
     </div>
     <div class="right">

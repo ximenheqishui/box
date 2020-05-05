@@ -1,4 +1,7 @@
 const articleModels = require('../models/article')
+const path = require('path')
+
+
 
 module.exports = {
 
@@ -26,7 +29,7 @@ module.exports = {
                 keyword: req.body.keyword,
                 description: req.body.description,
                 content: req.body.content,
-                cover: req.body.cover,
+                cover: path.parse(req.body.cover).base,
                 status: req.body.status || 0,
                 create_time: new Date(),
                 update_time: new Date(),
@@ -83,7 +86,7 @@ module.exports = {
                 keyword: req.body.keyword,
                 description: req.body.description,
                 content: req.body.content,
-                cover: req.body.cover,
+                cover: path.parse(req.body.cover).base,
                 status: req.body.status || 0,
                 update_time: new Date(),
             }
@@ -112,7 +115,7 @@ module.exports = {
     async getArticle(req, res, next) {
         try {
             req.returnData.data =  await articleModels.getArticle(req.query)
-            console.log(req.returnData)
+            // console.log(req.returnData)
             await res.json(req.returnData)
         } catch (e) {
             next(e)

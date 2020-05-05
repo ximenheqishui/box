@@ -107,11 +107,11 @@
       },
       // 图片上传之前的校验
       beforeAvatarUpload (file) {
-        const isLt2M = file.size / 1024 / 1024 < 2
-        if (!isLt2M) {
-          this.$message.error('上传头像图片大小不能超过 2MB!')
-        }
-        return isLt2M
+        // const isLt2M = file.size / 1024 / 1024 < 2
+        // if (!isLt2M) {
+        //   this.$message.error('上传头像图片大小不能超过 2MB!')
+        // }
+        return true
       },
       // 获取文章信息
       getData () {

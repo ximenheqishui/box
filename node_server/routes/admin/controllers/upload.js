@@ -1,4 +1,5 @@
 const imageHandle = require('../services/image-handle')
+const config = require('../../../config')
 
 module.exports = {
     async singleFile(req, res, next) {
@@ -12,7 +13,7 @@ module.exports = {
                 data.data = {
                     size: req.file.size,
                     original_name: req.file.originalname,
-                    path: 'http://192.168.199.147:3000/upload/images/' +  req.file.filename
+                    path: `http://${config.ip}:${config.port}/upload/images/` +  req.file.filename
                 }
             } else {
                 data = {

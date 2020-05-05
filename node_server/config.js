@@ -1,4 +1,7 @@
+const os = require('os');
+
 module.exports ={
+    ip: os.networkInterfaces().WLAN[0].address,
     env: 'development', // development 开发环境  production 生产环境   开发环境一定要修改node的环境变量（查文档看看怎么修改）
     port: 9000,
     database:{

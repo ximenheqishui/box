@@ -74,11 +74,11 @@
   @import "../../assets/styles/mixin";
   .layout {
     height: 100%;
-    min-width: 800px;
+    // min-width: 800px;
     .el-main{
       box-sizing: border-box;
       height: 0;
-      @include scrollBar('#d3dce6','#99a9bf');
+      // @include scrollBar('#d3dce6','#99a9bf');
     }
   }
 </style>

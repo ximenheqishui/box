@@ -1,5 +1,6 @@
 const dbUtils = require('../../../util/db-util')
 const articleTypeModels = require('./articleType.js')
+const config = require('../../../config.js')
 
 module.exports = {
 
@@ -64,7 +65,11 @@ module.exports = {
         if (id !== '' && id !== undefined) {
             _sql += ` and article.id=?`
             arr.push(id)
-            return  await dbUtils.query(_sqlUser + _sql, arr)
+            result = await dbUtils.query(_sqlUser + _sql, arr)
+            result.forEach(function(item){
+                item.cover = `http://${config.ip}:${config.port}/upload/images/${item.cover}`
+            })
+            return result
         }
 
         if (title !== '' && title !== undefined ) {
@@ -111,10 +116,16 @@ module.exports = {
             result.total = resultTotal[0].total_count
             _sql += ` LIMIT ${(pn - 1) * page_size} , ${page_size}`
             result.list = await dbUtils.query(_sqlUser + _sql, arr)
+            result.list.forEach(function(item){
+                item.cover = `http://${config.ip}:${config.port}/upload/images/${item.cover}`
+            })
         } else {
             result = await dbUtils.query(_sqlUser + _sql, arr)
+            result.forEach(function(item){
+                item.cover = `http://${config.ip}:${config.port}/upload/images/${item.cover}`
+            })
         }
-        console.log(result)
+        // console.log(result)
         return result
     }
 }
