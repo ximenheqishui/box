@@ -1,78 +1,75 @@
 import eventBus from './eventBus'
+
 /**
  * @name lili
  * @description 简单的事件管理
  * @param {Object} data  存储的默认数据 无则设置为 {}
  * @property {Array} data  要执行方法的数组
- * @property {Function} data.callback  要执行方法
- * x@property {Boolean} data.errorContinue true 报错以后直接跳转到错误处理函数没有就结束  false 继续执行
- * x@property {Boolean} data.async  类型  是同步执行这个还是异步执行    false同步执行    true异步执行
- * x@property {Boolean} data.error  名称 true 错误处理函数
+ * @property {Function} data.callback  要执行方法  会返回上次执行的结果 接下来怎么执行 外部可以控制
  * */
- function asyncArr (data) {
-    let symbol = String(new Date().getTime() + Math.random())
-    let arrData = data
-    let length = data.length
-    let i = 0
-    console.log(i,length)
-    function run (dataP) {
+
+class AsyncArr  {
+    constructor () {
+        this.symbol = ''
+        this.arrData = []
+        this.i = 0
+    }
+
+    emit (data) {
+        eventBus.emit(this.symbol, data)
+    }
+
+    off () {
+        eventBus.off(this.symbol)
+    }
+
+    executeAsync (dataP) {
         let data = dataP || {}
-        console.log(i,length)
-        if (i < length) {
-            arrData[i].callback(symbol)
-            i = i + 1
+        if (this.i < this.arrData.length) {
+            this.arrData[this.i++](data)
+        } else {
+            this.off()
         }
     }
 
-    run()
-    asyncArr.eventBus.on(symbol, run)
-
+    run (data) {
+        this.off()
+        this.i = 0
+        this.arrData = data || []
+        this.symbol = String(new Date().getTime() + Math.random())
+        this.executeAsync()
+        eventBus.on(this.symbol, this.executeAsync, this)
+    }
 }
 
-asyncArr.eventBus = eventBus
+const async_test =  new AsyncArr()
 
-asyncArr(
-    [
-        {
-            callback: function (symbol) {
-                console.log(1)
-                setTimeout(function(){
-                    console.log(11)
-                    asyncArr.eventBus.emit(symbol,{
-                        type: 'success',
-                        data: {}
-                    })
-                },1000)
-            }
-        },
-        {
-            callback: function (symbol) {
-                console.log(2)
-                asyncArr.eventBus.emit(symbol,{
-                    type: 'success',
-                    data: {}
-                })
-            },
-        },
-        {
-            callback: function (symbol) {
-                console.log(3)
-                asyncArr.eventBus.emit(symbol,{
-                    type: 'success',
-                    data: {}
-                })
-            },
-        },
-        {
-            callback: function (symbol) {
-                console.log(4)
-                asyncArr.eventBus.emit(symbol,{
-                    type: 'success',
-                    data: {}
-                })
-            },
-        },
-    ]
-)
+async_test.run([
 
-export default asyncArr
+    function (data) {
+            console.log(1)
+            console.log(data)
+            setTimeout(function () {
+                console.log(11)
+                async_test.emit( '1的结果')
+            }, 1000)
+    },
+    function (data) {
+            console.log(2)
+            console.log(data)
+            async_test.emit( '2的结果')
+        },
+    function (data) {
+            console.log(3)
+            console.log(data)
+            async_test.emit( '1的结果')
+        },
+    function (data) {
+            console.log(4)
+            console.log(data)
+            async_test.emit( '1的结果')
+        },
+])
+
+
+export default AsyncArr

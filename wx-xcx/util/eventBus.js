@@ -17,29 +17,41 @@ class EventBus {
         this.eventStore = {}
     }
 
-    on (msgName, func) {
+    on (msgName, func,_this) {
         if (!func || typeof func != "function") {
             return false
         }
         if (this.eventStore.hasOwnProperty(msgName)) {
-            this.eventStore[msgName].push(func)
+            this.eventStore[msgName].push({
+                cb:func,
+                _this:_this
+            })
         } else {
-            this.eventStore[msgName] = [func]
+            this.eventStore[msgName] = [{
+                cb:func,
+                _this:_this
+            }]
         }
     }
 
-    once(msgName, func) {
+    once(msgName, func,_this) {
         if (!func || typeof func != "function") {
             return false
         }
-        let wrapFunc =  args => {
-            func(args)
+        let wrapFunc =  (args,_this) => {
+            func.call(_this,args)
             this.off(msgName,wrapFunc)
         }
         if (this.eventStore.hasOwnProperty(msgName)) {
-            this.eventStore[msgName].push(wrapFunc)
+            this.eventStore[msgName].push({
+              cb:wrapFunc,
+              _this:_this
+            })
         } else {
-            this.eventStore[msgName] = [wrapFunc]
+            this.eventStore[msgName] = [{
+                cb:wrapFunc,
+                _this:_this
+            }]
         }
     }
 
@@ -50,7 +62,7 @@ class EventBus {
      * @param tag  是否累计存储消息
      * */
     emit(msgName, msg, tag) {
-        if (tag) {
+        if (!tag) {
             this.data[msgName] = msg
         } else {
             if (!this.data.hasOwnProperty(msgName)) {
@@ -62,8 +74,8 @@ class EventBus {
         if (!this.eventStore.hasOwnProperty(msgName)) {
             return false
         }
-        this.eventStore[msgName].map((fn) => {
-            fn(msg)
+        this.eventStore[msgName].map((item) => {
+            item.cb.call(item._this,msg)
         })
     }
 
@@ -78,11 +90,12 @@ class EventBus {
             return
         }
         if (func) {
-            this.eventStore[msgName] = this.eventStore[msgName].filter(function(fn){
-                return  fn != func
+            this.eventStore[msgName] = this.eventStore[msgName].filter(function(item){
+                return  item.cb != func
             })
         } else {
             delete this.eventStore[msgName]
+            delete this.data[msgName]
         }
     }
 }

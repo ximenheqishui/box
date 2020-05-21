@@ -14,35 +14,5 @@
       "desc": "你的位置信息将用于小程序位置接口的效果展示"
     }
   },
-  "sitemapLocation": "sitemap.json",
-  "usingComponents": {
-    "van-button": "@vant/weapp/button",
-    "van-icon": "@vant/weapp/icon",
-    "van-cell-group": "@vant/weapp/cell-group",
-    "van-radio-group": "@vant/weapp/radio-group",
-    "van-radio": "@vant/weapp/radio",
-    "van-field": "@vant/weapp/field",
-    "van-cell": "@vant/weapp/cell",
-    "van-popup": "@vant/weapp/popup",
-    "van-uploader": "@vant/weapp/uploader",
-    "van-checkbox-group": "@vant/weapp/checkbox-group",
-    "van-checkbox": "@vant/weapp/checkbox",
-    "van-area": "@vant/weapp/area",
-    "van-collapse-item": "@vant/weapp/collapse-item",
-    "van-collapse": "@vant/weapp/collapse",
-    "van-search": "@vant/weapp/search",
-    "van-tabs": "@vant/weapp/tabs",
-    "van-tab": "@vant/weapp/tab",
-    "van-dialog": "@vant/weapp/dialog",
-    "van-loading": "@vant/weapp/loading",
-    "van-action-sheet": "@vant/weapp/action-sheet",
-    "van-picker": "@vant/weapp/picker",
-    "van-dropdown-menu": "@vant/weapp/dropdown-menu",
-    "van-dropdown-item": "@vant/weapp/dropdown-item",
-    "van-grid": "@vant/weapp/grid",
-    "van-grid-item": "@vant/weapp/grid-item",
-    "van-datetime-picker": "@vant/weapp/datetime-picker",
-    "van-collapse": "@vant/weapp/collapse",
-    "van-collapse-item": "@vant/weapp/collapse-item"
-  }
+  "sitemapLocation": "sitemap.json"
 }
