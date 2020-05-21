@@ -1,7 +1,0 @@
-<!--index.wxml-->
-<view class="container">
-    <map id="map" longitude="{{longitude}}" latitude="{{latitude}}" scale="15"
-         polyline="{{polyline}}" markers="{{markers}}"
-         show-location="true" style="width: 100%; height: {{ height }}px;">
-    </map>
-</view>

@@ -1,126 +1,245 @@
-//index.js
-var QQMapWX = require('../../lib/qqmap/qqmap-wx-jssdk.js');
-var qqmapsdk;
-//获取应用实例
 const app = getApp()
 
 Page({
+
     data: {
-        log: [],
-        lines: [],
-        point: [],
-        background: [
-            'https://bus.xee.link/static/images/xcx/g1.png',
-            'https://bus.xee.link/static/images/xcx/g2.png',
-        ],
-        indicatorDots: true,
-        vertical: false,
-        autoplay: false,
-        interval: 2000,
-        duration: 500
+        first:true,
+        roomList: [],
+        roomId: 0,
+        community_id: 0,
+        lunbo: {
+            indicatorDots: true,
+            vertical: false,
+            autoplay: true,
+            interval: 20000,
+            duration: 500,
+            lunbo: [],
+        },
+        gonggao:{
+            indicatorDots: false,
+            vertical: true,
+            autoplay: true,
+            interval: 10000,
+            duration: 500,
+            lunbo: [],
+        },
+        lunbo2: [],
+        grid: [
+            {
+                url: '/pagesproperty/community/index/index',
+                registerUrl: '/pagesproperty/bindRoom/index',
+                icon: 'iconxiaoquguanli',
+                text: '小区信息',
+                color: '#3c57fb',
+                disabledColor: '#666',
+            },
+            {
+                url: '/pagesproperty/pay/list/index',
+                registerUrl: '/pagesproperty/bindRoom/index',
+                icon: 'iconpeizhitubiaosvg-',
+                text: '在线缴费',
+                color: '#fc7b44',
+                disabledColor: '#666',
+            },
+            {
+                url: '/pagesproperty/car/index/index',
+                registerUrl: '/pagesproperty/bindRoom/index',
+                icon: 'iconcheliang-',
+                text: '车辆管理',
+                color: '#67b9f6',
+                disabledColor: '#666',
+            },
+            {
+                url: '/pagesproperty/visit/list/index',
+                registerUrl: '/pagesproperty/bindRoom/index',
+                icon: 'iconrenyuandengji',
+                text: '来访历史',
+                color: '#ff9d3f',
+                disabledColor: '#666',
+            },
+            {
+                url: '/pagesproperty/repairs/add/index',
+                registerUrl: '/pagesproperty/bindRoom/index',
+                icon: 'iconweixiu',
+                text: '在线报修',
+                color: '#fc7740',
+                disabledColor: '#666',
+            },
+            {
+                url: '/pages/coming/index',
+                registerUrl: '/pages/coming/index',
+                icon: 'iconjiankong1',
+                text: '安防监控',
+                color: '#ffa544',
+                disabledColor: '#ffa544',
+            },
+            {
+                url: '/pages/coming/index',
+                registerUrl: '/pages/coming/index',
+                icon: 'iconyuyueguahao1',
+                text: '预约诊疗',
+                color: '#3c57fb',
+                disabledColor: '#3c57fb',
+            },
+            {
+                url: '/pages/coming/index',
+                registerUrl: '/pages/coming/index',
+                icon: 'icondianziweilan',
+                text: '电子围栏',
+                color: '#ffa544',
+                disabledColor: '#ffa544',
+            }
+        ]
     },
-    onShareAppMessage: function (res) {
-        return {
-            title: '永旺梦乐城',
-            path: `/pages/index/index`
+
+    onLoad: function (options) {
+        wx.showLoading({
+            title: '加载中...',
+            mask: true
+        })
+        this.getRoom()
+        this.getLunbo()
+        this.getLunbo2()
+    },
+    onShow: function (e) {
+        if (this.data.first) {
+            this.data.first = false
+        } else {
+            this.getRoom(1)
         }
     },
-    onShow: function () {
-        let _this = this
-        _this.getDistance(_this.data.lines)
+    onShareAppMessage: function (e) {
     },
-    onLoad: function () {
+
+    // 自定也方法
+    getRoom (tag) {
         let _this = this
-        // 实例化API核心类
-        qqmapsdk = new QQMapWX({
-            key: 'A65BZ-DDJ6O-DCOWL-SPETB-VDH7H-3NBJT'
+        app.getRoom(function(res){
+            if (tag) {
+                if (_this.data.community_id !=  res.select.community_id) {
+                    _this.getGongGao(res.select.community_id)
+                }
+            } else {
+                _this.getGongGao(res.select.community_id)
+                wx.hideLoading()
+            }
+            _this.setData({
+                community_id: res.select.community_id,
+                roomId: res.select.apartment_id,
+                roomList: res.data
+            })
         })
-        // 获取公交线路
-        // wx.showLoading({
-        //   title: '加载中',
-        // })
-        wx.request({
-            method: 'get',
-            url: app.globalData.baseUrl + '/bus/getLineList',
-            dataType: 'json',
-            data: {},
-            success(res) {
-                let data = res.data.data
-                _this.setData({
-                    lines: data
-                })
-                _this.getDistance(data)
-                // wx.hideLoading()
+    },
+    getGongGao (id) {
+        let _this = this
+        app.network.request(
+            '/main.Content/getList',
+            'get',
+            {
+                community_id: id,
+                content_group_id: 12,
+                page: 1,
+                limit: 10,
             },
-            fail(error) {
-                // wx.hideLoading()
-                console.log(error)
+            function (res) {
+                // 成功之后的回调
+                if (res.data.data.total) {
+                    _this.setData({
+                        'gonggao.lunbo': res.data.data.data
+                    })
+                } else {
+                    _this.setData({
+                        'gonggao.lunbo': []
+                    })
+                }
+            },
+            function (res) {
+                // 失败的回调函数
+            },
+        )
+    },
+    getLunbo () {
+        let _this = this
+        app.network.request(
+            '/main.Slide/getList',
+            'get',
+            {
+                community_id: _this.data.community_id,
+                slide_group_id: 1
+            },
+            function (res) {
+                // 成功之后的回调
+                if (res.data.data.total) {
+                    _this.setData({
+                        'lunbo.lunbo': res.data.data.data
+                    })
+                } else {
+                    _this.setData({
+                        'lunbo.lunbo': []
+                    })
+                }
+            },
+            function (res) {
+                // 失败的回调函数
+            },
+        )
+    },
+    getLunbo2 () {
+        let _this = this
+        app.network.request(
+            '/main.Slide/getList',
+            'get',
+            {
+                community_id: _this.data.community_id,
+                slide_group_id: 2
+            },
+            function (res) {
+                // 成功之后的回调
+                if (res.data.data.total) {
+                    _this.setData({
+                        'lunbo2': res.data.data.data
+                    })
+                } else {
+                    _this.setData({
+                        'lunbo2': []
+                    })
+                }
+            },
+            function (res) {
+                // 失败的回调函数
+            },
+        )
+    },
+    roomChange (e) {
+        // 还要置换下面的数据 暂时不做
+        let _this = this
+        let community_id = 0
+        this.data.roomList.forEach(function(item){
+            if (item.id == e.detail) {
+                community_id = item.community_id
+                return false
             }
         })
-    },
-    getDistance(data) {
-        var _this = this;
-        let arr = []
-        if (data && data.length) {
-            data.forEach(function (item) {
-                arr = arr.concat(item.station)
-            })
-            //调用距离计算接口
-            qqmapsdk.calculateDistance({
-                mode: 'walking',//可选值：'driving'（驾车）、'walking'（步行），不填默认：'walking',可不填
-                //from参数不填默认当前地址
-                //获取表单提交的经纬度并设置from和to参数（示例为string格式）
-                from: '',  // 若起点有数据则采用起点坐标，若为空默认当前地址
-                to: arr,  // 终点坐标
-                success: function (res) {//成功后的回调
-                    console.log(res);
-                    var res = res.result;
-                    var dis = [];
-                    for (var i = 0; i < res.elements.length; i++) {
-                        dis.push(res.elements[i].distance); //将返回数据存入dis数组，
-                    }
-
-                    function sortNumber(a, b) {
-                        return a - b
-                    }
-
-                    let point = []
-                    data.forEach(function (item) {
-                        let distance = dis.splice(0, item.station.length)
-                        let distance2 = JSON.parse(JSON.stringify(distance))
-                        distance.sort(sortNumber)
-                        let index = distance2.indexOf(distance[0])
-                        item.station[index].distance = distance[0]
-                        // 小于10千米的才显示出来
-                        if (distance[0] < 5000) {
-                            item.station[index].distance = item.station[index].distance > 1000 ? (item.station[index].distance / 1000).toFixed(2) + 'km' : item.station[index].distance + 'm',
-                                point.push({
-                                    title: item.title,
-                                    id: item.id,
-                                    point: item.station[index]
-                                })
-                        }
-                    })
-                    console.log(point)
-                    _this.setData({
-                        point: point
-                    })
-                },
-                fail: function (error) {
-                    console.error(error);
-                },
-                complete: function (res) {
-                    // 请求完成
-                    // console.log(res);
-                }
-            });
-        }
-    },
-    log (text) {
-        let log = this.data.log
-        log.push(text)
-        this.setData({
-            log: log
+        _this.setData({
+            roomId: e.detail,
+            community_id: community_id
         })
-    }
+        this.setApartment(e.detail)
+        this.getGongGao()
+    },
+    setApartment (id) {
+        app.network.request(
+            '/main.User/setCurrentOwner',
+            'post',
+            {
+                owner_id: id,
+            },
+            function (res) {
+                // 成功之后的回调
+            },
+            function (res) {
+                // 失败的回调函数
+            },
+        )
+    },
 })

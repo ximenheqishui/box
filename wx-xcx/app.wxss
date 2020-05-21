@@ -1,6 +1,3 @@
-/**app.wxss**/
-html,body{
-  background-color: #f2f3f5;
-}
-.container {
+body, page {
+    height: 100%;
 }
