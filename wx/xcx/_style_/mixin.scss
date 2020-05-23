@@ -1,0 +1,11 @@
+/*@include  来引用本文件中第一的函数，如：@include clearfix */
+@mixin clearfix {
+  &:after {
+    visibility: hidden;
+    display: block;
+    font-size: 0;
+    content: " ";
+    clear: both;
+    height: 0;
+  }
+}
