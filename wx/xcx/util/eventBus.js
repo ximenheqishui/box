@@ -9,7 +9,6 @@
  * @method  once 监听事件一次
  * @method  emit 触发事件
  * @method  off 取消监听
- *
  * */
 class EventBus {
     constructor(data) {
@@ -17,7 +16,7 @@ class EventBus {
         this.eventStore = {}
     }
 
-    on (msgName, func,_this) {
+    on (msgName, func, _this) {
         if (!func || typeof func != "function") {
             return false
         }
@@ -75,7 +74,11 @@ class EventBus {
             return false
         }
         this.eventStore[msgName].map((item) => {
-            item.cb.call(item._this,msg)
+            if (item._this) {
+                item.cb.call(item._this,msg)
+            } else {
+                item.cb(msg)
+            }
         })
     }
 
@@ -100,4 +103,4 @@ class EventBus {
     }
 }
 
-export default new EventBus()
+export default EventBus

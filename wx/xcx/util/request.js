@@ -1,11 +1,12 @@
 import config from '../config'
-import eventBus from './eventBus'
+import EventBus from './eventBus'
 
 class Request {
     constructor(data = {}) {
         this.header = data.header || {}
         this.baseUrl = data.baseUrl || config.apiHost
         this.timeout = data.timeout || 5000
+        this.eventBus = new EventBus()
     }
 
     /**
@@ -89,7 +90,7 @@ class Request {
             }
         }
         function login() {
-            if (!eventBus.eventStore.hasOwnProperty('login')) {
+            if (!this.eventBus.eventStore.hasOwnProperty('login')) {
                 wx.login({
                     success(res) {
                         if (res.code) {
@@ -102,8 +103,8 @@ class Request {
                                 success(res) {
                                     if (res.data.code === 1) {
                                         _this.header['access-token'] = res.data.data.access_token
-                                        eventBus.emit('login')
-                                        eventBus.off('login')
+                                        this.eventBus.emit('login')
+                                        this.eventBus.off('login')
                                     } else {
                                         wx.showToast({
                                             title: '登录失败......',
@@ -132,7 +133,7 @@ class Request {
                     }
                 })
             }
-            eventBus.on('login',cb)
+            this.eventBus.on('login',cb)
         }
     }
 
