@@ -27,7 +27,7 @@ module.exports = {
   pages: {
     index: {
       // page 的入口
-      entry: 'src/main.js',
+      entry: 'src/views/index/index.js',
       // 模板来源
       template: 'public/index.html',
       // 在 dist/index.html 的输出
@@ -41,7 +41,7 @@ module.exports = {
     },
     index2: {
       // page 的入口
-      entry: 'src/main.js',
+      entry: 'src/views/index2/index.js',
       // 模板来源
       template: 'public/index.html',
       // 在 dist/index.html 的输出
