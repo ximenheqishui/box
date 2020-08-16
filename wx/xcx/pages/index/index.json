@@ -1,4 +1,5 @@
 {
-  "navigationBarTitleText": "首页",
+  "navigationStyle": "custom",
+  "navigationBarTextStyle": "black",
   "usingComponents":{}
 }

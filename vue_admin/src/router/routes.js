@@ -13,6 +13,18 @@ const routes = [
     ]
   },
   {
+    path: '/test',
+    component: Layout,
+    children: [
+      {
+        path: '',
+        component: () => import('@/views/test'),
+        name: 'test',
+        meta: { title: '测试' }
+      }
+    ]
+  },
+  {
     path: '/admin',
     component: Layout,
     children: [

@@ -16,7 +16,7 @@ module.exports = {
     },
     proxy: {
       '/admin': {
-        target: 'http://localhost:9000',
+        target: 'http://192.168.43.91:9000',
         ws: true,
         changeOrigin: true,
         pathRewrite: {
@@ -24,7 +24,7 @@ module.exports = {
         }
       },
       '/common': {
-        target: 'http://localhost:9000',
+        target: 'http://192.168.43.91:9000',
         ws: true,
         changeOrigin: true,
         pathRewrite: {

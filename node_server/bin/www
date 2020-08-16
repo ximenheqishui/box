@@ -130,6 +130,6 @@ function onListening() {
       ? 'pipe ' + addr
       : 'port ' + addr.port;
   debug('Listening on ' + bind);
-  console.log(`---\n     服务器启动成功 >>>  https://127.0.0.1:${addr.port}\n     时间：${new Date().toLocaleString()}\n---`);
+  console.log(`---\n     服务器启动成功 >>>  http://${config.ip}:${addr.port}\n     时间：${new Date().toLocaleString()}\n---`);
   // opn(`http://127.0.0.1:${addr.port}`)
 }
