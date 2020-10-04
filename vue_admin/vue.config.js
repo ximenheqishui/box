@@ -16,7 +16,7 @@ module.exports = {
     },
     proxy: {
       '/admin': {
-        target: 'http://192.168.43.91:9000',
+        target: 'http://192.168.6.227:9000',
         ws: true,
         changeOrigin: true,
         pathRewrite: {

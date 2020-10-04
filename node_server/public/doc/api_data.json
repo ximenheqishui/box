@@ -23,7 +23,7 @@
     "groupTitle": "article",
     "sampleRequest": [
       {
-        "url": "http://192.168.199.147:3000/admin/article"
+        "url": "http://192.168.6.227:9000/admin/article"
       }
     ],
     "header": {
@@ -64,7 +64,7 @@
     "groupTitle": "articleType",
     "sampleRequest": [
       {
-        "url": "http://192.168.199.147:3000/admin/articleType"
+        "url": "http://192.168.6.227:9000/admin/articleType"
       }
     ],
     "header": {
@@ -133,7 +133,7 @@
     "groupTitle": "articleType",
     "sampleRequest": [
       {
-        "url": "http://192.168.199.147:3000/admin/articleType"
+        "url": "http://192.168.6.227:9000/admin/articleType"
       }
     ],
     "header": {
@@ -174,7 +174,7 @@
     "groupTitle": "articleType",
     "sampleRequest": [
       {
-        "url": "http://192.168.199.147:3000/admin/articleType"
+        "url": "http://192.168.6.227:9000/admin/articleType"
       }
     ],
     "header": {
@@ -250,7 +250,7 @@
     "groupTitle": "articleType",
     "sampleRequest": [
       {
-        "url": "http://192.168.199.147:3000/admin/articleType"
+        "url": "http://192.168.6.227:9000/admin/articleType"
       }
     ],
     "header": {
@@ -340,7 +340,7 @@
     "groupTitle": "article",
     "sampleRequest": [
       {
-        "url": "http://192.168.199.147:3000/admin/article"
+        "url": "http://192.168.6.227:9000/admin/article"
       }
     ],
     "header": {
@@ -437,7 +437,7 @@
     "groupTitle": "article",
     "sampleRequest": [
       {
-        "url": "http://192.168.199.147:3000/admin/article"
+        "url": "http://192.168.6.227:9000/admin/article"
       }
     ],
     "header": {
@@ -534,7 +534,7 @@
     "groupTitle": "article",
     "sampleRequest": [
       {
-        "url": "http://192.168.199.147:3000/admin/article"
+        "url": "http://192.168.6.227:9000/admin/article"
       }
     ],
     "header": {
@@ -575,7 +575,7 @@
     "groupTitle": "caseType",
     "sampleRequest": [
       {
-        "url": "http://192.168.199.147:3000/admin/caseType"
+        "url": "http://192.168.6.227:9000/admin/caseType"
       }
     ],
     "header": {
@@ -644,7 +644,7 @@
     "groupTitle": "caseType",
     "sampleRequest": [
       {
-        "url": "http://192.168.199.147:3000/admin/caseType"
+        "url": "http://192.168.6.227:9000/admin/caseType"
       }
     ],
     "header": {
@@ -685,7 +685,7 @@
     "groupTitle": "caseType",
     "sampleRequest": [
       {
-        "url": "http://192.168.199.147:3000/admin/caseType"
+        "url": "http://192.168.6.227:9000/admin/caseType"
       }
     ],
     "header": {
@@ -761,7 +761,7 @@
     "groupTitle": "caseType",
     "sampleRequest": [
       {
-        "url": "http://192.168.199.147:3000/admin/caseType"
+        "url": "http://192.168.6.227:9000/admin/caseType"
       }
     ],
     "header": {
@@ -850,7 +850,7 @@
     "groupTitle": "case",
     "sampleRequest": [
       {
-        "url": "http://192.168.199.147:3000/admin/case"
+        "url": "http://192.168.6.227:9000/admin/case"
       }
     ],
     "header": {
@@ -940,7 +940,7 @@
     "groupTitle": "case",
     "sampleRequest": [
       {
-        "url": "http://192.168.199.147:3000/admin/case/party"
+        "url": "http://192.168.6.227:9000/admin/case/party"
       }
     ],
     "header": {
@@ -995,7 +995,7 @@
     "groupTitle": "case",
     "sampleRequest": [
       {
-        "url": "http://192.168.199.147:3000/admin/case/setting"
+        "url": "http://192.168.6.227:9000/admin/case/setting"
       }
     ],
     "header": {
@@ -1023,7 +1023,7 @@
     "groupTitle": "common",
     "sampleRequest": [
       {
-        "url": "http://192.168.199.147:3000/admin/excelExport"
+        "url": "http://192.168.6.227:9000/admin/excelExport"
       }
     ],
     "header": {
@@ -1051,7 +1051,7 @@
     "groupTitle": "common",
     "sampleRequest": [
       {
-        "url": "http://192.168.199.147:3000/admin/dictionaries"
+        "url": "http://192.168.6.227:9000/admin/dictionaries"
       }
     ],
     "header": {
@@ -1079,7 +1079,7 @@
     "groupTitle": "common",
     "sampleRequest": [
       {
-        "url": "http://192.168.199.147:3000/admin/userInfo"
+        "url": "http://192.168.6.227:9000/admin/userInfo"
       }
     ],
     "header": {
@@ -1127,7 +1127,7 @@
     "groupTitle": "common",
     "sampleRequest": [
       {
-        "url": "http://192.168.199.147:3000/admin/login"
+        "url": "http://192.168.6.227:9000/admin/login"
       }
     ]
   },
@@ -1142,7 +1142,7 @@
     "groupTitle": "common",
     "sampleRequest": [
       {
-        "url": "http://192.168.199.147:3000/admin/logout"
+        "url": "http://192.168.6.227:9000/admin/logout"
       }
     ],
     "header": {
@@ -1218,7 +1218,7 @@
     "groupTitle": "common",
     "sampleRequest": [
       {
-        "url": "http://192.168.199.147:3000/admin/userInfo"
+        "url": "http://192.168.6.227:9000/admin/userInfo"
       }
     ],
     "header": {
@@ -1264,7 +1264,7 @@
     "groupTitle": "common",
     "sampleRequest": [
       {
-        "url": "http://192.168.199.147:3000/null"
+        "url": "http://192.168.6.227:9000/null"
       }
     ]
   },
@@ -1292,7 +1292,7 @@
     "groupTitle": "department",
     "sampleRequest": [
       {
-        "url": "http://192.168.199.147:3000/admin/department"
+        "url": "http://192.168.6.227:9000/admin/department"
       }
     ],
     "header": {
@@ -1361,7 +1361,7 @@
     "groupTitle": "department",
     "sampleRequest": [
       {
-        "url": "http://192.168.199.147:3000/admin/department"
+        "url": "http://192.168.6.227:9000/admin/department"
       }
     ],
     "header": {
@@ -1402,7 +1402,7 @@
     "groupTitle": "department",
     "sampleRequest": [
       {
-        "url": "http://192.168.199.147:3000/admin/department"
+        "url": "http://192.168.6.227:9000/admin/department"
       }
     ],
     "header": {
@@ -1443,7 +1443,7 @@
     "groupTitle": "department",
     "sampleRequest": [
       {
-        "url": "http://192.168.199.147:3000/admin/department/leader"
+        "url": "http://192.168.6.227:9000/admin/department/leader"
       }
     ],
     "header": {
@@ -1526,7 +1526,7 @@
     "groupTitle": "department",
     "sampleRequest": [
       {
-        "url": "http://192.168.199.147:3000/admin/department"
+        "url": "http://192.168.6.227:9000/admin/department"
       }
     ],
     "header": {
@@ -1567,7 +1567,7 @@
     "groupTitle": "dictionaries",
     "sampleRequest": [
       {
-        "url": "http://192.168.199.147:3000/admin/dictionaries"
+        "url": "http://192.168.6.227:9000/admin/dictionaries"
       }
     ],
     "header": {
@@ -1629,7 +1629,7 @@
     "groupTitle": "dictionaries",
     "sampleRequest": [
       {
-        "url": "http://192.168.199.147:3000/admin/dictionaries"
+        "url": "http://192.168.6.227:9000/admin/dictionaries"
       }
     ],
     "header": {
@@ -1677,7 +1677,7 @@
     "groupTitle": "dictionaries",
     "sampleRequest": [
       {
-        "url": "http://192.168.199.147:3000/admin/dictionaries"
+        "url": "http://192.168.6.227:9000/admin/dictionaries"
       }
     ],
     "header": {
@@ -1746,7 +1746,7 @@
     "groupTitle": "dictionaries",
     "sampleRequest": [
       {
-        "url": "http://192.168.199.147:3000/admin/dictionaries"
+        "url": "http://192.168.6.227:9000/admin/dictionaries"
       }
     ],
     "header": {
@@ -1787,7 +1787,7 @@
     "groupTitle": "menu",
     "sampleRequest": [
       {
-        "url": "http://192.168.199.147:3000/admin/menu"
+        "url": "http://192.168.6.227:9000/admin/menu"
       }
     ],
     "header": {
@@ -1866,6 +1866,13 @@
             "group": "Parameter",
             "type": "Number",
             "optional": false,
+            "field": "show",
+            "description": "<p>是否显示  0 是显示  1 是不显示</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
             "field": "type",
             "description": "<p>节点是按钮还是菜单   1 菜单类型  2 按钮类型</p>"
           },
@@ -1891,7 +1898,7 @@
     "groupTitle": "menu",
     "sampleRequest": [
       {
-        "url": "http://192.168.199.147:3000/admin/menu"
+        "url": "http://192.168.6.227:9000/admin/menu"
       }
     ],
     "header": {
@@ -1932,7 +1939,7 @@
     "groupTitle": "menu",
     "sampleRequest": [
       {
-        "url": "http://192.168.199.147:3000/admin/menu"
+        "url": "http://192.168.6.227:9000/admin/menu"
       }
     ],
     "header": {
@@ -2043,7 +2050,7 @@
     "groupTitle": "menu",
     "sampleRequest": [
       {
-        "url": "http://192.168.199.147:3000/admin/menu"
+        "url": "http://192.168.6.227:9000/admin/menu"
       }
     ],
     "header": {
@@ -2084,7 +2091,7 @@
     "groupTitle": "role",
     "sampleRequest": [
       {
-        "url": "http://192.168.199.147:3000/admin/role"
+        "url": "http://192.168.6.227:9000/admin/role"
       }
     ],
     "header": {
@@ -2132,7 +2139,7 @@
     "groupTitle": "role",
     "sampleRequest": [
       {
-        "url": "http://192.168.199.147:3000/admin/role"
+        "url": "http://192.168.6.227:9000/admin/role"
       }
     ],
     "header": {
@@ -2180,7 +2187,7 @@
     "groupTitle": "role",
     "sampleRequest": [
       {
-        "url": "http://192.168.199.147:3000/admin/role/menu"
+        "url": "http://192.168.6.227:9000/admin/role/menu"
       }
     ],
     "header": {
@@ -2228,7 +2235,7 @@
     "groupTitle": "role",
     "sampleRequest": [
       {
-        "url": "http://192.168.199.147:3000/admin/role"
+        "url": "http://192.168.6.227:9000/admin/role"
       }
     ],
     "header": {
@@ -2269,7 +2276,7 @@
     "groupTitle": "role",
     "sampleRequest": [
       {
-        "url": "http://192.168.199.147:3000/admin/role/menu"
+        "url": "http://192.168.6.227:9000/admin/role/menu"
       }
     ],
     "header": {
@@ -2324,7 +2331,7 @@
     "groupTitle": "role",
     "sampleRequest": [
       {
-        "url": "http://192.168.199.147:3000/admin/role"
+        "url": "http://192.168.6.227:9000/admin/role"
       }
     ],
     "header": {
@@ -2365,7 +2372,7 @@
     "groupTitle": "user",
     "sampleRequest": [
       {
-        "url": "http://192.168.199.147:3000/admin/user"
+        "url": "http://192.168.6.227:9000/admin/user"
       }
     ],
     "header": {
@@ -2462,7 +2469,7 @@
     "groupTitle": "user",
     "sampleRequest": [
       {
-        "url": "http://192.168.199.147:3000/admin/user"
+        "url": "http://192.168.6.227:9000/admin/user"
       }
     ],
     "header": {
@@ -2566,7 +2573,7 @@
     "groupTitle": "user",
     "sampleRequest": [
       {
-        "url": "http://192.168.199.147:3000/admin/user"
+        "url": "http://192.168.6.227:9000/admin/user"
       }
     ],
     "header": {
@@ -2670,7 +2677,7 @@
     "groupTitle": "user",
     "sampleRequest": [
       {
-        "url": "http://192.168.199.147:3000/admin/user"
+        "url": "http://192.168.6.227:9000/admin/user"
       }
     ],
     "header": {

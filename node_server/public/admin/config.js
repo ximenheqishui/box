@@ -1,5 +1,5 @@
-var baseUrl =  'http://localhost:9000'
+var baseUrl =  'http://192.168.6.227:9000'
 var baseConfig = {
   apiHost: baseUrl + '/admin',
-  systemName: '力久订单管理系统'
+  systemName: 'box'
 }
