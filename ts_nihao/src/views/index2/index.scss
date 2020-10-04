@@ -1,0 +1,14 @@
+@import url('../../assets/css/base.scss');
+html{
+  height: 100%;
+}
+body{
+  height: 100%;
+  background-color: #eee;
+  background-image: url("../../assets/images/mienv.jpg");
+  background-repeat: no-repeat;
+  background-position: center;
+  h1{
+    color: olivedrab;
+  }
+}

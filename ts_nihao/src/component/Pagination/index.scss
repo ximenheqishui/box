@@ -1,0 +1,46 @@
+.com-pagination{
+  ul,li{
+    display: inline-block;
+    list-style: none;
+  }
+  &-total{
+    display: inline-block;
+    margin-right: 8px;
+  }
+  &-select{
+    margin-right: 8px;
+    display: inline-block;
+    select{
+      display: inline-block;
+    }
+  }
+  .btn{
+    cursor: pointer;
+    padding: 0 4px;
+    border: 1px solid #ddd;
+  }
+  &-pager{
+    padding: 0 6px;
+    margin: 0;
+   li{
+     display: inline-block;
+     padding: 0 8px;
+     margin: 0 4px;
+   }
+    .more{
+    }
+    .number{
+      cursor: pointer;
+    }
+    .active{
+      border: #26a2ff;
+      color: #26a2ff;
+    }
+  }
+  &-input{
+    input{
+      width: 30px;
+      text-align: center;
+    }
+  }
+}

@@ -1,0 +1,10 @@
+@import url('../../assets/css/base.scss');
+html{
+  height: 100%;
+}
+body{
+  padding: 20px;
+  .page-content{
+    margin-top: 40px;
+  }
+}
