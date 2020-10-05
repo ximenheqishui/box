@@ -2,8 +2,6 @@
 import pagination from '@/component/Pagination/index'
 import './index.scss'
 
-import * as $ from  'jquery'
-
 let pn = 1, pageSize = 10, total = 1000
 
 let pagination1 = pagination({
