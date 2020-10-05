@@ -6,6 +6,47 @@
     <link rel="shortcut icon" href="../vendor/favicon.ico">
 </head>
     <h1>开发测试分页组件</h1>
-    <div class="page-content"></div>
+    <div class="item">
+        <div class="des">
+            基本使用方式
+            <div class="code">
+            <code>
+                <pre>
+                let pagination1 = pagination({
+                    elem: '.page-content',
+                    currentPage: 1,
+                    pageSize: 10,
+                    total: 1000,
+                    sizeChange: onSizeChange,
+                    currentChange: onCurrentChange
+                })
+                </pre>
+            </code>
+            </div>
+        </div>
+        <div class="page-content content"></div>
+    </div>
+    <div class="item">
+        <div class="des">
+            修改分页个数
+            <div class="code">
+                <code>
+                    <pre>
+                    let pagination1 = pagination({
+                        elem: '.page-content2',
+                        pagerCount: 12,
+                        currentPage: 1,
+                        pageSize: 10,
+                        total: 1000,
+                        sizeChange: onSizeChange,
+                        currentChange: onCurrentChange
+                    })
+                    </pre>
+                </code>
+            </div>
+        </div>
+        <div class="page-content2 content"></div>
+    </div>
+
 </body>
 </html>

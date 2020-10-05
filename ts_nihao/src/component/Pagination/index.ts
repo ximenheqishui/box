@@ -4,13 +4,11 @@ interface Ipagination {
     elem: string, // 外部容器的
     total?: number, // 数据总数
     currentPage?: number, // 当前页码
-    pagerCount?: number,
+    pagerCount?: number, // 最多显示几个分页
     pageSize?: number, // 每页多少个
     pageSizes?: number[], // 选择分页参数
-    sizeChange?: () => void,
-    currentChange?: () => void,
-    prevClick?: () => void,
-    nextClick?: () => void
+    sizeChange?: (size:number,pn:number) => void,
+    currentChange?: (num:number) => void,
 }
 
 function pagination(options: Ipagination) {
@@ -40,7 +38,7 @@ class Pagination {
         this.tempContainer = document.createElement('div');
         this.tempContainer.className = 'com-pagination'
         let innerHTML = `
-        <span class="com-pagination-total">共${this.settings.total}条</span>`
+        <span class="com-pagination-total"></span>`
         innerHTML +=
         `<span class="com-pagination-select">
             <select>`
@@ -51,11 +49,11 @@ class Pagination {
             `</select>
             条/页
         </span>`
-        innerHTML += `<span class="com-pagination-prev btn">上一页</span>`
+        innerHTML += `<button type="button" class="com-pagination-prev btn"> <i class="iconfont iconjiantou"></i></button>`
 
         innerHTML += `<ul class="com-pagination-pager"></ul>`
 
-        innerHTML += `<span class="com-pagination-next btn">下一页</span>`
+        innerHTML += `<button type="button" class="com-pagination-next btn"> <i class="iconfont iconarrow-right"></i></button>`
 
         innerHTML += `<span class="com-pagination-input">
                         前往
@@ -63,29 +61,110 @@ class Pagination {
                         页
                     </span>`
         this.tempContainer.innerHTML = innerHTML
-        this.createPager(this.settings.currentPage)
+        this.setTotal(this.settings.total)
         document.querySelector(`${this.settings.elem}`).appendChild(this.tempContainer);
     }
     //事件操作
     handle() {
         let _this = this
         let pager = this.tempContainer.querySelector('.com-pagination-pager')
+        let prev = this.tempContainer.querySelector('.com-pagination-prev')
+        let next = this.tempContainer.querySelector('.com-pagination-next')
+        let input = this.tempContainer.querySelector('.com-pagination-input input')
+        let select = this.tempContainer.querySelector('.com-pagination-select select')
+        // 跳转到那页
         pager.addEventListener('click',function (event) {
             let evt = window.event || event
             let target = evt.target|| evt.srcElement;
-            if (target.getAttribute('data-number')) {
-                _this.createPager(parseInt(target.getAttribute('data-number')))
+            let num = target.getAttribute('data-number')
+            if (num) {
+                num = parseInt(num)
+                _this.createPagerAndSetButton(num)
+                _this.settings.currentChange(num)
+            }
+        })
+         // 上一页
+        prev.addEventListener('click',function(event){
+            if (_this.settings.currentPage > 1) {
+                _this.createPagerAndSetButton(--_this.settings.currentPage)
+                if (_this.settings.currentChange && typeof _this.settings.currentChange == 'function') {
+                    _this.settings.currentChange(_this.settings.currentPage)
+                }
+            }
+        })
+        // 下一页
+        next.addEventListener('click',function(event){
+            let totalPages = Math.ceil(_this.settings.total / _this.settings.pageSize)
+            if (_this.settings.currentPage < totalPages) {
+                _this.createPagerAndSetButton(++_this.settings.currentPage)
+                if (_this.settings.currentChange && typeof _this.settings.currentChange == 'function') {
+                    _this.settings.currentChange(_this.settings.currentPage)
+                }
+            }
+        })
+        // 输入框跳转页面
+        input.addEventListener('keypress',function(event){
+            let evt = window.event || event
+            let target = evt.target|| evt.srcElement;
+            if (event.keyCode == "13") {
+                event.preventDefault();
+                // console.log(target.value)
+                let num = parseInt(target.value)
+                let totalPages = Math.ceil(_this.settings.total / _this.settings.pageSize)
+                if (isNaN(num) || num < 1) {
+                    num = 1
+                } else if (num > totalPages) {
+                    num = totalPages
+                }
+                // target.value = num
+                _this.createPagerAndSetButton(num)
+                if (_this.settings.currentChange && typeof _this.settings.currentChange == 'function') {
+                    _this.settings.currentChange(num)
+                }
+            }
+        })
+
+        select.addEventListener('change',function(event) {
+            let evt = window.event || event
+            let target = evt.target|| evt.srcElement;
+            //   console.log(target.value)
+            _this.settings.pageSize = target.value
+            _this.settings.currentPage = 1
+            _this.createPagerAndSetButton(_this.settings.currentPage)
+            if (_this.settings.sizeChange && typeof _this.settings.sizeChange == 'function') {
+                _this.settings.sizeChange(target.value, 1)
             }
         })
     }
     // 生成页码
     // 点点有四种情况  1、 没有点  2、 左右都有点  3、 只是左边有点  4、 只是右边有点
-    createPager (activePage: number) {
+    createPagerAndSetButton (activePage: number) {
         let _this = this
         let pager = this.tempContainer.querySelector('.com-pagination-pager')
+        let prev = this.tempContainer.querySelector('.com-pagination-prev')
+        let next = this.tempContainer.querySelector('.com-pagination-next')
+        let input = this.tempContainer.querySelector('.com-pagination-input input')
         let totalPages = Math.ceil(_this.settings.total / _this.settings.pageSize)
-        let innerHTML = ''
+
         _this.settings.currentPage = activePage
+        input.value = activePage
+
+        // 设置上下页的状态
+        if (activePage == 1 || !_this.settings.total) {
+            prev.setAttribute('disabled','disabled')
+        } else {
+            prev.removeAttribute('disabled')
+        }
+        if (activePage == totalPages || !_this.settings.total) {
+            next.setAttribute('disabled','disabled')
+        } else {
+            next.removeAttribute('disabled')
+        }
+
+        // 生成分页
+        let innerHTML = ''
+
+
         // 小于总数的不需要显示点点
         if (totalPages <= _this.settings.pagerCount) {
             for (let i = 0; i < totalPages; i++ ){
@@ -112,12 +191,12 @@ class Pagination {
                     innerHTML += `<li class="number ${i == active ? 'active': ''}" data-number="${i+1}">${i + 1}</li>`
                     // 当选中  大于最多可显示数量
                     if (activePage >= show) {
-                        innerHTML += `<li class="more">...</li>`
+                        innerHTML += `<li class="more"><i class="iconfont iconellipsis2"></i></li>`
                     }
                 } else if (i == (totalPages -1)) {
                     // 当选中 小于总数减去可显示页数
                     if (activePage < totalPages - show + buquan) {
-                        innerHTML += `<li class="more">...</li>`
+                        innerHTML += `<li class="more"><i class="iconfont iconellipsis2"></i></li>`
                     }
                     innerHTML += `<li class="number ${i == active ? 'active': ''}" data-number="${i+1}">${i + 1}</li>`
                 } else {
@@ -141,6 +220,18 @@ class Pagination {
             }
         }
         pager.innerHTML = innerHTML
+    }
+
+    setTotal (value: number) {
+        let total = this.tempContainer.querySelector('.com-pagination-total')
+        this.settings.total = value
+        total.innerHTML = `共${this.settings.total}条`
+        this.createPagerAndSetButton(this.settings.currentPage)
+    }
+
+    setCurrentPage (value: number) {
+        this.settings.currentPage = value
+        this.createPagerAndSetButton(this.settings.currentPage)
     }
 }
 

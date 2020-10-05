@@ -15,11 +15,30 @@
     }
   }
   .btn{
+    user-select: none;
+    background-color: transparent;
     cursor: pointer;
     padding: 0 4px;
-    border: 1px solid #ddd;
+    border: none;
+    outline: none;
+    &:active{
+      border: none;
+    }
+    &:hover{
+      color: #26a2ff;
+      border: none;
+    }
+    &[disabled]{
+      cursor: not-allowed;
+      color: #999;
+      &:hover{
+        color: #999;
+        border: none;
+      }
+    }
   }
   &-pager{
+    user-select: none;
     padding: 0 6px;
     margin: 0;
    li{
@@ -31,6 +50,9 @@
     }
     .number{
       cursor: pointer;
+      &:hover{
+        color: #26a2ff;
+      }
     }
     .active{
       border: #26a2ff;
