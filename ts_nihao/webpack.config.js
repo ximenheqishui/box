@@ -35,11 +35,6 @@ appEntry.forEach(function(item){
 
 module.exports = {
     entry: entry,
-    devServer: {
-        contentBase:  path.resolve(__dirname, "dist"),
-        compress: true,
-        port: 9001
-    },
     module: {
         rules: [
             {
@@ -79,16 +74,6 @@ module.exports = {
     output: {
         filename: 'js/[name].[chunkhash].js',
         path: path.resolve(__dirname, 'dist')
-    },
-    // 代码去重分离,把重复的js代码提取到同一个文件中，减少请求代码的体积
-    optimization: {
-        minimize: false, // 是否压缩
-        splitChunks: {
-            chunks (chunk) {
-                return chunk.name !== 'component';
-            }, // 包含哪些 chunk
-            name:'vendor'  // 命名为 vendor  和 入口文件中vendor保持同名。 确保公共部分都打包到一个文件中
-        },
     },
     resolve: {
         extensions: [ '.ts', '.js', '.json' ],

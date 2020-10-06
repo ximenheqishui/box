@@ -5,3 +5,7 @@ import '@/assets/css/base.scss'
     pagination
 }
 
+// @ts-ignore
+window.$$ = {
+    pagination
+}

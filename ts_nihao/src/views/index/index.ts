@@ -44,8 +44,8 @@ $('.jquery').css({
 });
 
 
-// @ts-ignore
-let myChart = echarts.init(document.getElementById('main'));
+// 类型错误的时候可以强转一下<any>
+let myChart = echarts.init(<any>document.getElementById('main'));
 
 // 指定图表的配置项和数据
 let option = {
@@ -69,3 +69,7 @@ let option = {
 
 // 使用刚指定的配置项和数据显示图表。
 myChart.setOption(option);
+
+// 没哟生命文件的外部js的使用可以用下面的代码过滤掉ts的校验
+// @ts-ignore
+let map = new AMap.Map('container');
