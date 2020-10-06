@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<head>
+    <meta charset="UTF-8">
+    <title>打包所有组件到一个js和css中，可以给其他非ts的项目使用</title>
+    <link rel="shortcut icon" href="../vendor/favicon.ico">
+    <script type="application/javascript" src="../vendor/js/jquery.min.js"></script>
+</head>
+<body>
+
+<style>
+    body{
+        padding: 20px;
+    }
+</style>
+
+    <h1>打包所有组件到一个js和css中，可以给其他非ts的项目使用</h1>
+    <h3>测试分页组件</h3>
+    <div class="item">
+        <div class="des">
+            基本使用方式
+            <div class="code">
+            <code>
+                <pre>
+                let pagination1 = $$.pagination({
+                    elem: '.page-content',
+                    currentPage: 1,
+                    pageSize: 10,
+                    total: 0,
+                    sizeChange: onSizeChange,
+                    currentChange: onCurrentChange
+                })
+                pagination1.setTotal(1000)
+                pagination1.setCurrentPage(1)
+                // 每页多少变化
+                function onSizeChange(csize,cpn) {
+                    console.log('分页大小变化',cpn)
+                }
+                // 页码变化
+                function onCurrentChange (cpn) {
+                    console.log('页码发生变化',cpn)
+                }
+                </pre>
+            </code>
+            </div>
+        </div>
+        <div class="page-content content"></div>
+    </div>
+</body>
+<script>
+    $$.pagination({
+        elem: '.page-content',
+        currentPage: 1,
+        pageSize: 10,
+        total: 1000,
+        sizeChange: onSizeChange,
+        currentChange: onCurrentChange
+    })
+    // 每页多少变化
+    function onSizeChange(csize,cpn) {
+        console.log('分页大小变化',cpn)
+    }
+    // 页码变化
+    function onCurrentChange (cpn) {
+        console.log('页码发生变化',cpn)
+    }
+</script>
+</html>

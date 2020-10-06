@@ -4,9 +4,9 @@ interface Ipagination {
     elem: string, // 外部容器的
     total?: number, // 数据总数
     currentPage?: number, // 当前页码
-    pagerCount?: number, // 最多显示几个分页
+    readonly pagerCount?: number, // 最多显示几个分页
     pageSize?: number, // 每页多少个
-    pageSizes?: number[], // 选择分页参数
+    pageSizes?: ReadonlyArray<number>, // 选择分页参数
     sizeChange?: (size:number,pn:number) => void,
     currentChange?: (num:number) => void,
 }
@@ -28,13 +28,13 @@ class Pagination {
         this.init();
     }
     // 初始化
-    init() {
+    private init() {
         this.template();
         this.handle();
     }
 
     //创建模板
-    template() {
+    private template() {
         this.tempContainer = document.createElement('div');
         this.tempContainer.className = 'com-pagination'
         let innerHTML = `
@@ -65,7 +65,7 @@ class Pagination {
         document.querySelector(`${this.settings.elem}`).appendChild(this.tempContainer);
     }
     //事件操作
-    handle() {
+    private handle() {
         let _this = this
         let pager = this.tempContainer.querySelector('.com-pagination-pager')
         let prev = this.tempContainer.querySelector('.com-pagination-prev')
@@ -80,7 +80,9 @@ class Pagination {
             if (num) {
                 num = parseInt(num)
                 _this.createPagerAndSetButton(num)
-                _this.settings.currentChange(num)
+                if (_this.settings.currentChange && typeof _this.settings.currentChange == 'function') {
+                    _this.settings.currentChange(num)
+                }
             }
         })
          // 上一页
@@ -138,7 +140,7 @@ class Pagination {
     }
     // 生成页码
     // 点点有四种情况  1、 没有点  2、 左右都有点  3、 只是左边有点  4、 只是右边有点
-    createPagerAndSetButton (activePage: number) {
+    private  createPagerAndSetButton (activePage: number) {
         let _this = this
         let pager = this.tempContainer.querySelector('.com-pagination-pager')
         let prev = this.tempContainer.querySelector('.com-pagination-prev')
@@ -222,14 +224,14 @@ class Pagination {
         pager.innerHTML = innerHTML
     }
 
-    setTotal (value: number) {
+    public setTotal (value: number) {
         let total = this.tempContainer.querySelector('.com-pagination-total')
         this.settings.total = value
         total.innerHTML = `共${this.settings.total}条`
         this.createPagerAndSetButton(this.settings.currentPage)
     }
 
-    setCurrentPage (value: number) {
+    public setCurrentPage (value: number) {
         this.settings.currentPage = value
         this.createPagerAndSetButton(this.settings.currentPage)
     }

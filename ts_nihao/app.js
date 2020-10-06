@@ -18,7 +18,6 @@ function common(pageName,name) {
 
 let entry = [
     common('index','测试各个功能是否好用'),
-    common('index2','使用了es6语法/兼容到ie9'),
     common('page','分页组件开发')
 ]
 console.log(entry)

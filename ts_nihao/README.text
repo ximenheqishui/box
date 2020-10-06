@@ -1,5 +1,5 @@
 使用指南
-1、在src/views下创建文件夹，在文件夹下创建index.html,index.css,index.ts,这个文件夹名字会被转为对应的html的名字
+1、在src/views下创建文件夹，在文件夹下创建index.html,index.css,index.js,这个文件夹名字会被转为对应的html的名字
 2、在app.js中加入上一步创建的文件夹名字。 如下 entry = [ common('文件夹名字'，‘首页文件的中文名字’) ]
 3、启动项目   npm  run   start
 4、生成静态文件  npm  run  build

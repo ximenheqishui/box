@@ -12,6 +12,7 @@ let pagination1 = pagination({
     sizeChange: onSizeChange,
     currentChange: onCurrentChange
 })
+console.log(pagination1)
 
 let pagination2 = pagination({
     elem: '.page-content2',
@@ -58,15 +59,3 @@ function getData () {
 }
 
 
-// $.ajax({
-//     url: '',
-//     method: 'get',
-//     type: 'json',
-//     success (res) {
-//         console.log(res)
-//     }
-// })
-
-$('h1').css({
-    color: 'red'
-})

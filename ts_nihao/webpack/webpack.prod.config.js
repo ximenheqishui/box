@@ -19,7 +19,7 @@ module.exports = merge.merge(base, {
     },
     plugins: [
         new CleanWebpackPlugin({
-            cleanOnceBeforeBuildPatterns: ['index.html','views/*','js/*','css/*','images/*','fonts/*'], // 这个人写的代码没有排除文件夹的功能
+            cleanOnceBeforeBuildPatterns: ['**/*', '!vendor','!vendor/**/*'], // 这个人写的代码没有排除文件夹的功能
         }),
         new MiniCssExtractPlugin({
             filename: "./css/[name].[chunkhash].css",
