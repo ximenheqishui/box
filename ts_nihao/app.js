@@ -23,6 +23,7 @@ let entry = [
 console.log(entry)
 try {
     let str = `<ul>`
+    str += `<li><a href="./component.html">给外部引用的组件的文档和js，css</a></li>`
     entry.forEach(function (item) {
         str += `<li><a href="${item.info.path}">${item.info.name}</a></li>`
     })

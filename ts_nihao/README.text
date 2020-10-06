@@ -7,8 +7,10 @@
 // 开发中新建的的页面需要走上面的 1、2、3、步
 
 功能点：
-1、es6编译，sass编译
+1、ts编译， sass编译
 2、css、js自动加入到对应的html中加上了hash  防止缓存
 3、html，css，js 变化是页面自动刷新
 4、js，css 压缩
 5、自动生成一个简单的导航页面index.html
+
+/src/component 中的所有组件单独生成了一个js和css 给其他项目用
